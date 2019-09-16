@@ -1,0 +1,19 @@
+# Don't track content of these folders
+Stratego/target/
+.idea
+Stratego/.idea/
+
+# Compiled source #
+###################
+*.class
+
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
