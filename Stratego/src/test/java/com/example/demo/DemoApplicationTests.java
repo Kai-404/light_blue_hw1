@@ -25,9 +25,16 @@ public class DemoApplicationTests {
 	}
 
 	@Test
-	public void dbTest() {
+	public void dbAddTest() {
 		userRepository.deleteAll();
 		userRepository.save(new User("pikapika", "abs"));
 		assert userRepository.findByUserId("pikapika") != null;
+	}
+
+	@Test
+	public void dbDeleteTest() {
+		User user = userRepository.findByUserId("pikapika");
+		userRepository.delete(user);
+		assert userRepository.findByUserId("pikapika") == null;
 	}
 }
