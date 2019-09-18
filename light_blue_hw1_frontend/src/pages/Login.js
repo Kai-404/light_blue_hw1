@@ -18,7 +18,7 @@ class Login extends Component {
         User Name:
         <input
           className="input"
-          placeholder="anonymous@stonybrook.edu"
+          placeholder="anonymous"
           value={this.state.email}
           type="text"
           name="email"

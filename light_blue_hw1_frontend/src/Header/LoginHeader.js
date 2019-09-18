@@ -6,17 +6,20 @@ function LoginHeader() {
   return (
     <header>
       <h1>Light Blue Stratego</h1>
-      <Link className="link" to="/">
-        Home
-      </Link>
-      {"  "}|{"  "}
-      <Link className="link" to="/login">
-        Login
-      </Link>
-      {"  "}|{"  "}
-      <Link className="link" to="/register">
-        Register
-      </Link>
+      <br></br>
+      <div className="pageHeader">
+        <Link className="link" to="/">
+          Home
+        </Link>
+        <br></br>
+        <Link className="link" to="/login">
+          Login
+        </Link>
+        <br></br>
+        <Link className="link" to="/register">
+          Register
+        </Link>
+      </div>
     </header>
   );
 }
