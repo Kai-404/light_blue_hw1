@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+</head>
+
+<body>
+    Welcome! This is the homepage!
+    <div><a th:href="@{/game}">Play</a></div>
+    <div><a th:href="@{/history}">History</a></div>
+    <div><a th:href="@{/logout}">Logout</a></div>
+</body>
+
+</html>
