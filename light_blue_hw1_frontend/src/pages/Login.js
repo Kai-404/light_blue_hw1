@@ -12,9 +12,6 @@ class Login extends Component {
   render() {
     return (
       <form className="form" onSubmit={this.onSubmit}>
-        <br></br>
-        <br></br>
-        <br></br>
         User Name:
         <input
           className="input"

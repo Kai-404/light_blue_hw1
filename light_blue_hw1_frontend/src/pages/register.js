@@ -34,7 +34,7 @@ class Register extends Component {
       <form className="form" onSubmit={this.onSubmit}>
         User Name:
         <input
-          className="inputBox"
+          className="input"
           placeholder="UserName"
           value={this.state.name}
           type="text"
@@ -45,7 +45,7 @@ class Register extends Component {
         <br />
         Email:
         <input
-          className="inputBox"
+          className="input"
           placeholder="first.last@stonybrook.edu"
           value={this.state.email}
           type="text"
@@ -56,7 +56,7 @@ class Register extends Component {
         <br />
         Password:
         <input
-          className="inputBox"
+          className="input"
           value={this.state.password}
           type="password"
           name="password"
@@ -66,7 +66,7 @@ class Register extends Component {
         <br />
         Reenter Password:
         <input
-          className="inputBox"
+          className="input"
           value={this.state.password2}
           type="password"
           name="password2"
@@ -76,7 +76,7 @@ class Register extends Component {
         <br />
         Phone Number:
         <input
-          className="inputBox"
+          className="input"
           placeholder={"1234567890"}
           value={this.state.phoneNumber}
           type="text"

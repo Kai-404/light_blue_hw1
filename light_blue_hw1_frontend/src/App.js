@@ -4,15 +4,15 @@ import "./App.css";
 import { Link } from "react-router-dom";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from "./pages/Login";
-import LoginHeader from "./Header/LoginHeader";
 import HomePage from "./pages/HomePage";
 import Register from "./pages/register";
+import SideBar from "./Header/SideBar";
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <LoginHeader />
+        <SideBar />
         <div className="Home">
           <Route exact path="/" component={HomePage} />
           <Route

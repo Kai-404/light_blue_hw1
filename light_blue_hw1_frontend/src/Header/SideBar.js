@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../App.css";
 
-function LoginHeader() {
+function SideBar() {
   return (
     <header>
       <h1>Light Blue Stratego</h1>
@@ -24,4 +24,4 @@ function LoginHeader() {
   );
 }
 
-export default LoginHeader;
+export default SideBar;
