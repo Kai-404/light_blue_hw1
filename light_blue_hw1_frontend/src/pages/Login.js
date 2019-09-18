@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
+import "../App.css";
 
 class Login extends Component {
   //state/info used for login
@@ -26,7 +27,7 @@ class Login extends Component {
         Password:
         <input
           className="input"
-          placeholder="cewitconf2018"
+          placeholder="cse308hw1"
           value={this.state.password}
           type="password"
           name="password"
@@ -34,18 +35,18 @@ class Login extends Component {
         />
         <br />
         <br />
-        <button type="submit" style={submitStyle}>
+        <button type="submit" className="submitButton">
           Login
         </button>
         {"  "}
-        <button type="button" style={submitStyle}>
-          <Link style={linkStyle} to="/create-account">
+        <button type="button" className="submitButton">
+          <Link className="linkStyle" to="/register">
             New Account
           </Link>
         </button>
         {"  "}
-        <button type="button" style={submitStyle}>
-          <Link style={linkStyle} to="/">
+        <button type="button" className="submitButton">
+          <Link className="linkStyle" to="/">
             Cancle
           </Link>
         </button>
@@ -53,18 +54,5 @@ class Login extends Component {
     );
   }
 }
-
-const submitStyle = {
-  backgroundColor: "black",
-  color: "#fff",
-  padding: "12px 20px",
-  border: "none",
-  borderRadius: "4px",
-  cursor: "pointer"
-};
-const linkStyle = {
-  color: "#fff",
-  textDecoration: "none"
-};
 
 export default withRouter(Login);

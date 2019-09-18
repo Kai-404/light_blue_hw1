@@ -13,7 +13,7 @@ class Register extends Component {
     phoneNumber: ""
   };
   onChange = e => this.setState({ [e.target.name]: e.target.value });
-
+  /** 
   onSubmit = e => {
     e.preventDefault();
     const { name, email, password, password2, phoneNumber } = this.state;
@@ -28,7 +28,7 @@ class Register extends Component {
       phoneNumber: ""
     });
     this.props.history.push("/");
-  };
+  };*/
   render() {
     return (
       <form className="form" onSubmit={this.onSubmit}>
@@ -90,7 +90,9 @@ class Register extends Component {
         </button>
         {"  "}
         <button type="button" className="submitButton">
-          <Link to="/">Cancle</Link>
+          <Link className="linkStyle" to="/">
+            Cancle
+          </Link>
         </button>
       </form>
     );

@@ -10,6 +10,7 @@ import SideBar from "./Header/SideBar";
 
 function App() {
   return (
+    //side bar will change it's content according to the login status, ex: display history after login
     <Router>
       <div className="App">
         <SideBar />

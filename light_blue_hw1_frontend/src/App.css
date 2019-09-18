@@ -42,6 +42,10 @@ link:active {
   background-color: lightblue;
 }
 
+.linkStyle {
+  color: #fff;
+  text-decoration: none;
+}
 .notes {
   text-align: center;
   font-family: Open Sans, sans-serif;
