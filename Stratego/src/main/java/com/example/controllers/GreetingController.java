@@ -19,7 +19,7 @@ public class GreetingController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping("/")
+    @RequestMapping(value= {"/","/login"})
     public String index() {
         userRepository.deleteAll();
         userRepository.save(new User("pikapika", "abs"));
