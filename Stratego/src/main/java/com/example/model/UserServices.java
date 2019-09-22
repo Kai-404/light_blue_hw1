@@ -17,4 +17,17 @@ public class UserServices {
     public boolean checkDuplicateEmail(String email) {
         return userRepository.findByEmail(email) != null;
     }
+
+    /**
+     * check if there is a account with provided id and check the password
+     * @param userId user id
+     * @param password user password
+     * @return if account not exist, return false. if password is wrong, return false
+     *
+     */
+    public boolean checkAccoundIdAndPassword(String userId, String password) {
+        User user = userRepository.findByUserId(userId);
+        if (user == null) return false;
+        return user.getPassword() == password;
+    }
 }

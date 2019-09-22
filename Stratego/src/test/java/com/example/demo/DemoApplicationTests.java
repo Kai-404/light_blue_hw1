@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {DemoApplication.class})
 @DataMongoTest
-
 public class DemoApplicationTests {
 	@Autowired
 	private UserRepository userRepository;
@@ -42,7 +41,17 @@ public class DemoApplicationTests {
 	}
 
 	@Test
-	public void dbDuplicateCheck() {
+	public void dbDuplicateCheckTest() {
 		assert userServices.checkDuplicateEmail("pikapika");
+	}
+
+	@Test
+	public void dbCheckAccountIdPasswordTest() {
+		User user = new User("pikapika","1234", "pikapika@naver.com");
+		userRepository.save(user);
+		assert !userServices.checkAccoundIdAndPassword("qweqw","asdad");
+		assert !userServices.checkAccoundIdAndPassword("pikapika","123");
+		assert userServices.checkAccoundIdAndPassword("pikapika", "1234");
+		userRepository.delete(user);
 	}
 }

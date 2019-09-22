@@ -1,10 +1,12 @@
 package com.example.model;
 
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
+@Getter
 @Document
 public class User {
     @Id
