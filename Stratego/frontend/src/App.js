@@ -19,6 +19,16 @@ class App extends Component {
     History: [] //date, status, description
   };
 
+  /**
+  //load data at the starting of the application
+  componentDidMount() {
+    //get user data from spring boot
+    axios.get("/users").then(res => this.setState({ users: res.data }));
+
+    axios.get("/history").then(res => this.setState({ events: res.data }));
+  }
+  */
+
   login = (email, password) => {
     let data = JSON.stringify({
       email,
@@ -27,7 +37,7 @@ class App extends Component {
     this.setState({ LoginFlag: !this.state.LoginFlag });
     /**
     axios
-      .post(`http://localhost:8080/users/${email}`, data, {
+      .post(`/users/${email}`, data, {
         headers: { "Content-Type": "application/json;charset=UTF-8" }
       })
       .then(res => {

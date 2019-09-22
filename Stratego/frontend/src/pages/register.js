@@ -27,7 +27,7 @@ class Register extends Component {
     });
     /**
     axios
-      .post("http://localhost:8080/users", data, {
+      .post("/users", data, {
         headers: { "Content-Type": "application/json;charset=UTF-8" }
       })
       .then(res => {
