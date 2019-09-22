@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import "../App.css";
+import "./Game.css" ;
 
 class Game extends React.Component {
   /* required functions:
@@ -22,7 +23,7 @@ class Game extends React.Component {
       PLAYER_TWO: "B",
       currentTurn: "R",
       //board will be load from the back end as a list/array
-      board: Array(100).fill("placeHolder"),
+      board: Array(100).fill(";)"),
       winner: null
     };
   }
@@ -67,7 +68,7 @@ class Game extends React.Component {
           </button>
           <br />
         </React.Fragment>
-        <React.Fragment>{board}</React.Fragment>
+        <div className="board">{board}</div>
       </React.Fragment>
     );
   }
