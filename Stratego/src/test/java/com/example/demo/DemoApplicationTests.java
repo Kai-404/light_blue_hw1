@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.example.model.User;
 import com.example.model.UserRepository;
+import com.example.model.UserServices;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class DemoApplicationTests {
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private UserServices userServices;
 
 	@Test
 	public void contextLoads() {
@@ -36,5 +39,10 @@ public class DemoApplicationTests {
 		User user = userRepository.findByUserId("pikapika");
 		userRepository.delete(user);
 		assert userRepository.findByUserId("pikapika") == null;
+	}
+
+	@Test
+	public void dbDuplicateCheck() {
+		assert userServices.checkDuplicateEmail("pikapika");
 	}
 }
