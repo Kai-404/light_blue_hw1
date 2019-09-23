@@ -1,0 +1,20 @@
+.square {
+  background-color: lightblue;
+  height: 60px;
+  width: 60px;
+  box-sizing: border-box;
+  border: 5px solid black;
+  font-size: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board {
+  display: flex;
+  width: 600px;
+  height: 600px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}

@@ -2,33 +2,73 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router";
+import axios from "axios";
 import "../App.css";
+import Login from "./Login";
 
 class Register extends Component {
   state = {
     username: "",
     email: "@stonybrook.edu",
     password: "",
-    password2: "",
-    phoneNumber: ""
+    password2: ""
+  };
+  routeChange = () => {
+    this.props.history.push("/");
   };
   onChange = e => this.setState({ [e.target.name]: e.target.value });
-  /** 
+
+  //TODO: if registered then use this new account to Login, jump to loggedIn bar
+  register = (name, email, password) => {
+    let data = JSON.stringify({
+      name,
+      email,
+      password
+    });
+    axios
+      .post("/register", data, {
+        headers: { "Content-Type": "application/json;charset=UTF-8" }
+      })
+      .then(res => {
+        if (res.data === 0) alert("New Account Created");
+        else if (res.data === 1) {
+          alert("Fail to create new Account, invalid email or already exist");
+        } else if (res.data === 2) {
+          alert("Fail to create new Account, invalid phone number");
+        } else if (res.data === 3) {
+          alert(
+            "Fail to create new Account, password don't match or password is not length 8"
+          );
+        } else if (res.data === 4)
+          alert("Fail to create new Account, must enter a username");
+        else {
+          alert("Fail to create new Account");
+        }
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   onSubmit = e => {
     e.preventDefault();
-    const { name, email, password, password2, phoneNumber } = this.state;
+    const { name, email, password, password2 } = this.state;
     if (password !== password2) {
-      this.props.createAccount(name, email, "", phoneNumber);
-    } else this.props.createAccount(name, email, password, phoneNumber);
-    this.setState({
-      name: "",
-      email: "@stonybrook.edu",
-      password: "",
-      password2: "",
-      phoneNumber: ""
-    });
-    this.props.history.push("/");
-  };*/
+      alert("Fail to create new Account, password don't match");
+    } else {
+      this.register(name, email, password);
+
+      this.setState({
+        name: "",
+        email: "@stonybrook.edu",
+        password: "",
+        password2: ""
+      });
+      this.props.history.push("/");
+    }
+  };
+
   render() {
     return (
       <form className="form" onSubmit={this.onSubmit}>
@@ -74,25 +114,16 @@ class Register extends Component {
         />
         <br />
         <br />
-        Phone Number:
-        <input
-          className="input"
-          placeholder={"1234567890"}
-          value={this.state.phoneNumber}
-          type="text"
-          name="phoneNumber"
-          onChange={this.onChange}
-        />
-        <br />
-        <br />
         <button type="submit" className="submitButton">
           Submit
         </button>
         {"  "}
-        <button type="button" className="submitButton">
-          <Link className="linkStyle" to="/">
-            Cancle
-          </Link>
+        <button
+          type="button"
+          className="submitButton"
+          onClick={this.routeChange}
+        >
+          Cancle
         </button>
       </form>
     );

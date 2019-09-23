@@ -2,12 +2,43 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
 import "../App.css";
+import axios from "axios";
 
 class Login extends Component {
   //state/info used for login
   state = {
-    userName: "anonymous",
-    password: "cse308hw1"
+    userName: "",
+    password: ""
+  };
+
+  routeChangeL = () => {
+    let path = "/register";
+    this.props.history.push(path);
+  };
+  routeChangeC = () => {
+    let path = "/";
+    this.props.history.push(path);
+  };
+
+  onChange = e => this.setState({ [e.target.name]: e.target.value });
+  onSubmit = e => {
+    e.preventDefault();
+    const { email, password } = this.state;
+      axios.get("/login", {params: {email: email, password: password}})
+          .then( res=> {
+              if (res != null) {
+                  this.props.login(email, password)
+                  this.setState({
+                      email: "",
+                      password: ""
+                  });
+                  this.props.history.push("/")
+              }
+              else {
+                  alert("Invalid login")
+              }
+
+          });
   };
 
   render() {
@@ -16,7 +47,6 @@ class Login extends Component {
         User Name:
         <input
           className="input"
-          placeholder="anonymous"
           value={this.state.email}
           type="text"
           name="email"
@@ -27,7 +57,6 @@ class Login extends Component {
         Password:
         <input
           className="input"
-          placeholder="cse308hw1"
           value={this.state.password}
           type="password"
           name="password"
@@ -39,16 +68,20 @@ class Login extends Component {
           Login
         </button>
         {"  "}
-        <button type="button" className="submitButton">
-          <Link className="linkStyle" to="/register">
-            New Account
-          </Link>
+        <button
+          type="button"
+          className="submitButton"
+          onClick={this.routeChangeL}
+        >
+          New Account
         </button>
         {"  "}
-        <button type="button" className="submitButton">
-          <Link className="linkStyle" to="/">
-            Cancle
-          </Link>
+        <button
+          type="button"
+          className="submitButton"
+          onClick={this.routeChangeC}
+        >
+          Cancle
         </button>
       </form>
     );
