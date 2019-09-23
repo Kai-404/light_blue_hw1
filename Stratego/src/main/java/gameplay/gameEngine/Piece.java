@@ -1,6 +1,7 @@
 package gameplay.gameEngine;
 
 import java.security.PublicKey;
+import java.util.ArrayList;
 
 public class Piece {
 
@@ -37,6 +38,16 @@ public class Piece {
 
     public int getWhosePiece(){
         return this.whosePiece;
+    }
+
+    public String[] getPiece(){
+
+        String[] toReturn = new String[2];
+        toReturn[0] = Integer.toString( this.getWhosePiece() );
+        toReturn[1] = this.getType();
+
+        return toReturn;
+
     }
 
     public boolean isPlayerOnePiece(){

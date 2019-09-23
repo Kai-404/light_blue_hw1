@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import gameplay.gameEngine.Board;
 
+import java.util.ArrayList;
+
 @CrossOrigin
 @RestController
 public class GameController {
@@ -11,7 +13,7 @@ public class GameController {
 
     @RequestMapping("/game/init")
     @ResponseBody
-    public String[] initGame(){
+    public ArrayList<String[]> initGame(){
 
         board.setBoard();
 

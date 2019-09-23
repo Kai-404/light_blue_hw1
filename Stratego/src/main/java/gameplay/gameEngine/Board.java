@@ -28,12 +28,14 @@ public class Board {
 
     }
 
-    public String[] getBoardState(){
-        String[] boardStateStringArray = new String[100];
+    public ArrayList<String[]> getBoardState(){
+        ArrayList<String[]> boardStateStringArray = new ArrayList<>(  );
 
         for(int i =0; i<100;i++){
             if(boardState[i]!=null) {
-                boardStateStringArray[i] = boardState[i].getType();
+                boardStateStringArray.add( boardState[i].getPiece() );
+            }else{
+                boardStateStringArray.add( null );
             }
 
         }
@@ -44,14 +46,14 @@ public class Board {
 
     //for console test only
     public void printBoard(){
-        String[] boardStateStringArray = getBoardState();
+        ArrayList<String[]> boardStateStringArray = getBoardState();
 
         for(int i =0; i<100;i++){
             if(i%10==0){
                 System.out.println(  );
             }
 
-            System.out.print(boardStateStringArray[i] + " " );
+            System.out.print(boardStateStringArray.get( i ) + " " );
 
         }
     }
