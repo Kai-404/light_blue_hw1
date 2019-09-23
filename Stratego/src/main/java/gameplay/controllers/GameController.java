@@ -4,7 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import gameplay.gameEngine.Board;
 
-@Controller
+@CrossOrigin
+@RestController
 public class GameController {
     Board board = new Board();
 
