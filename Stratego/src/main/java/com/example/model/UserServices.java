@@ -23,7 +23,6 @@ public class UserServices {
      * @param userId user id
      * @param password user password
      * @return if account not exist, return false. if password is wrong, return false
-     *
      */
     public boolean checkAccoundIdAndPassword(String userId, String password) {
         User user = userRepository.findByUserId(userId);
