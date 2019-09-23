@@ -21,25 +21,25 @@ class Login extends Component {
   };
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
-  onSubmit = e => {
-    e.preventDefault();
-    const { email, password } = this.state;
-      axios.get("/login", {params: {email: email, password: password}})
-          .then( res=> {
-              if (res != null) {
-                  this.props.login(email, password)
-                  this.setState({
-                      email: "",
-                      password: ""
-                  });
-                  this.props.history.push("/")
-              }
-              else {
-                  alert("Invalid login")
-              }
-
-          });
-  };
+    onSubmit = e => {
+        e.preventDefault();
+        const { email, password } = this.state;
+        axios.get("/login", {headers: { "Content-Type": "application/json;charset=UTF-8" }, params: {email: email, password: password}})
+            .then( res => {
+                if (res.data != "") {
+                    this.props.login(email, password)
+                    this.setState({
+                        email: "",
+                        password: ""
+                    });
+                    this.props.history.push("/")
+                }
+                else {
+                    alert("login err");
+                }
+            })
+            .catch(err => { console.log(err); });
+    };
 
   render() {
     return (
