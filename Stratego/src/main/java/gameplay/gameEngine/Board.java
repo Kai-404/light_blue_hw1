@@ -1,9 +1,6 @@
 package gameplay.gameEngine;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Random;
+import java.util.*;
 
 public class Board {
 
@@ -28,8 +25,8 @@ public class Board {
 
     }
 
-    public ArrayList<String[]> getBoardState(){
-        ArrayList<String[]> boardStateStringArray = new ArrayList<>(  );
+    public ArrayList<Map<String,String>> getBoardState(){
+        ArrayList<Map<String,String>> boardStateStringArray = new ArrayList<>(  );
 
         for(int i =0; i<100;i++){
             if(boardState[i]!=null) {
@@ -46,7 +43,7 @@ public class Board {
 
     //for console test only
     public void printBoard(){
-        ArrayList<String[]> boardStateStringArray = getBoardState();
+        ArrayList<Map<String,String>> boardStateStringArray = getBoardState();
 
         for(int i =0; i<100;i++){
             if(i%10==0){

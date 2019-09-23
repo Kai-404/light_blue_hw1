@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import gameplay.gameEngine.Board;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -13,9 +14,11 @@ public class GameController {
 
     @RequestMapping("/game/init")
     @ResponseBody
-    public ArrayList<String[]> initGame(){
+    public ArrayList<Map<String,String>> initGame(){
 
         board.setBoard();
+
+        board.printBoard();
 
         return board.getBoardState();
 
