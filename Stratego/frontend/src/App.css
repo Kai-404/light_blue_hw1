@@ -1,5 +1,5 @@
 .App {
-  background-color: #ffffff;
+  background-color: white;
   height: 100vh;
   text-align: center;
   overflow: hidden;
@@ -9,21 +9,21 @@
   position: absolute;
   left: 30%;
   right: 30%;
-  top: 20%;
   line-height: 30px;
   font-size: 16px;
-  background-color: #ffffff;
+  background-color: white;
   border-width: 1px;
 }
 
-.pageHeader {
-  position: absolute;
-  display: block;
-  background: lightblue;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 3;
+.sidebar {
+  width: 130px;
+  position: fixed;
+  z-index: 1;
+  top: 20px;
+  left: 10px;
+  background: lightsteelblue;
+  overflow-x: hidden;
+  padding: 8px 0;
 }
 
 .link {
