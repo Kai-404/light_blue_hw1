@@ -36,7 +36,7 @@ class Game extends React.Component {
   componentDidMount() {
     //get init game data from spring boot
     axios
-      .get("W/game/init")
+      .get("/game/init")
       .then(res => this.setState({ board: res.data }));
   }
 

@@ -13,8 +13,7 @@ class LoggedIn extends Component {
     return (
       <header>
         <h1>Light Blue Stratego</h1>
-        <br></br>
-        <div className="pageHeader">
+        <div className="sidebar">
           <Link className="link" to="/">
             Home
           </Link>
@@ -22,6 +21,10 @@ class LoggedIn extends Component {
             Logout
           </Link>
           <br></br>
+          <Link className="link" to="/register">
+            Register
+          </Link>
+          <br />
           <Link className="link" to="/game">
             Stratego
           </Link>
