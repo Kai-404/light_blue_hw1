@@ -1,4 +1,4 @@
-package com.example.model;
+package gameplay.model;
 
 import lombok.Data;
 import lombok.Getter;
