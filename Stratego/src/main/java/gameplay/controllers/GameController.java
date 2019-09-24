@@ -4,15 +4,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import gameplay.gameEngine.Board;
 
-@Controller
+import java.util.ArrayList;
+import java.util.Map;
+
+@CrossOrigin
+@RestController
 public class GameController {
     Board board = new Board();
 
     @RequestMapping("/game/init")
     @ResponseBody
-    public String[] initGame(){
+    public ArrayList<Map<String,String>> initGame(){
 
         board.setBoard();
+
+        board.printBoard();
 
         return board.getBoardState();
 

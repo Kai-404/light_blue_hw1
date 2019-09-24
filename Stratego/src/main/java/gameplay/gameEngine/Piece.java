@@ -1,6 +1,9 @@
 package gameplay.gameEngine;
 
 import java.security.PublicKey;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Piece {
 
@@ -37,6 +40,20 @@ public class Piece {
 
     public int getWhosePiece(){
         return this.whosePiece;
+    }
+
+    public Map<String,String> getPiece(){
+
+        Map< String,String> piece = new HashMap< String,String>();
+        //String[] toReturn = new String[2];
+
+        piece.put( "Type",this.getType() );
+        piece.put( "Player",Integer.toString( this.getWhosePiece() ) );
+//        toReturn[0] = Integer.toString( this.getWhosePiece() );
+//        toReturn[1] = this.getType();
+
+        return piece;
+
     }
 
     public boolean isPlayerOnePiece(){
