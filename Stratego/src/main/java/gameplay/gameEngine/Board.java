@@ -50,7 +50,11 @@ public class Board {
                 System.out.println(  );
             }
 
-            System.out.print(boardStateStringArray.get( i ) + " " );
+            if (boardStateStringArray.get( i )!=null){
+                System.out.print(boardStateStringArray.get( i ).get("Type") + " " );
+            }else{
+                System.out.print("  ");
+            }
 
         }
     }
@@ -65,6 +69,126 @@ public class Board {
 
         //printBoard();
 
+    }
+
+    public Piece[] getBoardMap(){
+        return this.boardState;
+    }
+
+    public ArrayList<Integer> allValidMove(int pieceIndex){
+
+        int leftBound = (pieceIndex/10)*10 ;
+        int rightBound = (leftBound + 9);
+        int whose = boardState[pieceIndex].getWhosePiece();
+
+        ArrayList<Integer> validMoveIndexes = new ArrayList<>();
+
+        String pieceType = boardState[pieceIndex].getType();
+
+        if (pieceType.equals( "F" )){
+            return validMoveIndexes;
+        }else if (pieceType.equals( "B" )){
+            return validMoveIndexes;
+        }else if (pieceType.equals( "2" )){
+
+            int tempIndex= pieceIndex;
+            while (tempIndex<rightBound){
+                tempIndex +=1 ;
+                if (boardState[tempIndex]==null){
+                    validMoveIndexes.add( tempIndex );
+                } else if (boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0){
+                    break;
+                }else {
+                    validMoveIndexes.add( tempIndex );
+                }
+            }
+
+            tempIndex= pieceIndex;
+            while (tempIndex>leftBound){
+                tempIndex -=1 ;
+                if (boardState[tempIndex]==null){
+                    validMoveIndexes.add( tempIndex );
+                } else if (boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0){
+                    break;
+                }else {
+                    validMoveIndexes.add( tempIndex );
+                }
+            }
+
+            tempIndex= pieceIndex;
+            while (tempIndex<89){
+                tempIndex +=10 ;
+                if (boardState[tempIndex]==null){
+                    validMoveIndexes.add( tempIndex );
+                } else if (boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0){
+                    break;
+                }else {
+                    validMoveIndexes.add( tempIndex );
+                }
+            }
+
+            tempIndex= pieceIndex;
+            while (tempIndex>9){
+                tempIndex -=10 ;
+                if (boardState[tempIndex]==null){
+                    validMoveIndexes.add( tempIndex );
+                } else if (boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0){
+                    break;
+                }else {
+                    validMoveIndexes.add( tempIndex );
+                }
+            }
+
+        }else{
+            int tempIndex= pieceIndex;
+
+            if (tempIndex<rightBound){
+                tempIndex +=1 ;
+                if (boardState[tempIndex]==null){
+                    validMoveIndexes.add( tempIndex );
+                } else if (!(boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0)) {
+                    validMoveIndexes.add( tempIndex );
+                }
+            }
+
+            tempIndex= pieceIndex;
+            if (tempIndex>leftBound){
+                tempIndex -=1 ;
+                if (boardState[tempIndex]==null){
+                    validMoveIndexes.add( tempIndex );
+                } else if (!(boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0)) {
+                    validMoveIndexes.add( tempIndex );
+                }
+            }
+
+            tempIndex= pieceIndex;
+            if (tempIndex<89){
+                tempIndex +=10 ;
+                if (boardState[tempIndex]==null){
+                    validMoveIndexes.add( tempIndex );
+                } else if (!(boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0)) {
+                    validMoveIndexes.add( tempIndex );
+                }
+            }
+
+            tempIndex= pieceIndex;
+            if (tempIndex>9){
+                tempIndex -=10 ;
+                if (boardState[tempIndex]==null){
+                    validMoveIndexes.add( tempIndex );
+                } else if (!(boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0)) {
+                    validMoveIndexes.add( tempIndex );
+                }
+            }
+        }
+
+
+        return validMoveIndexes;
+    }
+
+    public boolean isValidMove(int start, int dist){
+
+        return allValidMove(start).contains( dist );
 
     }
 
