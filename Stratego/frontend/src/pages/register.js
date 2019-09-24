@@ -134,7 +134,7 @@ class Register extends Component {
 
 //propTypes
 Register.propTypes = {
-    Register: PropTypes.func.isRequired
+  Register: PropTypes.func.isRequired
 };
 
 export default withRouter(Register);

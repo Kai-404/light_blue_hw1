@@ -2,8 +2,8 @@
 
 package gameplay.controllers;
 
-import gameplay.models.User;
-import gameplay.models.UserRepository;
+import gameplay.model.User;
+import gameplay.model.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.repository.query.Param;
@@ -22,7 +22,7 @@ public class UserController {
     @PostMapping("/register")
     public int createCourse(@RequestBody User user) {
         if (userRepository.findByEmail(user.getEmail()) != null) { return 1; }
-        if (userRepository.findByUsername(user.getUsername()) != null) { return 2; }
+        if (userRepository.findByUsername(user.getUserId()) != null) { return 2; }
         userRepository.save(user);
         return 3;
     }
