@@ -14,9 +14,8 @@ import History from "./game/History";
 
 class App extends Component {
   state = {
-    //    LoginFlag: false,
-    LoginFlag: true,
-    User: [], //username, password, email, history
+    LoginFlag: false,
+    User: [], //username, password, email
     History: [] //date, status, description
   };
 
@@ -24,9 +23,9 @@ class App extends Component {
   //load data at the starting of the application
   componentDidMount() {
     //get user data from spring boot
-    axios.get("/users").then(res => this.setState({ User: res.data }));
+    axios.get("/users").then(res => this.setState({ users: res.data }));
 
-    axios.get("/history").then(res => this.setState({ History: res.data }));
+    axios.get("/history").then(res => this.setState({ events: res.data }));
   }
   */
 
@@ -54,7 +53,6 @@ class App extends Component {
   };
 
   logout = () => {
-    alert("You have logged out");
     this.setState({ LoginFlag: !this.state.LoginFlag });
   };
 
