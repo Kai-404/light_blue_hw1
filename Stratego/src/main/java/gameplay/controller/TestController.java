@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Email;
+
 @RestController
 @ComponentScan("gameplay")
 public class TestController {
@@ -18,8 +20,11 @@ public class TestController {
     private UserRepository userRepository;
 
     @PostMapping("/register")
-    public void createCourse(@RequestBody User user) {
+    public int createCourse(@RequestBody User user) {
+        if (userRepository.findByEmail(user.getEmail()) != null) { return 1; }
+        if (userRepository.findByUsername(user.getUsername()) != null) { return 2; }
         userRepository.save(user);
+        return 3;
     }
 
     @GetMapping("/login")

@@ -24,21 +24,30 @@ class Login extends Component {
     onSubmit = e => {
         e.preventDefault();
         const { email, password } = this.state;
-        axios.get("/login", {headers: { "Content-Type": "application/json;charset=UTF-8" }, params: {email: email, password: password}})
-            .then( res => {
-                if (res.data != "") {
-                    this.props.login(email, password)
-                    this.setState({
-                        email: "",
-                        password: ""
-                    });
-                    this.props.history.push("/")
-                }
-                else {
-                    alert("login err");
-                }
+        if (email === "" || password === "") {
+            alert("fill in all fields")
+        }
+        else {
+            axios.get("/login", {
+                headers: {"Content-Type": "application/json;charset=UTF-8"},
+                params: {email: email, password: password}
             })
-            .catch(err => { console.log(err); });
+                .then(res => {
+                    if (res.data != "") {
+                        this.props.login(email, password)
+                        this.setState({
+                            email: "",
+                            password: ""
+                        });
+                        this.props.history.push("/")
+                    } else {
+                        alert("Invalid username or password");
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
     };
 
   render() {
@@ -81,7 +90,7 @@ class Login extends Component {
           className="submitButton"
           onClick={this.routeChangeC}
         >
-          Cancle
+          Cancel
         </button>
       </form>
     );
