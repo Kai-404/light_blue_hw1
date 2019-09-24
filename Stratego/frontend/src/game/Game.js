@@ -91,13 +91,24 @@ class Game extends React.Component {
     }
   }
 
+  //display the pieces based on the state
+  //if the piece haven't been explored, display:false
+  //if piece explored(eat other piece), display:true
+
   //depending on the action determine swap or eat
   handleClick(index) {
-    this.eat(index);
+    if (this.state.board[this.state.FIRST_SELECT]) this.eat(index);
+    else {
+      this.setState({
+        FIRST_SELECT: index
+      });
+    }
   }
 
   render() {
     let board = this.state.board.map((cell, index) => {
+      var classNames = require("classnames");
+      var colorDep;
       let PlayerBStat;
       let cn = "square";
       let disable = false;
@@ -108,7 +119,10 @@ class Game extends React.Component {
           cn = "squareA";
         } else if (cell.Player == 2) {
           cn = "squareB";
+          colorDep = classNames("square", { backgroundColor: "#99cccc" });
         } else if (cell.Player == 0) {
+          piece = null;
+          cn = "squareR";
           disable = true;
         }
       }
@@ -151,12 +165,8 @@ class Game extends React.Component {
         </React.Fragment>
         <div className="board">
           {board}
-          <div className="resultBarLeft">
-            <header className="stat">Oppen Pieces</header>
-            <p className="stat">{playerA}</p>
-          </div>
           <div className="resultBarRight">
-            <header className="stat">Your Pieces</header>
+            <header className="stat">Remaining Pieces</header>
             <p className="stat">{playerA}</p>
           </div>
         </div>
