@@ -11,7 +11,8 @@ class Register extends Component {
         username: "",
         email: "",
         password: "",
-        password2: ""
+        password2: "",
+        errmsg: ""
     };
     routeChange = () => {
         this.props.history.push("/");
@@ -31,13 +32,13 @@ class Register extends Component {
             })
             .then(res => {
                 if (res.data === 0) {
-                    alert("Fail to create new Account, invalid email");
+                    this.setState({errmsg: "Fail to create new Account, invalid email"});
                 } else if (res.data === 1) {
-                    alert("Fail to create new Account, email already exists");
+                    this.setState({errmsg: "Fail to create new Account, email already exists"});
                 } else if (res.data === 2)
-                    alert("Fail to create new Account, username already exists");
+                    this.setState({errmsg: "Fail to create new Account, username already exists"});
                 else {
-                    alert("Success")
+                    this.setState({errmsg: "registration successful"})
                 }
                 console.log(res);
             })
@@ -50,11 +51,14 @@ class Register extends Component {
         e.preventDefault();
         const { name, email, password, password2 } = this.state;
         if (name === "" || email == "" || password === "" || password2 === "") {
-            alert("fill in all fields")
+            this.setState({errmsg: "fill in all fields"})
         }
-        else if (/\S+@\S+\.\S+/.test(email) == false) { alert("invalid email")}
+        else if (/\S+@\S+\.\S+/.test(email) == false) { this.setState({errmsg: "invalid email"})}
         else if (password !== password2) {
-            alert("Fail to create new Account, password don't match");
+            this.setState({errmsg: "Fail to create new Account, password don't match"});
+        }
+        else if (password.length < 8) {
+            this.setState({errmsg: "password needs to be at least 8 characters long"})
         } else {
             this.register(name, email, password);
 
@@ -70,59 +74,62 @@ class Register extends Component {
 
     render() {
         return (
-            <form className="form" onSubmit={this.onSubmit}>
-                User Name:
-                <input
-                    className="input"
-                    value={this.state.name}
-                    type="text"
-                    name="name"
-                    onChange={this.onChange}
-                />
-                <br />
-                <br />
-                Email:
-                <input
-                    className="input"
-                    value={this.state.email}
-                    type="text"
-                    name="email"
-                    onChange={this.onChange}
-                />
-                <br />
-                <br />
-                Password:
-                <input
-                    className="input"
-                    value={this.state.password}
-                    type="password"
-                    name="password"
-                    onChange={this.onChange}
-                />
-                <br />
-                <br />
-                Reenter Password:
-                <input
-                    className="input"
-                    value={this.state.password2}
-                    type="password"
-                    name="password2"
-                    onChange={this.onChange}
-                />
-                <br />
-                <br />
-                <button type="submit" className="submitButton">
-                    Submit
-                </button>
-                {"  "}
-                <button
-                    type="button"
-                    className="submitButton"
-                    onClick={this.routeChange}
-                >
-                    Cancle
-                </button>
-            </form>
+            <div>
+                <p class="errmsg">{this.state.errmsg}</p>
+                <form className="form" onSubmit={this.onSubmit}>
+                    User Name:
+                    <input
+                        className="input"
+                        value={this.state.name}
+                        type="text"
+                        name="name"
+                        onChange={this.onChange}
+                    />
+                    <br />
+                    <br />
+                    Email:
+                    <input
+                        className="input"
+                        value={this.state.email}
+                        type="text"
+                        name="email"
+                        onChange={this.onChange}
+                    />
+                    <br />
+                    <br />
+                    Password:
+                    <input
+                        className="input"
+                        value={this.state.password}
+                        type="password"
+                        name="password"
+                        onChange={this.onChange}
+                    />
+                    <br />
+                    <br />
+                    Reenter Password:
+                    <input
+                        className="input"
+                        value={this.state.password2}
+                        type="password"
+                        name="password2"
+                        onChange={this.onChange}
+                    />
+                    <br />
+                    <br />
+                    <button type="submit" className="submitButton">
+                        Submit
+                    </button>
+                    {"  "}
+                    <button
+                        type="button"
+                        className="submitButton"
+                        onClick={this.routeChange}
+                    >
+                        Cancel
+                    </button>
+                </form>
+            </div>
         );
     }
 }

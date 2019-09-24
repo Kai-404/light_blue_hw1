@@ -107,3 +107,7 @@ link:active {
   border-radius: 4px;
   cursor: pointer;
 }
+
+.errmsg {
+  color: red;
+}

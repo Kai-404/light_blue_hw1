@@ -5,27 +5,28 @@ import "../App.css";
 import axios from "axios";
 
 class Login extends Component {
-  //state/info used for login
-  state = {
-    userName: "",
-    password: ""
-  };
+    //state/info used for login
+    state = {
+        userName: "",
+        password: "",
+        errmsg: ""
+    };
 
-  routeChangeL = () => {
-    let path = "/register";
-    this.props.history.push(path);
-  };
-  routeChangeC = () => {
-    let path = "/";
-    this.props.history.push(path);
-  };
+    routeChangeL = () => {
+        let path = "/register";
+        this.props.history.push(path);
+    };
+    routeChangeC = () => {
+        let path = "/";
+        this.props.history.push(path);
+    };
 
-  onChange = e => this.setState({ [e.target.name]: e.target.value });
+    onChange = e => this.setState({ [e.target.name]: e.target.value });
     onSubmit = e => {
         e.preventDefault();
         const { email, password } = this.state;
         if (email === "" || password === "") {
-            alert("fill in all fields")
+            this.setState({errmsg: "fill in all blanks"})
         }
         else {
             axios.get("/login", {
@@ -41,7 +42,7 @@ class Login extends Component {
                         });
                         this.props.history.push("/")
                     } else {
-                        alert("Invalid username or password");
+                        this.setState({errmsg: "Invalid username or password"});
                     }
                 })
                 .catch(err => {
@@ -50,51 +51,54 @@ class Login extends Component {
         }
     };
 
-  render() {
-    return (
-      <form className="form" onSubmit={this.onSubmit}>
-        User Name:
-        <input
-          className="input"
-          value={this.state.email}
-          type="text"
-          name="email"
-          onChange={this.onChange}
-        />
-        <br />
-        <br />
-        Password:
-        <input
-          className="input"
-          value={this.state.password}
-          type="password"
-          name="password"
-          onChange={this.onChange}
-        />
-        <br />
-        <br />
-        <button type="submit" className="submitButton">
-          Login
-        </button>
-        {"  "}
-        <button
-          type="button"
-          className="submitButton"
-          onClick={this.routeChangeL}
-        >
-          New Account
-        </button>
-        {"  "}
-        <button
-          type="button"
-          className="submitButton"
-          onClick={this.routeChangeC}
-        >
-          Cancel
-        </button>
-      </form>
-    );
-  }
+    render() {
+        return (
+            <div>
+                <p class="errmsg">{this.state.errmsg}</p>
+                <form className="form" onSubmit={this.onSubmit}>
+                    User Name:
+                    <input
+                        className="input"
+                        value={this.state.email}
+                        type="text"
+                        name="email"
+                        onChange={this.onChange}
+                    />
+                    <br />
+                    <br />
+                    Password:
+                    <input
+                        className="input"
+                        value={this.state.password}
+                        type="password"
+                        name="password"
+                        onChange={this.onChange}
+                    />
+                    <br />
+                    <br />
+                    <button type="submit" className="submitButton">
+                        Login
+                    </button>
+                    {"  "}
+                    <button
+                        type="button"
+                        className="submitButton"
+                        onClick={this.routeChangeL}
+                    >
+                        New Account
+                    </button>
+                    {"  "}
+                    <button
+                        type="button"
+                        className="submitButton"
+                        onClick={this.routeChangeC}
+                    >
+                        Cancel
+                    </button>
+                </form>
+            </div>
+        );
+    }
 }
 
 export default withRouter(Login);
