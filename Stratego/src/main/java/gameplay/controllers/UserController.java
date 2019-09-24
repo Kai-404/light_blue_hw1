@@ -1,6 +1,6 @@
 //for test purpose only
 
-package gameplay.controller;
+package gameplay.controllers;
 
 import gameplay.models.User;
 import gameplay.models.UserRepository;
@@ -14,7 +14,7 @@ import javax.validation.constraints.Email;
 
 @RestController
 @ComponentScan("gameplay")
-public class TestController {
+public class UserController {
 
     @Autowired
     private UserRepository userRepository;
