@@ -40,26 +40,44 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   box-sizing: border-box;
-  border: 5px solid #336699;
-}
-
-.resultBarLeft {
-  width: 130px;
-  float: left;
-  position: relative;
-  z-index: 1;
-  background: lightsteelblue;
-  overflow-x: hidden;
-  padding: 8px 0;
+  border: 5px solid lightblue;
 }
 
 .resultBarRight {
   width: 130px;
-  float: right;
-  position: relative;
-  z-index: 1;
-  left: 100px;
-  background: lightsteelblue;
+  height: 490px;
+  position: fixed;
+  left: 1000px;
+  top: 185px;
+  background: lightblue;
   overflow-x: hidden;
+  overflow-y: hidden;
   padding: 8px 0;
+}
+.resultBarLeft {
+  width: 130px;
+  height: 490px;
+  position: fixed;
+  left: 300px;
+  top: 185px;
+  background: lightblue;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  padding: 8px 0;
+}
+
+.stat {
+  font-size: 15px;
+  font-weight: bold;
+  text-align: left;
+  display: inline-block;
+}
+
+.button {
+  background-color: lightblue;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }

@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 
-import "../App.css";
 import "./Game.css";
-import SideBar from "../SideBar/SideBar";
 
 class Game extends React.Component {
   /* required functions:
@@ -23,12 +21,23 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      PLAYER_ONE: "R",
-      PLAYER_TWO: "B",
-      currentTurn: "R",
       FIRST_SELECT: null,
       //board will be load from the back end as a list/array
       board: Array(100).fill(";)"),
+      PlayerAStat: {
+        Marshall: 1,
+        General: 1,
+        Colonels: 2,
+        Majors: 3,
+        Captains: 4,
+        Lieutenants: 4,
+        Sergeants: 4,
+        Miners: 3,
+        Scouts: 8,
+        Spy: 1,
+        Bombs: 6,
+        Flag: 1
+      },
       winner: null
     };
   }
@@ -36,7 +45,7 @@ class Game extends React.Component {
   componentDidMount() {
     //get init game data from spring boot
     axios
-      .get("/game/init")
+      .get("http://localhost:8080/game/init")
       .then(res => this.setState({ board: res.data }));
   }
 
@@ -89,6 +98,7 @@ class Game extends React.Component {
 
   render() {
     let board = this.state.board.map((cell, index) => {
+      let PlayerBStat;
       let cn = "square";
       let disable = false;
       let piece = cell;
@@ -112,25 +122,44 @@ class Game extends React.Component {
         </button>
       );
     });
+
+    let playerA = Object.keys(this.state.PlayerAStat).map(function(key, index) {
+      let piec = key + ": ";
+      return (
+        <p>
+          {piec}
+          <br />
+        </p>
+      );
+    });
     return (
       //TODO:try to answer why do we use React.Fragment over div?
       <React.Fragment>
-        <div className="resultBarLeft">Opp's SideBar</div>
-        <div className="resultBarRight">Your SideBar</div>
         <React.Fragment>
           <br />
-          <button className="submitButton" onClick={this.playGame}>
+          <button className="button" onClick={this.playGame}>
             Play
           </button>
-          <button className="submitButton" onClick={this.setupGame}>
+          <button className="button" onClick={this.setupGame}>
             Setup
           </button>
-          <button className="submitButton" onClick={this.surrender}>
+          <button className="button" onClick={this.surrender}>
             Surrender
           </button>
           <br />
+          <br />
         </React.Fragment>
-        <div className="board">{board}</div>
+        <div className="board">
+          {board}
+          <div className="resultBarLeft">
+            <header className="stat">Oppen Pieces</header>
+            <p className="stat">{playerA}</p>
+          </div>
+          <div className="resultBarRight">
+            <header className="stat">Your Pieces</header>
+            <p className="stat">{playerA}</p>
+          </div>
+        </div>
       </React.Fragment>
     );
   }
