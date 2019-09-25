@@ -235,7 +235,8 @@ class Game extends React.Component {
         this.state.board[index2].Player !== this.state.board[index1].Player
       ) {
         this.state.board[index2] = this.state.board[index1];
-        this.state.board[index1] = null;
+        //TODO: generalize blank piece
+        this.state.board[index1] = { Type: "E", Player: "0" };
         this.setState({
           FIRST_SELECT: null,
           SECOND_SELECT: null,
