@@ -26,7 +26,109 @@ class Game extends React.Component {
       Player1: true,
       Player2: false,
       //board will be load from the back end as a list/array
-      board: Array(100).fill(null),
+      //board: Array(100).fill(null),
+      board: [
+        { Type: "5", Player: "2" },
+        { Type: "2", Player: "2" },
+        { Type: "2", Player: "2" },
+        { Type: "2", Player: "2" },
+        { Type: "10", Player: "2" },
+        { Type: "2", Player: "2" },
+        { Type: "8", Player: "2" },
+        { Type: "7", Player: "2" },
+        { Type: "6", Player: "2" },
+        { Type: "B", Player: "2" },
+        { Type: "B", Player: "2" },
+        { Type: "4", Player: "2" },
+        { Type: "6", Player: "2" },
+        { Type: "7", Player: "2" },
+        { Type: "2", Player: "2" },
+        { Type: "9", Player: "2" },
+        { Type: "8", Player: "2" },
+        { Type: "2", Player: "2" },
+        { Type: "B", Player: "2" },
+        { Type: "F", Player: "2" },
+        { Type: "3", Player: "2" },
+        { Type: "2", Player: "2" },
+        { Type: "7", Player: "2" },
+        { Type: "5", Player: "2" },
+        { Type: "3", Player: "2" },
+        { Type: "5", Player: "2" },
+        { Type: "5", Player: "2" },
+        { Type: "6", Player: "2" },
+        { Type: "6", Player: "2" },
+        { Type: "B", Player: "2" },
+        { Type: "3", Player: "2" },
+        { Type: "B", Player: "2" },
+        { Type: "4", Player: "2" },
+        { Type: "3", Player: "2" },
+        { Type: "4", Player: "2" },
+        { Type: "2", Player: "2" },
+        { Type: "4", Player: "2" },
+        { Type: "B", Player: "2" },
+        { Type: "3", Player: "2" },
+        { Type: "1", Player: "2" },
+        { Type: "E", Player: "0" },
+        { Type: "E", Player: "0" },
+        { Type: "R", Player: "0" },
+        { Type: "R", Player: "0" },
+        { Type: "E", Player: "0" },
+        { Type: "E", Player: "0" },
+        { Type: "R", Player: "0" },
+        { Type: "R", Player: "0" },
+        { Type: "E", Player: "0" },
+        { Type: "E", Player: "0" },
+        { Type: "E", Player: "0" },
+        { Type: "E", Player: "0" },
+        { Type: "R", Player: "0" },
+        { Type: "R", Player: "0" },
+        { Type: "E", Player: "0" },
+        { Type: "E", Player: "0" },
+        { Type: "R", Player: "0" },
+        { Type: "R", Player: "0" },
+        { Type: "E", Player: "0" },
+        { Type: "E", Player: "0" },
+        { Type: "10", Player: "1" },
+        { Type: "5", Player: "1" },
+        { Type: "5", Player: "1" },
+        { Type: "2", Player: "1" },
+        { Type: "2", Player: "1" },
+        { Type: "2", Player: "1" },
+        { Type: "8", Player: "1" },
+        { Type: "B", Player: "1" },
+        { Type: "B", Player: "1" },
+        { Type: "3", Player: "1" },
+        { Type: "4", Player: "1" },
+        { Type: "3", Player: "1" },
+        { Type: "2", Player: "1" },
+        { Type: "3", Player: "1" },
+        { Type: "6", Player: "1" },
+        { Type: "5", Player: "1" },
+        { Type: "4", Player: "1" },
+        { Type: "B", Player: "1" },
+        { Type: "5", Player: "1" },
+        { Type: "9", Player: "1" },
+        { Type: "3", Player: "1" },
+        { Type: "7", Player: "1" },
+        { Type: "2", Player: "1" },
+        { Type: "2", Player: "1" },
+        { Type: "4", Player: "1" },
+        { Type: "7", Player: "1" },
+        { Type: "B", Player: "1" },
+        { Type: "F", Player: "1" },
+        { Type: "B", Player: "1" },
+        { Type: "6", Player: "1" },
+        { Type: "7", Player: "1" },
+        { Type: "2", Player: "1" },
+        { Type: "8", Player: "1" },
+        { Type: "2", Player: "1" },
+        { Type: "1", Player: "1" },
+        { Type: "4", Player: "1" },
+        { Type: "6", Player: "1" },
+        { Type: "B", Player: "1" },
+        { Type: "3", Player: "1" },
+        { Type: "6", Player: "1" }
+      ],
       PlayerAStat: {
         Marshall: 1,
         General: 1,
@@ -48,7 +150,7 @@ class Game extends React.Component {
   componentDidMount() {
     //get init game data from spring boot
     axios
-      .get("/game/init")
+      .get("http://localhost:8080/game/init")
       .then(res => this.setState({ board: res.data }));
   }
 
@@ -58,7 +160,7 @@ class Game extends React.Component {
   playGame = () => {
     alert("start to play game");
     this.setState({ isStart: !this.state.isStart });
-    /*axios.post("/game/init").then(res => {
+    /*axios.post("http://localhost:8080/game/init").then(res => {
       if (res === true) this.setState({ isStart: !this.state.isStart });
     });
     */
@@ -73,7 +175,7 @@ class Game extends React.Component {
       );
     }
     axios
-      .get("/game/init")
+      .get("http://localhost:8080/game/init")
       .then(res => this.setState({ board: res.data }));
     this.setState({
       isStart: false,
@@ -170,19 +272,18 @@ class Game extends React.Component {
       var classNames = require("classnames");
       let cn = "square";
       let disable = false;
-      let piece = cell;
-      if (cell) {
-        piece = cell.Type;
-        if (cell.Player === "1") {
-          cn = "squareA";
-        } else if (cell.Player === "2") {
-          cn = "squareB";
-          //colorDep = classNames("square", { backgroundColor: "#99cccc" });
-        } else if (cell.Player === "0") {
-          piece = null;
-          cn = "squareR";
-          disable = true;
-        }
+      let piece = cell.Type;
+      if (cell.Player === "1") {
+        cn = "squareA";
+      } else if (cell.Player === "2") {
+        cn = "squareB";
+        //colorDep = classNames("square", { backgroundColor: "#99cccc" });
+      } else if (cell.Type === "R") {
+        cn = "squareR";
+        piece = null;
+        disable = true;
+      } else {
+        piece = null;
       }
       return (
         <button
