@@ -22,6 +22,8 @@ class Game extends React.Component {
     super(props);
     this.state = {
       FIRST_SELECT: null,
+      Player1: true,
+      Player2: false,
       //board will be load from the back end as a list/array
       board: Array(100).fill(";)"),
       PlayerAStat: {
@@ -45,7 +47,7 @@ class Game extends React.Component {
   componentDidMount() {
     //get init game data from spring boot
     axios
-      .get("http://localhost:8080/game/init")
+      .get("/game/init")
       .then(res => this.setState({ board: res.data }));
   }
 
@@ -54,6 +56,21 @@ class Game extends React.Component {
   playGame = () => {};
   setupGame = () => {};
   surrender = () => {};
+
+  validPiece(index) {
+    if (!this.state.FIRST_SELECT && this.state.board[index] !== null) {
+      if (
+        (this.state.board[index].Player === "2" && this.state.Player2) ||
+        (this.state.board[index].Player === "1" && this.state.Player1)
+      ) {
+        this.setState({
+          FIRST_SELECT: index
+        });
+      } else {
+        this.setState({ FIRST_SELECT: null });
+      }
+    }
+  }
 
   //at most 2 buttons can be selected, and check if second is a valid move
   //if not, unclick 2nd
@@ -65,29 +82,29 @@ class Game extends React.Component {
       this.state.board[this.state.FIRST_SELECT] = A;
       this.setState({
         board: this.state.board,
-        FIRST_SELECT: null
-      });
-    } else {
-      this.setState({
-        FIRST_SELECT: index,
-        board: this.state.board
+        FIRST_SELECT: null,
+        Player1: !this.state.Player1,
+        Player2: !this.state.Player2
       });
     }
   }
 
   eat(index) {
-    if (this.state.FIRST_SELECT != null && this.state.FIRST_SELECT != index) {
-      this.state.board[index] = this.state.board[this.state.FIRST_SELECT];
-      this.state.board[this.state.FIRST_SELECT] = null;
-      this.setState({
-        FIRST_SELECT: null,
-        board: this.state.board
-      });
-    } else {
-      this.setState({
-        FIRST_SELECT: index,
-        board: this.state.board
-      });
+    let first = this.state.FIRST_SELECT;
+    if (first !== null && first !== index) {
+      if (
+        this.state.board[index] == null ||
+        this.state.board[index].Player !== this.state.board[first].Player
+      ) {
+        this.state.board[index] = this.state.board[first];
+        this.state.board[first] = null;
+        this.setState({
+          FIRST_SELECT: null,
+          board: this.state.board,
+          Player1: !this.state.Player1,
+          Player2: !this.state.Player2
+        });
+      }
     }
   }
 
@@ -97,12 +114,8 @@ class Game extends React.Component {
 
   //depending on the action determine swap or eat
   handleClick(index) {
-    if (this.state.board[this.state.FIRST_SELECT]) this.eat(index);
-    else {
-      this.setState({
-        FIRST_SELECT: index
-      });
-    }
+    if (!this.state.FIRST_SELECT) this.validPiece(index);
+    else this.eat(index);
   }
 
   render() {
@@ -115,12 +128,12 @@ class Game extends React.Component {
       let piece = cell;
       if (cell) {
         piece = cell.Type;
-        if (cell.Player == 1) {
+        if (cell.Player === "1") {
           cn = "squareA";
-        } else if (cell.Player == 2) {
+        } else if (cell.Player === "2") {
           cn = "squareB";
           colorDep = classNames("square", { backgroundColor: "#99cccc" });
-        } else if (cell.Player == 0) {
+        } else if (cell.Player === "0") {
           piece = null;
           cn = "squareR";
           disable = true;
