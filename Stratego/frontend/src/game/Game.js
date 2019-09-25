@@ -21,11 +21,12 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isStart: false,
       FIRST_SELECT: null,
       Player1: true,
       Player2: false,
       //board will be load from the back end as a list/array
-      board: Array(100).fill(";)"),
+      board: Array(100).fill(null),
       PlayerAStat: {
         Marshall: 1,
         General: 1,
@@ -51,13 +52,45 @@ class Game extends React.Component {
       .then(res => this.setState({ board: res.data }));
   }
 
-  //by clicking the play button, react will send back the finalized board to spring,
+  //by clicking the play button,
+  //react will send back the finalized board to spring,
   //then user are able to start the game
-  playGame = () => {};
-  setupGame = () => {};
-  surrender = () => {};
+  playGame = () => {
+    alert("start to play game");
+    this.setState({ isStart: !this.state.isStart });
+    /*axios.post("/game/init").then(res => {
+      if (res === true) this.setState({ isStart: !this.state.isStart });
+    });
+    */
+  };
+  setupGame = () => {
+    console.log(this.state.isStart);
+    if (this.state.isStart) {
+      alert("New game started without saving the old one");
+    } else {
+      alert(
+        "You can swap the pieces by by clicking them,\nwhen you finish setting up the board\nclick play game to start"
+      );
+    }
+    axios
+      .get("/game/init")
+      .then(res => this.setState({ board: res.data }));
+    this.setState({
+      isStart: false,
+      Player1: true,
+      Player2: false,
+      winner: null
+    });
+  };
+  //end the game with AI as winner
+  surrender = () => {
+    this.setState({ winner: "AI" });
+    alert(`game ended, winner is ${this.state.winner}`);
+  };
 
+  //validing the first index
   validPiece(index) {
+    console.log(`first: ${this.state.FIRST_SELECT}, index: ${index}`);
     if (!this.state.FIRST_SELECT && this.state.board[index] !== null) {
       if (
         (this.state.board[index].Player === "2" && this.state.Player2) ||
@@ -75,31 +108,35 @@ class Game extends React.Component {
   //at most 2 buttons can be selected, and check if second is a valid move
   //if not, unclick 2nd
   //if valid, swap value according to index.
-  swap(index) {
-    if (this.state.FIRST_SELECT != null) {
-      let A = this.state.board[index];
-      this.state.board[index] = this.state.board[this.state.FIRST_SELECT];
-      this.state.board[this.state.FIRST_SELECT] = A;
-      this.setState({
-        board: this.state.board,
-        FIRST_SELECT: null,
-        Player1: !this.state.Player1,
-        Player2: !this.state.Player2
-      });
+  swap(index1, index2) {
+    console.log(`try to swap ${index1} and ${index2}`);
+    if (this.state.board[index2]) {
+      console.log(this.state.board[index2]);
+      if (this.state.board[index1].Player === this.state.board[index2].Player) {
+        let A = this.state.board[index1];
+        this.state.board[index1] = this.state.board[index2];
+        this.state.board[index2] = A;
+        this.setState({
+          board: this.state.board,
+          FIRST_SELECT: null,
+          SECOND_SELECT: null
+        });
+      }
     }
   }
 
-  eat(index) {
-    let first = this.state.FIRST_SELECT;
-    if (first !== null && first !== index) {
+  eat(index1, index2) {
+    console.log(`${index1} try to eat ${index2}`);
+    if (index1 !== null && index1 !== index2) {
       if (
-        this.state.board[index] == null ||
-        this.state.board[index].Player !== this.state.board[first].Player
+        this.state.board[index2] == null ||
+        this.state.board[index2].Player !== this.state.board[index1].Player
       ) {
-        this.state.board[index] = this.state.board[first];
-        this.state.board[first] = null;
+        this.state.board[index2] = this.state.board[index1];
+        this.state.board[index1] = null;
         this.setState({
           FIRST_SELECT: null,
+          SECOND_SELECT: null,
           board: this.state.board,
           Player1: !this.state.Player1,
           Player2: !this.state.Player2
@@ -114,15 +151,23 @@ class Game extends React.Component {
 
   //depending on the action determine swap or eat
   handleClick(index) {
-    if (!this.state.FIRST_SELECT) this.validPiece(index);
-    else this.eat(index);
+    if (this.state.winner) {
+      alert(`game ended, winner is ${this.state.winner}`);
+    } else {
+      if (!this.state.FIRST_SELECT) this.validPiece(index);
+      else {
+        if (!this.state.isStart) {
+          this.swap(this.state.FIRST_SELECT, index);
+        } else {
+          this.eat(this.state.FIRST_SELECT, index);
+        }
+      }
+    }
   }
 
   render() {
     let board = this.state.board.map((cell, index) => {
       var classNames = require("classnames");
-      var colorDep;
-      let PlayerBStat;
       let cn = "square";
       let disable = false;
       let piece = cell;
@@ -132,7 +177,7 @@ class Game extends React.Component {
           cn = "squareA";
         } else if (cell.Player === "2") {
           cn = "squareB";
-          colorDep = classNames("square", { backgroundColor: "#99cccc" });
+          //colorDep = classNames("square", { backgroundColor: "#99cccc" });
         } else if (cell.Player === "0") {
           piece = null;
           cn = "squareR";
@@ -159,13 +204,14 @@ class Game extends React.Component {
         </p>
       );
     });
+
     return (
       //TODO:try to answer why do we use React.Fragment over div?
       <React.Fragment>
         <React.Fragment>
           <br />
           <button className="button" onClick={this.playGame}>
-            Play
+            Play Game
           </button>
           <button className="button" onClick={this.setupGame}>
             Setup
