@@ -16,10 +16,10 @@ public class UserController {
     private UserRepository userRepository;
 
     @PostMapping("/register")
-    public int createCourse(@RequestBody User user) {
-        if (userRepository.findByEmail(user.getEmail()) != null) { return 1; }
-        if (userRepository.findByUserName(user.getUserName()) != null) { return 2; }
-        userRepository.save(user);
+    public int createCourse(@RequestParam(name = "username") String username, @RequestParam(name = "email") String email, @RequestParam(name = "password") String password) {
+        if (userRepository.findByEmail(email) != null) { return 1; }
+        if (userRepository.findByUsername(username) != null) { return 2; }
+        userRepository.save(new User(username, email, password));
         return 3;
     }
 

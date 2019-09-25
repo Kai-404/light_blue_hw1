@@ -9,9 +9,10 @@ import Login from "./Login";
 class Register extends Component {
   state = {
     username: "",
-    email: "@stonybrook.edu",
+    email: "",
     password: "",
-    password2: ""
+    password2: "",
+      errmsg: ""
   };
   routeChange = () => {
     this.props.history.push("/");
@@ -19,68 +20,70 @@ class Register extends Component {
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
   //TODO: if registered then use this new account to Login, jump to loggedIn bar
-  register = (name, email, password) => {
-    let data = JSON.stringify({
-      name,
-      email,
-      password
-    });
-    /**
-    axios
-      .post("/users", data, {
-        headers: { "Content-Type": "application/json;charset=UTF-8" }
-      })
-      .then(res => {
-        if (res.data === 0) alert("New Account Created");
-        else if (res.data === 1) {
-          alert("Fail to create new Account, invalid email or already exist");
-        } else if (res.data === 2) {
-          alert("Fail to create new Account, invalid phone number");
-        } else if (res.data === 3) {
-          alert(
-            "Fail to create new Account, password don't match or password is not length 8"
-          );
-        } else if (res.data === 4)
-          alert("Fail to create new Account, must enter a username");
-        else {
-          alert("Fail to create new Account");
+    register = (username, email, password) => {
+        let data = JSON.stringify({
+            username,
+            email,
+            password
+        });
+        axios
+            .post("/register", data, {
+                headers: { "Content-Type": "application/json;charset=UTF-8" },
+                params: {username: username, email: email, password: password}
+            })
+            .then(res => {
+                if (res.data === 0) {
+                    this.setState({errmsg: "Fail to create new Account, invalid email"});
+                } else if (res.data === 1) {
+                    this.setState({errmsg: "Fail to create new Account, email already exists"});
+                } else if (res.data === 2)
+                    this.setState({errmsg: "Fail to create new Account, username already exists"});
+                else {
+                    this.setState({errmsg: "registration successful"})
+                }
+                console.log(res);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+
+    onSubmit = e => {
+        e.preventDefault();
+        const { username, email, password, password2 } = this.state;
+        if (username === "" || email == "" || password === "" || password2 === "") {
+            this.setState({errmsg: "fill in all fields"})
         }
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-      */
-  };
+        else if (/\S+@\S+\.\S+/.test(email) == false) { this.setState({errmsg: "invalid email"})}
+        else if (password !== password2) {
+            this.setState({errmsg: "Fail to create new Account, password don't match"});
+        }
+        else if (password.length < 8) {
+            this.setState({errmsg: "password needs to be at least 8 characters long"})
+        } else {
+            this.register(username, email, password);
 
-  onSubmit = e => {
-    e.preventDefault();
-    const { name, email, password, password2 } = this.state;
-    if (password !== password2) {
-      alert("Fail to create new Account, password don't match");
-    } else {
-      this.register(name, email, password);
-
-      this.setState({
-        name: "",
-        email: "@stonybrook.edu",
-        password: "",
-        password2: ""
-      });
-      this.props.history.push("/");
-    }
-  };
+            this.setState({
+                username: "",
+                email: "",
+                password: "",
+                password2: ""
+            });
+            this.props.history.push("/");
+        }
+    };
 
   render() {
     return (
+        <div>
+            <p className="errmsg">{this.state.errmsg}</p>
       <form className="form" onSubmit={this.onSubmit}>
         User Name:
         <input
           className="input"
-          placeholder="UserName"
-          value={this.state.name}
+          value={this.state.username}
           type="text"
-          name="name"
+          name="username"
           onChange={this.onChange}
         />
         <br />
@@ -88,7 +91,6 @@ class Register extends Component {
         Email:
         <input
           className="input"
-          placeholder="first.last@stonybrook.edu"
           value={this.state.email}
           type="text"
           name="email"
@@ -125,9 +127,10 @@ class Register extends Component {
           className="submitButton"
           onClick={this.routeChange}
         >
-          Cancle
+          Cancel
         </button>
       </form>
+        </div>
     );
   }
 }

@@ -7,22 +7,31 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Getter
-@Document
+@Document(collection="user")
 public class User {
     @Id
     private String id;
-    private String userName;
+    private String username;
     private String password;
     private String email;
 
-    public  User(String userName, String password) {
-        this.userName = userName;
+    public User() {}
+
+    public  User(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
-    public User(String userName, String password, String email) {
-        this.userName = userName;
+    public User(String username, String email, String password) {
+        this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public User(String id, String username, String password, String email) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
     }
 }
