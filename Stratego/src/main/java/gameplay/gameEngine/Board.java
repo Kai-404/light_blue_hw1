@@ -66,6 +66,7 @@ public class Board {
         setupPlayerTwo( this.boardState, this.playerTwoPieces );
         setupPlayerOne(this.boardState, this.playerOnePieces  );
         setRiver( this.boardState );
+        setEmptyBlock( this.boardState  );
 
         //printBoard();
 
@@ -94,7 +95,7 @@ public class Board {
             int tempIndex= pieceIndex;
             while (tempIndex<rightBound){
                 tempIndex +=1 ;
-                if (boardState[tempIndex]==null){
+                if (boardState[tempIndex].isEmptyBlock()){
                     validMoveIndexes.add( tempIndex );
                 } else if (boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0){
                     break;
@@ -106,7 +107,7 @@ public class Board {
             tempIndex= pieceIndex;
             while (tempIndex>leftBound){
                 tempIndex -=1 ;
-                if (boardState[tempIndex]==null){
+                if (boardState[tempIndex].isEmptyBlock()){
                     validMoveIndexes.add( tempIndex );
                 } else if (boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0){
                     break;
@@ -118,7 +119,7 @@ public class Board {
             tempIndex= pieceIndex;
             while (tempIndex<89){
                 tempIndex +=10 ;
-                if (boardState[tempIndex]==null){
+                if (boardState[tempIndex].isEmptyBlock()){
                     validMoveIndexes.add( tempIndex );
                 } else if (boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0){
                     break;
@@ -130,7 +131,7 @@ public class Board {
             tempIndex= pieceIndex;
             while (tempIndex>9){
                 tempIndex -=10 ;
-                if (boardState[tempIndex]==null){
+                if (boardState[tempIndex].isEmptyBlock()){
                     validMoveIndexes.add( tempIndex );
                 } else if (boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0){
                     break;
@@ -144,7 +145,7 @@ public class Board {
 
             if (tempIndex<rightBound){
                 tempIndex +=1 ;
-                if (boardState[tempIndex]==null){
+                if (boardState[tempIndex].isEmptyBlock()){
                     validMoveIndexes.add( tempIndex );
                 } else if (!(boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0)) {
                     validMoveIndexes.add( tempIndex );
@@ -154,7 +155,7 @@ public class Board {
             tempIndex= pieceIndex;
             if (tempIndex>leftBound){
                 tempIndex -=1 ;
-                if (boardState[tempIndex]==null){
+                if (boardState[tempIndex].isEmptyBlock()){
                     validMoveIndexes.add( tempIndex );
                 } else if (!(boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0)) {
                     validMoveIndexes.add( tempIndex );
@@ -164,7 +165,7 @@ public class Board {
             tempIndex= pieceIndex;
             if (tempIndex<89){
                 tempIndex +=10 ;
-                if (boardState[tempIndex]==null){
+                if (boardState[tempIndex].isEmptyBlock()){
                     validMoveIndexes.add( tempIndex );
                 } else if (!(boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0)) {
                     validMoveIndexes.add( tempIndex );
@@ -174,7 +175,7 @@ public class Board {
             tempIndex= pieceIndex;
             if (tempIndex>9){
                 tempIndex -=10 ;
-                if (boardState[tempIndex]==null){
+                if (boardState[tempIndex].isEmptyBlock()){
                     validMoveIndexes.add( tempIndex );
                 } else if (!(boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0)) {
                     validMoveIndexes.add( tempIndex );
@@ -368,7 +369,11 @@ public class Board {
 
     public void setRiver(Piece[] boardArray){
 
+        //row 50: _ _ R R _ _ R R _ _
+        //row 60: _ _ R R _ _ R R _ _
+
         Piece river = new Piece( 0,"R" );
+
         boardArray[42] = river;
         boardArray[43] = river;
         boardArray[46] = river;
@@ -377,6 +382,29 @@ public class Board {
         boardArray[53] = river;
         boardArray[56] = river;
         boardArray[57] = river;
+
+    }
+
+    public void setEmptyBlock(Piece[] boardArray){
+
+        //row 50: E E _ _ E E _ _ E E
+        //row 60: E E _ _ E E _ _ E E
+
+        Piece empty = new Piece( 0,"E" );
+
+        boardArray[40] = empty;
+        boardArray[41] = empty;
+        boardArray[44] = empty;
+        boardArray[45] = empty;
+        boardArray[48] = empty;
+        boardArray[49] = empty;
+
+        boardArray[50] = empty;
+        boardArray[51] = empty;
+        boardArray[54] = empty;
+        boardArray[55] = empty;
+        boardArray[58] = empty;
+        boardArray[59] = empty;
 
     }
 
