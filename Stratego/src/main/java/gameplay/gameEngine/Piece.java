@@ -9,7 +9,7 @@ public class Piece {
 
     // 1: player one piece
     // 2: player two piece
-    // 0: river
+    // 0: River or Empty
     int whosePiece;
 
     // 10: 1 Marshall
@@ -25,6 +25,7 @@ public class Piece {
     //  B: 6 Bombs
     //  F: 1 Flag
     //  R: 8 River
+    //  E: 12 Empty Block
     String PieceType;
 
     public Piece(int whosePiece, String type){
@@ -68,6 +69,14 @@ public class Piece {
 
     public boolean isFlag(){
         return this.PieceType.equals( "F" );
+    }
+
+    public boolean isEmptyBlock(){
+        return this.PieceType.equals( "E" );
+    }
+
+    public boolean isBomb(){
+        return this.PieceType.equals( "B" );
     }
 
     public void setPieceType(String type){
