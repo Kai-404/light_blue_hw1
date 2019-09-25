@@ -6,11 +6,7 @@ import gameplay.model.User;
 import gameplay.model.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.constraints.Email;
 
 @RestController
 @ComponentScan("gameplay")
@@ -22,7 +18,7 @@ public class UserController {
     @PostMapping("/register")
     public int createCourse(@RequestBody User user) {
         if (userRepository.findByEmail(user.getEmail()) != null) { return 1; }
-        if (userRepository.findByUsername(user.getUserId()) != null) { return 2; }
+        if (userRepository.findByUserName(user.getUserName()) != null) { return 2; }
         userRepository.save(user);
         return 3;
     }
