@@ -43,7 +43,7 @@ public class GameController {
     @RequestMapping("/game/move")
     @ResponseBody
     public boolean movePiece(@RequestParam int startIndex, @RequestParam int distIndex){
-
+        System.out.println(startIndex + " " + distIndex);
         // true if valid move
         // false if not valid move
         return board.move(startIndex,distIndex);
@@ -64,6 +64,7 @@ public class GameController {
     @RequestMapping("/game/swap")
     @ResponseBody
     public ArrayList<Map<String,String>> swap(@RequestParam int startIndex, @RequestParam int distIndex){
+        System.out.println("\n" + startIndex + " " + distIndex);
 
         board.swapPieces( startIndex,distIndex );
 

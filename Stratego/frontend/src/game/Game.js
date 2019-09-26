@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
+import Alert from "react-bootstrap/Alert";
 
 import "./Game.css";
+import { parseAsync } from "@babel/core";
 
 class Game extends React.Component {
   /* required functions:
@@ -25,110 +27,111 @@ class Game extends React.Component {
       FIRST_SELECT: null,
       Player1: true,
       Player2: false,
+      moveMade: false,
       //board will be load from the back end as a list/array
-      //board: Array(100).fill(null),
-      board: [
-        { Type: "5", Player: "2" },
-        { Type: "2", Player: "2" },
-        { Type: "2", Player: "2" },
-        { Type: "2", Player: "2" },
-        { Type: "10", Player: "2" },
-        { Type: "2", Player: "2" },
-        { Type: "8", Player: "2" },
-        { Type: "7", Player: "2" },
-        { Type: "6", Player: "2" },
-        { Type: "B", Player: "2" },
-        { Type: "B", Player: "2" },
-        { Type: "4", Player: "2" },
-        { Type: "6", Player: "2" },
-        { Type: "7", Player: "2" },
-        { Type: "2", Player: "2" },
-        { Type: "9", Player: "2" },
-        { Type: "8", Player: "2" },
-        { Type: "2", Player: "2" },
-        { Type: "B", Player: "2" },
-        { Type: "F", Player: "2" },
-        { Type: "3", Player: "2" },
-        { Type: "2", Player: "2" },
-        { Type: "7", Player: "2" },
-        { Type: "5", Player: "2" },
-        { Type: "3", Player: "2" },
-        { Type: "5", Player: "2" },
-        { Type: "5", Player: "2" },
-        { Type: "6", Player: "2" },
-        { Type: "6", Player: "2" },
-        { Type: "B", Player: "2" },
-        { Type: "3", Player: "2" },
-        { Type: "B", Player: "2" },
-        { Type: "4", Player: "2" },
-        { Type: "3", Player: "2" },
-        { Type: "4", Player: "2" },
-        { Type: "2", Player: "2" },
-        { Type: "4", Player: "2" },
-        { Type: "B", Player: "2" },
-        { Type: "3", Player: "2" },
-        { Type: "1", Player: "2" },
-        { Type: "E", Player: "0" },
-        { Type: "E", Player: "0" },
-        { Type: "R", Player: "0" },
-        { Type: "R", Player: "0" },
-        { Type: "E", Player: "0" },
-        { Type: "E", Player: "0" },
-        { Type: "R", Player: "0" },
-        { Type: "R", Player: "0" },
-        { Type: "E", Player: "0" },
-        { Type: "E", Player: "0" },
-        { Type: "E", Player: "0" },
-        { Type: "E", Player: "0" },
-        { Type: "R", Player: "0" },
-        { Type: "R", Player: "0" },
-        { Type: "E", Player: "0" },
-        { Type: "E", Player: "0" },
-        { Type: "R", Player: "0" },
-        { Type: "R", Player: "0" },
-        { Type: "E", Player: "0" },
-        { Type: "E", Player: "0" },
-        { Type: "10", Player: "1" },
-        { Type: "5", Player: "1" },
-        { Type: "5", Player: "1" },
-        { Type: "2", Player: "1" },
-        { Type: "2", Player: "1" },
-        { Type: "2", Player: "1" },
-        { Type: "8", Player: "1" },
-        { Type: "B", Player: "1" },
-        { Type: "B", Player: "1" },
-        { Type: "3", Player: "1" },
-        { Type: "4", Player: "1" },
-        { Type: "3", Player: "1" },
-        { Type: "2", Player: "1" },
-        { Type: "3", Player: "1" },
-        { Type: "6", Player: "1" },
-        { Type: "5", Player: "1" },
-        { Type: "4", Player: "1" },
-        { Type: "B", Player: "1" },
-        { Type: "5", Player: "1" },
-        { Type: "9", Player: "1" },
-        { Type: "3", Player: "1" },
-        { Type: "7", Player: "1" },
-        { Type: "2", Player: "1" },
-        { Type: "2", Player: "1" },
-        { Type: "4", Player: "1" },
-        { Type: "7", Player: "1" },
-        { Type: "B", Player: "1" },
-        { Type: "F", Player: "1" },
-        { Type: "B", Player: "1" },
-        { Type: "6", Player: "1" },
-        { Type: "7", Player: "1" },
-        { Type: "2", Player: "1" },
-        { Type: "8", Player: "1" },
-        { Type: "2", Player: "1" },
-        { Type: "1", Player: "1" },
-        { Type: "4", Player: "1" },
-        { Type: "6", Player: "1" },
-        { Type: "B", Player: "1" },
-        { Type: "3", Player: "1" },
-        { Type: "6", Player: "1" }
-      ],
+      board: Array(100).fill(":("),
+      /*board: [
+        { Type: "4", Player: "2", Display: "no" },
+        { Type: "B", Player: "2", Display: "no" },
+        { Type: "B", Player: "2", Display: "no" },
+        { Type: "5", Player: "2", Display: "no" },
+        { Type: "3", Player: "2", Display: "no" },
+        { Type: "3", Player: "2", Display: "no" },
+        { Type: "10", Player: "2", Display: "no" },
+        { Type: "2", Player: "2", Display: "no" },
+        { Type: "B", Player: "2", Display: "no" },
+        { Type: "3", Player: "2", Display: "no" },
+        { Type: "4", Player: "2", Display: "no" },
+        { Type: "B", Player: "2", Display: "no" },
+        { Type: "F", Player: "2", Display: "no" },
+        { Type: "B", Player: "2", Display: "no" },
+        { Type: "8", Player: "2", Display: "no" },
+        { Type: "2", Player: "2", Display: "no" },
+        { Type: "9", Player: "2", Display: "no" },
+        { Type: "5", Player: "2", Display: "no" },
+        { Type: "2", Player: "2", Display: "no" },
+        { Type: "2", Player: "2", Display: "no" },
+        { Type: "6", Player: "2", Display: "no" },
+        { Type: "4", Player: "2", Display: "no" },
+        { Type: "B", Player: "2", Display: "no" },
+        { Type: "6", Player: "2", Display: "no" },
+        { Type: "2", Player: "2", Display: "no" },
+        { Type: "7", Player: "2", Display: "no" },
+        { Type: "7", Player: "2", Display: "no" },
+        { Type: "2", Player: "2", Display: "no" },
+        { Type: "6", Player: "2", Display: "no" },
+        { Type: "4", Player: "2", Display: "no" },
+        { Type: "2", Player: "2", Display: "no" },
+        { Type: "3", Player: "2", Display: "no" },
+        { Type: "1", Player: "2", Display: "no" },
+        { Type: "2", Player: "2", Display: "no" },
+        { Type: "3", Player: "2", Display: "no" },
+        { Type: "6", Player: "2", Display: "no" },
+        { Type: "5", Player: "2", Display: "no" },
+        { Type: "5", Player: "2", Display: "no" },
+        { Type: "7", Player: "2", Display: "no" },
+        { Type: "8", Player: "2", Display: "no" },
+        { Type: "E", Player: "0", Display: "yes" },
+        { Type: "E", Player: "0", Display: "yes" },
+        { Type: "R", Player: "0", Display: "yes" },
+        { Type: "R", Player: "0", Display: "yes" },
+        { Type: "E", Player: "0", Display: "yes" },
+        { Type: "E", Player: "0", Display: "yes" },
+        { Type: "R", Player: "0", Display: "yes" },
+        { Type: "R", Player: "0", Display: "yes" },
+        { Type: "E", Player: "0", Display: "yes" },
+        { Type: "E", Player: "0", Display: "yes" },
+        { Type: "E", Player: "0", Display: "yes" },
+        { Type: "E", Player: "0", Display: "yes" },
+        { Type: "R", Player: "0", Display: "yes" },
+        { Type: "R", Player: "0", Display: "yes" },
+        { Type: "E", Player: "0", Display: "yes" },
+        { Type: "E", Player: "0", Display: "yes" },
+        { Type: "R", Player: "0", Display: "yes" },
+        { Type: "R", Player: "0", Display: "yes" },
+        { Type: "E", Player: "0", Display: "yes" },
+        { Type: "E", Player: "0", Display: "yes" },
+        { Type: "6", Player: "1", Display: "yes" },
+        { Type: "6", Player: "1", Display: "yes" },
+        { Type: "3", Player: "1", Display: "yes" },
+        { Type: "4", Player: "1", Display: "yes" },
+        { Type: "4", Player: "1", Display: "yes" },
+        { Type: "3", Player: "1", Display: "yes" },
+        { Type: "5", Player: "1", Display: "yes" },
+        { Type: "2", Player: "1", Display: "yes" },
+        { Type: "9", Player: "1", Display: "yes" },
+        { Type: "6", Player: "1", Display: "yes" },
+        { Type: "8", Player: "1", Display: "yes" },
+        { Type: "5", Player: "1", Display: "yes" },
+        { Type: "7", Player: "1", Display: "yes" },
+        { Type: "2", Player: "1", Display: "yes" },
+        { Type: "2", Player: "1", Display: "yes" },
+        { Type: "5", Player: "1", Display: "yes" },
+        { Type: "2", Player: "1", Display: "yes" },
+        { Type: "3", Player: "1", Display: "yes" },
+        { Type: "7", Player: "1", Display: "yes" },
+        { Type: "5", Player: "1", Display: "yes" },
+        { Type: "4", Player: "1", Display: "yes" },
+        { Type: "2", Player: "1", Display: "yes" },
+        { Type: "3", Player: "1", Display: "yes" },
+        { Type: "B", Player: "1", Display: "yes" },
+        { Type: "B", Player: "1", Display: "yes" },
+        { Type: "6", Player: "1", Display: "yes" },
+        { Type: "B", Player: "1", Display: "yes" },
+        { Type: "2", Player: "1", Display: "yes" },
+        { Type: "1", Player: "1", Display: "yes" },
+        { Type: "2", Player: "1", Display: "yes" },
+        { Type: "2", Player: "1", Display: "yes" },
+        { Type: "B", Player: "1", Display: "yes" },
+        { Type: "10", Player: "1", Display: "yes" },
+        { Type: "8", Player: "1", Display: "yes" },
+        { Type: "7", Player: "1", Display: "yes" },
+        { Type: "B", Player: "1", Display: "yes" },
+        { Type: "F", Player: "1", Display: "yes" },
+        { Type: "B", Player: "1", Display: "yes" },
+        { Type: "4", Player: "1", Display: "yes" },
+        { Type: "3", Player: "1", Display: "yes" }
+      ],*/
       PlayerAStat: {
         Marshall: 1,
         General: 1,
@@ -143,7 +146,8 @@ class Game extends React.Component {
         Bombs: 6,
         Flag: 1
       },
-      winner: null
+      winner: null,
+      mesg: ""
     };
   }
 
@@ -159,14 +163,15 @@ class Game extends React.Component {
   //then user are able to start the game
   playGame = () => {
     alert("start to play game");
-    this.setState({ isStart: !this.state.isStart });
-    /*axios.post("http://localhost:8080/game/init").then(res => {
-      if (res === true) this.setState({ isStart: !this.state.isStart });
+    this.setState({
+      isStart: true,
+      Player1: true,
+      Player2: false,
+      winner: null,
+      mesg: ""
     });
-    */
   };
   setupGame = () => {
-    console.log(this.state.isStart);
     if (this.state.isStart) {
       alert("New game started without saving the old one");
     } else {
@@ -181,18 +186,17 @@ class Game extends React.Component {
       isStart: false,
       Player1: true,
       Player2: false,
-      winner: null
+      winner: null,
+      mesg: ""
     });
   };
   //end the game with AI as winner
   surrender = () => {
-    this.setState({ winner: "AI" });
-    alert(`game ended, winner is ${this.state.winner}`);
+    this.setState({ winner: "AI", mesg: "game ended, winner is AI" });
   };
 
   //validing the first index
   validPiece(index) {
-    console.log(`first: ${this.state.FIRST_SELECT}, index: ${index}`);
     if (!this.state.FIRST_SELECT && this.state.board[index] !== null) {
       if (
         (this.state.board[index].Player === "2" && this.state.Player2) ||
@@ -215,9 +219,21 @@ class Game extends React.Component {
     if (this.state.board[index2]) {
       console.log(this.state.board[index2]);
       if (this.state.board[index1].Player === this.state.board[index2].Player) {
-        let A = this.state.board[index1];
-        this.state.board[index1] = this.state.board[index2];
-        this.state.board[index2] = A;
+        let data = JSON.stringify({
+          index1,
+          index2
+        });
+        axios
+          .post("http://localhost:8080/game/swap", data, {
+            headers: { "Content-Type": "application/json;charset=UTF-8" },
+            params: { startIndex: index1, distIndex: index2 }
+          })
+          .then(res => this.setState({ moveMade: res.data }))
+          .catch(error => this.setState({ moveMade: error }));
+
+        axios
+          .get("http://localhost:8080/game/boardstatus")
+          .then(res => this.setState({ board: res.data }));
         this.setState({
           board: this.state.board,
           FIRST_SELECT: null,
@@ -228,15 +244,26 @@ class Game extends React.Component {
   }
 
   eat(index1, index2) {
-    console.log(`${index1} try to eat ${index2}`);
     if (index1 !== null && index1 !== index2) {
       if (
         this.state.board[index2] == null ||
         this.state.board[index2].Player !== this.state.board[index1].Player
       ) {
-        this.state.board[index2] = this.state.board[index1];
-        //TODO: generalize blank piece
-        this.state.board[index1] = { Type: "E", Player: "0" };
+        let data = JSON.stringify({
+          index1,
+          index2
+        });
+        axios
+          .post("http://localhost:8080/game/move", data, {
+            headers: { "Content-Type": "application/json;charset=UTF-8" },
+            params: { startIndex: index1, distIndex: index2 }
+          })
+          .then(res => this.setState({ moveMade: res.data }))
+          .catch(error => this.setState({ moveMade: error }));
+
+        axios
+          .get("http://localhost:8080/game/boardstatus")
+          .then(res => this.setState({ board: res.data }));
         this.setState({
           FIRST_SELECT: null,
           SECOND_SELECT: null,
@@ -248,6 +275,11 @@ class Game extends React.Component {
     }
   }
 
+  getWinner() {
+    axios
+      .get("http://localhost:8080/game/termination")
+      .then(res => this.setState({ winner: res.data }));
+  }
   //display the pieces based on the state
   //if the piece haven't been explored, display:false
   //if piece explored(eat other piece), display:true
@@ -255,17 +287,19 @@ class Game extends React.Component {
   //depending on the action determine swap or eat
   handleClick(index) {
     if (this.state.winner) {
-      alert(`game ended, winner is ${this.state.winner}`);
+      this.setState({ mesg: `game ended, winner is ${this.state.winner}` });
     } else {
       if (!this.state.FIRST_SELECT) this.validPiece(index);
       else {
         if (!this.state.isStart) {
           this.swap(this.state.FIRST_SELECT, index);
         } else {
+          console.log(this.state.FIRST_SELECT, index);
           this.eat(this.state.FIRST_SELECT, index);
         }
       }
     }
+    this.getWinner();
   }
 
   render() {
@@ -299,38 +333,33 @@ class Game extends React.Component {
 
     let playerA = Object.keys(this.state.PlayerAStat).map(function(key, index) {
       let piec = key + ": ";
-      return (
-        <p>
-          {piec}
-          <br />
-        </p>
-      );
+      return <p>{piec}</p>;
     });
 
     return (
       //TODO:try to answer why do we use React.Fragment over div?
       <React.Fragment>
-        <React.Fragment>
-          <br />
-          <button className="button" onClick={this.playGame}>
-            Play Game
-          </button>
-          <button className="button" onClick={this.setupGame}>
-            Setup
-          </button>
-          <button className="button" onClick={this.surrender}>
-            Surrender
-          </button>
-          <br />
-          <br />
-        </React.Fragment>
-        <div className="board">
-          {board}
-          <div className="resultBarRight">
+        <mes className="message">{this.state.mesg}</mes>
+        <br />
+        <button className="button" onClick={this.playGame}>
+          Play Game
+        </button>
+        <button className="button" onClick={this.setupGame}>
+          Setup
+        </button>
+        <button className="button" onClick={this.surrender}>
+          Surrender
+        </button>
+        <br />
+        <br />
+        <contain className="container">
+          <b className="board">{board}</b>
+
+          <bar className="resultBarRight">
             <header className="stat">Remaining Pieces</header>
             <p className="stat">{playerA}</p>
-          </div>
-        </div>
+          </bar>
+        </contain>
       </React.Fragment>
     );
   }

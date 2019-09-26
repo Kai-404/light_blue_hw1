@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { slide as Menu } from "react-burger-menu";
 
 import "../App.css";
 
@@ -13,7 +14,7 @@ class LoggedIn extends Component {
     return (
       <header>
         <h1>Light Blue Stratego</h1>
-        <div className="sidebar">
+        <Menu>
           <Link className="link" to="/">
             Home
           </Link>
@@ -32,7 +33,7 @@ class LoggedIn extends Component {
           <Link className="link" to="/history">
             History
           </Link>
-        </div>
+        </Menu>
       </header>
     );
   }

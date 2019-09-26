@@ -12,7 +12,7 @@
   line-height: 30px;
   font-size: 16px;
   border-width: 1px;
-  background-color: white;
+  background-color: transparent;
 }
 
 .sidebar {
@@ -29,7 +29,6 @@
 .link {
   color: #fff;
   font-weight: 800;
-  display: block;
   padding: 20px 30px;
   color: black;
   font-size: 20px;
@@ -106,6 +105,32 @@ link:active {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  left: 36px;
+  top: 36px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: black;
+}
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #373a47;
+}
+/* Color/shape of burger icon bars on hover*/
+.bm-burger-bars-hover {
+  background: steelblue;
+}
+.bm-menu {
+  background: lightsteelblue;
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
 }
 
 .errmsg {
