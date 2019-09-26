@@ -61,8 +61,8 @@ public class Board {
 
 
     public void setBoard(){
-        initPieces( this.playerOnePieces,1 );
-        initPieces( this.playerTwoPieces,2 );
+        initPieces( this.playerOnePieces,1 ,true);
+        initPieces( this.playerTwoPieces,2 ,false);
         setupPlayerTwo( this.boardState, this.playerTwoPieces );
         setupPlayerOne(this.boardState, this.playerOnePieces  );
         setRiver( this.boardState );
@@ -193,70 +193,70 @@ public class Board {
 
     }
 
-    public void initPieces(ArrayList<Piece> pieceList, int whose){
+    public void initPieces(ArrayList<Piece> pieceList, int whose, boolean display){
 
         //  F: 1 Flag
-        Piece piece = new Piece( whose,"F" );
+        Piece piece = new Piece( whose,"F", display );
         pieceList.add( piece );
 
         //  B: 6 Bombs
-        piece = new Piece( whose,"B" );
+        piece = new Piece( whose,"B",display );
         for(int i =0; i<6;i++){
             pieceList.add( piece );
         }
 
         // 10: 1 Marshall
-        piece = new Piece( whose,"10" );
+        piece = new Piece( whose,"10",display );
         pieceList.add( piece );
 
         // 9: 1 Marshall
-        piece = new Piece( whose,"9" );
+        piece = new Piece( whose,"9" ,display);
         pieceList.add( piece );
 
         //  8: 2 Colonels
-        piece = new Piece( whose,"8" );
+        piece = new Piece( whose,"8",display );
         for(int i =0; i<2;i++){
             pieceList.add( piece );
         }
 
         //  7: 3 Majors
-        piece = new Piece( whose,"7" );
+        piece = new Piece( whose,"7",display );
         for(int i =0; i<3;i++){
             pieceList.add( piece );
         }
 
         //  6: 4 Captains
-        piece = new Piece( whose,"6" );
+        piece = new Piece( whose,"6",display );
         for(int i =0; i<4;i++){
             pieceList.add( piece );
         }
 
         //  5: 4 Lieutenants
-        piece = new Piece( whose,"5" );
+        piece = new Piece( whose,"5",display );
         for(int i =0; i<4;i++){
             pieceList.add( piece );
         }
 
         //  4: 4 Sergeants
-        piece = new Piece( whose,"4" );
+        piece = new Piece( whose,"4",display );
         for(int i =0; i<4;i++){
             pieceList.add( piece );
         }
 
         //  3: 5 Miners
-        piece = new Piece( whose,"3" );
+        piece = new Piece( whose,"3",display );
         for(int i =0; i<5;i++){
             pieceList.add( piece );
         }
 
         //  2: 8 Scouts
-        piece = new Piece( whose,"2" );
+        piece = new Piece( whose,"2",display );
         for(int i =0; i<8;i++){
             pieceList.add( piece );
         }
 
         //  1: 1 Spy
-        piece = new Piece( whose,"1" );
+        piece = new Piece( whose,"1",display );
         pieceList.add( piece );
     }
 
@@ -372,7 +372,7 @@ public class Board {
         //row 50: _ _ R R _ _ R R _ _
         //row 60: _ _ R R _ _ R R _ _
 
-        Piece river = new Piece( 0,"R" );
+        Piece river = new Piece( 0,"R",true );
 
         boardArray[42] = river;
         boardArray[43] = river;
@@ -390,7 +390,7 @@ public class Board {
         //row 50: E E _ _ E E _ _ E E
         //row 60: E E _ _ E E _ _ E E
 
-        Piece empty = new Piece( 0,"E" );
+        Piece empty = new Piece( 0,"E",true );
 
         boardArray[40] = empty;
         boardArray[41] = empty;

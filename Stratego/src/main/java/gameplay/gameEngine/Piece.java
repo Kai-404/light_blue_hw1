@@ -28,10 +28,13 @@ public class Piece {
     //  E: 12 Empty Block
     String PieceType;
 
-    public Piece(int whosePiece, String type){
+    boolean display;
+
+    public Piece(int whosePiece, String type, boolean display){
 
         this.whosePiece = whosePiece;
         this.PieceType = type;
+        this.display = display;
 
     }
 
@@ -43,12 +46,18 @@ public class Piece {
         return this.whosePiece;
     }
 
+    public String getIfDisplay() {
+
+        return this.display ? "yes" : "no";
+    }
+
     public Map<String,String> getPiece(){
 
         Map< String,String> piece = new HashMap< String,String>();
 
         piece.put( "Type",this.getType() );
         piece.put( "Player",Integer.toString( this.getWhosePiece() ) );
+        piece.put( "Display",this.getIfDisplay());
 
         return piece;
 
@@ -85,6 +94,10 @@ public class Piece {
 
     public void setWhosePiece(int whose){
         this.whosePiece = whose;
+    }
+
+    public void setDisplay(boolean displayStatus){
+        this.display = displayStatus;
     }
 
 
