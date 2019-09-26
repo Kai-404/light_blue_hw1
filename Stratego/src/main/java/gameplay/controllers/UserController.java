@@ -25,9 +25,8 @@ public class UserController {
 
     @GetMapping("/login")
     public User getUser(@RequestParam(name = "email") String email, @RequestParam(name = "password") String password) {
-        User user = userRepository.findByEmailAndPassword(email, password);
-        if (user != null) { return user; }
-        return userRepository.findByUsernameAndPassword(email, password);
+
+        return userRepository.findByEmailAndPassword(email, password);
     }
 
 }

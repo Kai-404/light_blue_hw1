@@ -35,14 +35,14 @@ class Login extends Component {
             })
                 .then(res => {
                     if (res.data != "") {
-                        this.props.login(res.data)
+                        this.props.login(email, password)
                         this.setState({
                             email: "",
                             password: ""
                         });
                         this.props.history.push("/")
                     } else {
-                        this.setState({errmsg: "Invalid username/email or password"});
+                        this.setState({errmsg: "Invalid email or password"});
                     }
                 })
                 .catch(err => {
@@ -56,7 +56,7 @@ class Login extends Component {
         <div>
         <p className="errmsg">{this.state.errmsg}</p>
         <form className="form" onSubmit={this.onSubmit}>
-        Username or Email:
+        Email:
         <input
           className="input"
           value={this.state.email}

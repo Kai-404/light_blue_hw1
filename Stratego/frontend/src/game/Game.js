@@ -1,25 +1,10 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
-import Alert from "react-bootstrap/Alert";
 
 import "./Game.css";
-import { parseAsync } from "@babel/core";
 
 class Game extends React.Component {
-  /* required functions:
-  board
-  state:
-    boardstate
-    turnstate
-  handleMoving
-  copy of board state
-  if a move made, return state
-  set state of board
-  set state of turn
-  ifValidMove()
-  determine winingState/winner
-  */
   constructor(props) {
     super(props);
     this.state = {
@@ -29,121 +14,33 @@ class Game extends React.Component {
       Player2: false,
       //board will be load from the back end as a list/array
       board: Array(100).fill(":("),
-      /*board: [
-        { Type: "4", Player: "2", Display: "no" },
-        { Type: "B", Player: "2", Display: "no" },
-        { Type: "B", Player: "2", Display: "no" },
-        { Type: "5", Player: "2", Display: "no" },
-        { Type: "3", Player: "2", Display: "no" },
-        { Type: "3", Player: "2", Display: "no" },
-        { Type: "10", Player: "2", Display: "no" },
-        { Type: "2", Player: "2", Display: "no" },
-        { Type: "B", Player: "2", Display: "no" },
-        { Type: "3", Player: "2", Display: "no" },
-        { Type: "4", Player: "2", Display: "no" },
-        { Type: "B", Player: "2", Display: "no" },
-        { Type: "F", Player: "2", Display: "no" },
-        { Type: "B", Player: "2", Display: "no" },
-        { Type: "8", Player: "2", Display: "no" },
-        { Type: "2", Player: "2", Display: "no" },
-        { Type: "9", Player: "2", Display: "no" },
-        { Type: "5", Player: "2", Display: "no" },
-        { Type: "2", Player: "2", Display: "no" },
-        { Type: "2", Player: "2", Display: "no" },
-        { Type: "6", Player: "2", Display: "no" },
-        { Type: "4", Player: "2", Display: "no" },
-        { Type: "B", Player: "2", Display: "no" },
-        { Type: "6", Player: "2", Display: "no" },
-        { Type: "2", Player: "2", Display: "no" },
-        { Type: "7", Player: "2", Display: "no" },
-        { Type: "7", Player: "2", Display: "no" },
-        { Type: "2", Player: "2", Display: "no" },
-        { Type: "6", Player: "2", Display: "no" },
-        { Type: "4", Player: "2", Display: "no" },
-        { Type: "2", Player: "2", Display: "no" },
-        { Type: "3", Player: "2", Display: "no" },
-        { Type: "1", Player: "2", Display: "no" },
-        { Type: "2", Player: "2", Display: "no" },
-        { Type: "3", Player: "2", Display: "no" },
-        { Type: "6", Player: "2", Display: "no" },
-        { Type: "5", Player: "2", Display: "no" },
-        { Type: "5", Player: "2", Display: "no" },
-        { Type: "7", Player: "2", Display: "no" },
-        { Type: "8", Player: "2", Display: "no" },
-        { Type: "E", Player: "0", Display: "yes" },
-        { Type: "E", Player: "0", Display: "yes" },
-        { Type: "R", Player: "0", Display: "yes" },
-        { Type: "R", Player: "0", Display: "yes" },
-        { Type: "E", Player: "0", Display: "yes" },
-        { Type: "E", Player: "0", Display: "yes" },
-        { Type: "R", Player: "0", Display: "yes" },
-        { Type: "R", Player: "0", Display: "yes" },
-        { Type: "E", Player: "0", Display: "yes" },
-        { Type: "E", Player: "0", Display: "yes" },
-        { Type: "E", Player: "0", Display: "yes" },
-        { Type: "E", Player: "0", Display: "yes" },
-        { Type: "R", Player: "0", Display: "yes" },
-        { Type: "R", Player: "0", Display: "yes" },
-        { Type: "E", Player: "0", Display: "yes" },
-        { Type: "E", Player: "0", Display: "yes" },
-        { Type: "R", Player: "0", Display: "yes" },
-        { Type: "R", Player: "0", Display: "yes" },
-        { Type: "E", Player: "0", Display: "yes" },
-        { Type: "E", Player: "0", Display: "yes" },
-        { Type: "6", Player: "1", Display: "yes" },
-        { Type: "6", Player: "1", Display: "yes" },
-        { Type: "3", Player: "1", Display: "yes" },
-        { Type: "4", Player: "1", Display: "yes" },
-        { Type: "4", Player: "1", Display: "yes" },
-        { Type: "3", Player: "1", Display: "yes" },
-        { Type: "5", Player: "1", Display: "yes" },
-        { Type: "2", Player: "1", Display: "yes" },
-        { Type: "9", Player: "1", Display: "yes" },
-        { Type: "6", Player: "1", Display: "yes" },
-        { Type: "8", Player: "1", Display: "yes" },
-        { Type: "5", Player: "1", Display: "yes" },
-        { Type: "7", Player: "1", Display: "yes" },
-        { Type: "2", Player: "1", Display: "yes" },
-        { Type: "2", Player: "1", Display: "yes" },
-        { Type: "5", Player: "1", Display: "yes" },
-        { Type: "2", Player: "1", Display: "yes" },
-        { Type: "3", Player: "1", Display: "yes" },
-        { Type: "7", Player: "1", Display: "yes" },
-        { Type: "5", Player: "1", Display: "yes" },
-        { Type: "4", Player: "1", Display: "yes" },
-        { Type: "2", Player: "1", Display: "yes" },
-        { Type: "3", Player: "1", Display: "yes" },
-        { Type: "B", Player: "1", Display: "yes" },
-        { Type: "B", Player: "1", Display: "yes" },
-        { Type: "6", Player: "1", Display: "yes" },
-        { Type: "B", Player: "1", Display: "yes" },
-        { Type: "2", Player: "1", Display: "yes" },
-        { Type: "1", Player: "1", Display: "yes" },
-        { Type: "2", Player: "1", Display: "yes" },
-        { Type: "2", Player: "1", Display: "yes" },
-        { Type: "B", Player: "1", Display: "yes" },
-        { Type: "10", Player: "1", Display: "yes" },
-        { Type: "8", Player: "1", Display: "yes" },
-        { Type: "7", Player: "1", Display: "yes" },
-        { Type: "B", Player: "1", Display: "yes" },
-        { Type: "F", Player: "1", Display: "yes" },
-        { Type: "B", Player: "1", Display: "yes" },
-        { Type: "4", Player: "1", Display: "yes" },
-        { Type: "3", Player: "1", Display: "yes" }
-      ],*/
       PlayerAStat: {
-        Marshall: 1,
-        General: 1,
-        Colonels: 2,
-        Majors: 3,
-        Captains: 4,
-        Lieutenants: 4,
-        Sergeants: 4,
-        Miners: 3,
-        Scouts: 8,
-        Spy: 1,
-        Bombs: 6,
-        Flag: 1
+        Marshall: 0,
+        General: 0,
+        Colonels: 0,
+        Majors: 0,
+        Captains: 0,
+        Lieutenants: 0,
+        Sergeants: 0,
+        Miners: 0,
+        Scouts: 0,
+        Spy: 0,
+        Bombs: 0,
+        Flag: 0
+      },
+      PlayerBStat: {
+        Marshall: 0,
+        General: 0,
+        Colonels: 0,
+        Majors: 0,
+        Captains: 0,
+        Lieutenants: 0,
+        Sergeants: 0,
+        Miners: 0,
+        Scouts: 0,
+        Spy: 0,
+        Bombs: 0,
+        Flag: 0
       },
       winner: null,
       mesg: ""
@@ -157,10 +54,54 @@ class Game extends React.Component {
       .then(res => this.setState({ board: res.data }));
   }
 
-  //by clicking the play button,
-  //react will send back the finalized board to spring,
-  //then user are able to start the game
+  clearStat() {
+    this.setState({
+      PlayerAStat: {
+        Marshall: 0,
+        General: 0,
+        Colonels: 0,
+        Majors: 0,
+        Captains: 0,
+        Lieutenants: 0,
+        Sergeants: 0,
+        Miners: 0,
+        Scouts: 0,
+        Spy: 0,
+        Bombs: 0,
+        Flag: 0
+      },
+      PlayerBStat: {
+        Marshall: 0,
+        General: 0,
+        Colonels: 0,
+        Majors: 0,
+        Captains: 0,
+        Lieutenants: 0,
+        Sergeants: 0,
+        Miners: 0,
+        Scouts: 0,
+        Spy: 0,
+        Bombs: 0,
+        Flag: 0
+      }
+    });
+  }
+
+  /*by clicking the play button,
+  react will send back the finalized board to spring,
+  then user are able to start the game
+  TODO: Backend: form a gameResult, start to record
+  */
   playGame = () => {
+    this.clearStat();
+    this.state.board.map((cell, index) => {
+      let piece = cell.Type;
+      if (cell.Player === "1") {
+        this.modefiyStat(cell.Type, this.state.PlayerAStat);
+      } else if (cell.Player === "2") {
+        this.modefiyStat(cell.Type, this.state.PlayerBStat);
+      }
+    });
     alert("start to play game");
     this.setState({
       isStart: true,
@@ -169,7 +110,15 @@ class Game extends React.Component {
       winner: null,
       mesg: ""
     });
+
+    console.log(this.state.PlayerAStat);
   };
+
+  /*TODO: setup game will cause current game not saved,
+          remove gameHis from datatbase
+          - backend: trysomething like if game/init gets request
+                      delete gameHis with gameid
+  */
   setupGame = () => {
     if (this.state.isStart) {
       alert("New game started without saving the old one");
@@ -181,6 +130,7 @@ class Game extends React.Component {
     axios
       .get("http://localhost:8080/game/init")
       .then(res => this.setState({ board: res.data }));
+    this.clearStat();
     this.setState({
       isStart: false,
       Player1: true,
@@ -189,8 +139,10 @@ class Game extends React.Component {
       mesg: ""
     });
   };
+
   //end the game with AI as winner
   surrender = () => {
+    this.clearStat();
     this.setState({ winner: "AI", mesg: "game ended, winner is AI" });
   };
 
@@ -236,11 +188,22 @@ class Game extends React.Component {
     }
   }
 
+  //update the remainding piece accordingly
+  updatePieceStat() {
+    axios
+      .get("http://localhost:8080/game/getplayeronepiece")
+      .then(res => this.setState({ PlayerAStat: res.data }));
+    axios
+      .get("http://localhost:8080/game/getplayertwopiece")
+      .then(res => this.setState({ PlayerBStat: res.data }));
+  }
+
+  //used to update board when move made
   updateBoard() {
-    console.log("update board");
+    console.log("update board, and update remainding piece stat");
     axios
       .get("http://localhost:8080/game/boardstatus")
-      .then(res => this.setState({ board: res.data }));
+      .then(res => this.setState({ board: res.data }), this.updatePieceStat());
     if (this.state.isStart) {
       this.setState({
         FIRST_SELECT: null,
@@ -263,7 +226,6 @@ class Game extends React.Component {
     }
   }
 
-  //TODO:tell me what piece get eaten
   move(index1, index2) {
     if (index1 !== null && index1 !== index2) {
       if (
@@ -327,12 +289,59 @@ class Game extends React.Component {
     }
   }
 
+  //modefiy the player remaining pieces according to the board
+  //using switch statement
+  modefiyStat = (pie, player) => {
+    switch (pie) {
+      case "10":
+        player.Marshall = Number(player.Marshall) + 1;
+        break;
+      case "9":
+        player.General = Number(player.General) + 1;
+        break;
+      case "8":
+        player.Colonels = Number(player.Colonels) + 1;
+        break;
+      case "7":
+        player.Majors = Number(player.Majors) + 1;
+        break;
+      case "6":
+        player.Captains = Number(player.Captains) + 1;
+        break;
+      case "5":
+        player.Lieutenants = Number(player.Lieutenants) + 1;
+        break;
+      case "4":
+        player.Sergeants = Number(player.Sergeants) + 1;
+        break;
+      case "3":
+        player.Miners = Number(player.Miners) + 1;
+        break;
+      case "2":
+        player.Scouts = Number(player.Scouts) + 1;
+        break;
+      case "1":
+        player.Spy = Number(player.Spy) + 1;
+        break;
+      case "F":
+        player.Flag = Number(player.Flag) + 1;
+        break;
+      case "B":
+        player.Bombs = Number(player.Bombs) + 1;
+        break;
+      default:
+      // do nothing
+    }
+    return player;
+  };
+
   render() {
     let board = this.state.board.map((cell, index) => {
       var classNames = require("classnames");
       let cn = "square";
       let disable = false;
       let piece = cell.Type;
+
       if (cell.Player === "1") {
         cn = "squareA";
       } else if (cell.Player === "2") {
@@ -359,11 +368,18 @@ class Game extends React.Component {
       );
     });
 
-    let playerA = Object.keys(this.state.PlayerAStat).map(function(key, index) {
+    let Stat = Object.keys(this.state.PlayerAStat).map(function(key, index) {
       let piec = key + ": ";
       return <p>{piec}</p>;
     });
-
+    let Player1 = Object.values(this.state.PlayerAStat).map(function(val) {
+      let piec = val + "--";
+      return <p>{piec}</p>;
+    });
+    let Player2 = Object.values(this.state.PlayerBStat).map(function(val) {
+      let piec = val;
+      return <p>{piec}</p>;
+    });
     return (
       //TODO:try to answer why do we use React.Fragment over div?
       <React.Fragment>
@@ -384,8 +400,10 @@ class Game extends React.Component {
           <b className="board">{board}</b>
 
           <bar className="resultBarRight">
-            <header className="stat">Remaining Pieces</header>
-            <p className="stat">{playerA}</p>
+            <header className="stat">Remaining: A--B</header>
+            <p className="stat">{Stat}</p>
+            <p className="stat">{Player1}</p>
+            <p className="stat">{Player2}</p>
           </bar>
         </contain>
       </React.Fragment>
