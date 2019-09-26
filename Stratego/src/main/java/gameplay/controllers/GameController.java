@@ -10,11 +10,26 @@ import java.util.Map;
 @CrossOrigin
 @RestController
 public class GameController {
-    Board board = new Board();
+    Board board;
 
     @RequestMapping("/game/init")
     @ResponseBody
     public ArrayList<Map<String,String>> initGame(){
+
+        board = new Board();
+        board.setBoard();
+
+        board.printBoard();
+
+        return board.getBoardState();
+
+    }
+
+
+    //request a new board setup
+    @RequestMapping("/game/setup")
+    @ResponseBody
+    public ArrayList<Map<String,String>> setup(){
 
         board.setBoard();
 
@@ -24,6 +39,73 @@ public class GameController {
 
     }
 
+    //move piece during game play
+    @PostMapping("/game/move")
+    @ResponseBody
+    public boolean movePiece(@RequestParam int startIndex, @RequestParam int distIndex){
+        System.out.println(startIndex + " " + distIndex);
+        // true if valid move
+        // false if not valid move
+        return board.move(startIndex,distIndex);
+
+    }
+
+    // return 0: No winner yet
+    //        1: Player one win
+    //        2: Player two win
+    @RequestMapping("/game/termination")
+    @ResponseBody
+    public int termination(){
+
+        return board.getWinner();
+    }
+
+    //If player don't like the current setup, swap two selected pieces before game start.
+    @RequestMapping("/game/swap")
+    @ResponseBody
+    public ArrayList<Map<String,String>> swap(@RequestParam int startIndex, @RequestParam int distIndex){
+        System.out.println("\n" + startIndex + " " + distIndex);
+
+        board.swapPieces( startIndex,distIndex );
+
+        return board.getBoardState();
+
+    }
+
+    //get updated board after move or swap pieces
+    @RequestMapping("/game/boardstatus")
+    @ResponseBody
+    public ArrayList<Map<String,String>> getBoard(){
+
+        board.printBoard();
+
+        return board.getBoardState();
+
+    }
+
+    //Player One's remaining pieces
+    //Format:
+    //[{"Type": "10", "Player":"1"}, ....]
+    @RequestMapping("/game/getplayeronepiece")
+    @ResponseBody
+    public ArrayList<Map<String,String>> getPlayerOnePiece(){
+
+        return board.getRemainingPiece( 1 );
+
+    }
+
+    //Player Two's remaining pieces
+    //Format:
+    //[{"Type": "10", "Player":"2"}, ....]
+    @RequestMapping("/game/getplayertwopiece")
+    @ResponseBody
+    public ArrayList<Map<String,String>> getPlayerTwoPiece(){
+
+        return board.getRemainingPiece( 2 );
+
+    }
+
+    //for test only
     @RequestMapping("/game/p")
     @ResponseBody
     public String[] printsomthing(){

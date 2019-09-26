@@ -25,6 +25,37 @@ public class Board {
 
     }
 
+    public ArrayList<Map<String,String>> getRemainingPiece (int whose){
+        ArrayList<Map<String,String>> remainingPiece = new ArrayList<>(  );
+
+        ArrayList<Piece> list= whose==1?playerOnePieces:playerTwoPieces;
+
+        for(Piece piece: list){
+
+            if (piece!=null){
+                remainingPiece.add(piece.getPiece());
+            }
+        }
+
+        return remainingPiece;
+    }
+
+    public void setWinner(int winner){
+        this.winner = winner;
+    }
+
+    public int getWinner(){
+        return winner;
+    }
+
+    public void swapPieces(int pieceOne, int pieceTwo){
+
+        Piece tempPiece = boardState[pieceOne];
+        boardState[pieceOne]=boardState[pieceTwo];
+        boardState[pieceTwo]=tempPiece;
+
+    }
+
     public ArrayList<Map<String,String>> getBoardState(){
         ArrayList<Map<String,String>> boardStateStringArray = new ArrayList<>(  );
 
@@ -61,8 +92,8 @@ public class Board {
 
 
     public void setBoard(){
-        initPieces( this.playerOnePieces,1 );
-        initPieces( this.playerTwoPieces,2 );
+        initPieces( this.playerOnePieces,1 ,true);
+        initPieces( this.playerTwoPieces,2 ,false);
         setupPlayerTwo( this.boardState, this.playerTwoPieces );
         setupPlayerOne(this.boardState, this.playerOnePieces  );
         setRiver( this.boardState );
@@ -75,6 +106,162 @@ public class Board {
     public Piece[] getBoardMap(){
         return this.boardState;
     }
+
+
+    public boolean move(int startIndex, int distIndex){
+
+        if(isValidMove( startIndex,distIndex )){
+
+            if (boardState[distIndex].isEmptyBlock()){
+
+                if (boardState[startIndex].getType().equals( "2" ) ){
+
+                    if (!(distIndex == startIndex+1
+                            ||distIndex == startIndex-1
+                            ||distIndex == startIndex+10
+                            ||distIndex == startIndex-10)){
+
+                        boardState[startIndex].setDisplay( true );
+                    }
+                }
+                swapPieces( startIndex,distIndex );
+
+            }else {
+
+                this.battle(startIndex,distIndex);
+
+            }
+
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public void battle(int atkIndex, int defIndex){
+
+        Piece atkPiece = boardState[atkIndex];
+        Piece defPiece = boardState[defIndex];
+        Piece emptyPiece = new Piece( 0,"E",true );
+
+        if (defPiece.getType().equals( "F" )){
+            boardState[defIndex] = emptyPiece;
+            swapPieces( atkIndex,defIndex );
+            boardState[defIndex].setDisplay( true );
+            if (boardState[defIndex].getWhosePiece()==1){
+                removePiece( 1,"F" );
+            }else {
+                removePiece( 2,"F" );
+            }
+        }else if(defPiece.getType().equals( "B" )){
+
+            if (!(atkPiece.getType().equals("3"))){
+
+                boardState[atkIndex]=emptyPiece;
+                removePiece( atkPiece.getWhosePiece(),atkPiece.PieceType );
+                boardState[defIndex].setDisplay( true );
+            }else {
+                boardState[defIndex]=emptyPiece;
+                boardState[atkIndex].setDisplay( true );
+                swapPieces( atkIndex,defIndex );
+                removePiece( defPiece.getWhosePiece(),defPiece.getType() );
+            }
+        }else if(defPiece.getType().equals( "10" )){
+
+            if (!(atkPiece.getType().equals("1"))){
+
+                boardState[atkIndex]=emptyPiece;
+                removePiece( atkPiece.getWhosePiece(),atkPiece.PieceType );
+                boardState[defIndex].setDisplay( true );
+            }else {
+                boardState[defIndex]=emptyPiece;
+                boardState[atkIndex].setDisplay( true );
+                swapPieces( atkIndex,defIndex );
+                removePiece( defPiece.getWhosePiece(),defPiece.getType() );
+            }
+        }else {
+
+            int atkRank = Integer.parseInt( atkPiece.getType() );
+            int defRank = Integer.parseInt( defPiece.getType() );
+
+            if (atkRank>defRank){
+
+                boardState[defIndex]=emptyPiece;
+                boardState[atkIndex].setDisplay( true );
+                removePiece( defPiece.getWhosePiece(),defPiece.getType() );
+                swapPieces( atkIndex,defIndex );
+            }else if (atkRank<defRank){
+                boardState[atkIndex]=emptyPiece;
+                boardState[defIndex].setDisplay( true );
+                removePiece( atkPiece.getWhosePiece(),atkPiece.getType() );
+            }else {
+                boardState[defIndex]=emptyPiece;
+                boardState[atkIndex]=emptyPiece;
+                removePiece( defPiece.getWhosePiece(),defPiece.getType() );
+                removePiece( atkPiece.getWhosePiece(),atkPiece.getType() );
+            }
+
+        }
+
+        termination( playerOnePieces,playerTwoPieces );
+
+    }
+
+    public void termination(ArrayList<Piece> list1, ArrayList<Piece> list2){
+
+        boolean findFlag1 =false;
+        boolean findFlag2 =false;
+        boolean findMovablePiece1 =false;
+        boolean findMovablePiece2 =false;
+
+        for(Piece piece : list1){
+            if(piece != null){
+                String type = piece.getType();
+
+                if (type.equals( "F" )){
+                    findFlag1 =true;
+                }else{
+                    findMovablePiece1=true;
+                }
+            }
+        }
+
+        for(Piece piece : list2){
+            if(piece != null){
+                String type = piece.getType();
+
+                if (type.equals( "F" )){
+                    findFlag2 =true;
+                }else{
+                    findMovablePiece2=true;
+                }
+            }
+        }
+
+        if (!(findFlag1) || !(findMovablePiece1)){
+            setWinner( 2 );
+        }else if( !(findFlag2) || !(findMovablePiece2) ){
+            setWinner( 1 );
+        }
+
+
+
+    }
+
+    public void removePiece(int whose, String type){
+
+        ArrayList<Piece> list;
+
+        list= (whose ==1 ? playerOnePieces : playerTwoPieces);
+        for (Piece piece : list) {
+            if (piece.getType().equals( type )){
+                list.remove( piece );
+                break;
+            }
+        }
+    }
+
+
 
     public ArrayList<Integer> allValidMove(int pieceIndex){
 
@@ -193,70 +380,70 @@ public class Board {
 
     }
 
-    public void initPieces(ArrayList<Piece> pieceList, int whose){
+    public void initPieces(ArrayList<Piece> pieceList, int whose, boolean display){
 
         //  F: 1 Flag
-        Piece piece = new Piece( whose,"F" );
+        Piece piece = new Piece( whose,"F", display );
         pieceList.add( piece );
 
         //  B: 6 Bombs
-        piece = new Piece( whose,"B" );
+        piece = new Piece( whose,"B",display );
         for(int i =0; i<6;i++){
             pieceList.add( piece );
         }
 
         // 10: 1 Marshall
-        piece = new Piece( whose,"10" );
+        piece = new Piece( whose,"10",display );
         pieceList.add( piece );
 
         // 9: 1 Marshall
-        piece = new Piece( whose,"9" );
+        piece = new Piece( whose,"9" ,display);
         pieceList.add( piece );
 
         //  8: 2 Colonels
-        piece = new Piece( whose,"8" );
+        piece = new Piece( whose,"8",display );
         for(int i =0; i<2;i++){
             pieceList.add( piece );
         }
 
         //  7: 3 Majors
-        piece = new Piece( whose,"7" );
+        piece = new Piece( whose,"7",display );
         for(int i =0; i<3;i++){
             pieceList.add( piece );
         }
 
         //  6: 4 Captains
-        piece = new Piece( whose,"6" );
+        piece = new Piece( whose,"6",display );
         for(int i =0; i<4;i++){
             pieceList.add( piece );
         }
 
         //  5: 4 Lieutenants
-        piece = new Piece( whose,"5" );
+        piece = new Piece( whose,"5",display );
         for(int i =0; i<4;i++){
             pieceList.add( piece );
         }
 
         //  4: 4 Sergeants
-        piece = new Piece( whose,"4" );
+        piece = new Piece( whose,"4",display );
         for(int i =0; i<4;i++){
             pieceList.add( piece );
         }
 
         //  3: 5 Miners
-        piece = new Piece( whose,"3" );
+        piece = new Piece( whose,"3",display );
         for(int i =0; i<5;i++){
             pieceList.add( piece );
         }
 
         //  2: 8 Scouts
-        piece = new Piece( whose,"2" );
+        piece = new Piece( whose,"2",display );
         for(int i =0; i<8;i++){
             pieceList.add( piece );
         }
 
         //  1: 1 Spy
-        piece = new Piece( whose,"1" );
+        piece = new Piece( whose,"1",display );
         pieceList.add( piece );
     }
 
@@ -372,7 +559,7 @@ public class Board {
         //row 50: _ _ R R _ _ R R _ _
         //row 60: _ _ R R _ _ R R _ _
 
-        Piece river = new Piece( 0,"R" );
+        Piece river = new Piece( 0,"R",true );
 
         boardArray[42] = river;
         boardArray[43] = river;
@@ -390,7 +577,7 @@ public class Board {
         //row 50: E E _ _ E E _ _ E E
         //row 60: E E _ _ E E _ _ E E
 
-        Piece empty = new Piece( 0,"E" );
+        Piece empty = new Piece( 0,"E",true );
 
         boardArray[40] = empty;
         boardArray[41] = empty;
