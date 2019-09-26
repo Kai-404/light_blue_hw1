@@ -27,7 +27,6 @@ class Game extends React.Component {
       FIRST_SELECT: null,
       Player1: true,
       Player2: false,
-      moveMade: false,
       //board will be load from the back end as a list/array
       board: Array(100).fill(":("),
       /*board: [
@@ -228,27 +227,52 @@ class Game extends React.Component {
             headers: { "Content-Type": "application/json;charset=UTF-8" },
             params: { startIndex: index1, distIndex: index2 }
           })
-          .then(res => this.setState({ moveMade: res.data }))
+          .then(res => {
+            this.setState({ board: res.data });
+            this.updateBoard();
+          })
           .catch(error => this.setState({ moveMade: error }));
-
-        axios
-          .get("http://localhost:8080/game/boardstatus")
-          .then(res => this.setState({ board: res.data }));
-        this.setState({
-          board: this.state.board,
-          FIRST_SELECT: null,
-          SECOND_SELECT: null
-        });
       }
     }
   }
 
-  eat(index1, index2) {
+  updateBoard() {
+    console.log("update board");
+    axios
+      .get("http://localhost:8080/game/boardstatus")
+      .then(res => this.setState({ board: res.data }));
+    if (this.state.isStart) {
+      this.setState({
+        FIRST_SELECT: null,
+        SECOND_SELECT: null,
+        board: this.state.board,
+        Player1: !this.state.Player1,
+        Player2: !this.state.Player2
+      });
+      if (this.state.Player1) {
+        this.setState({ mesg: "It's your turn, make a move" });
+      } else {
+        this.setState({ mesg: "AI's move" });
+      }
+    } else {
+      this.setState({
+        board: this.state.board,
+        FIRST_SELECT: null,
+        SECOND_SELECT: null
+      });
+    }
+  }
+
+  //TODO:tell me what piece get eaten
+  move(index1, index2) {
     if (index1 !== null && index1 !== index2) {
       if (
         this.state.board[index2] == null ||
         this.state.board[index2].Player !== this.state.board[index1].Player
       ) {
+        console.log(
+          `self: ${this.state.Player1}, now move ${index1}, ${index2}`
+        );
         let data = JSON.stringify({
           index1,
           index2
@@ -258,19 +282,22 @@ class Game extends React.Component {
             headers: { "Content-Type": "application/json;charset=UTF-8" },
             params: { startIndex: index1, distIndex: index2 }
           })
-          .then(res => this.setState({ moveMade: res.data }))
+          .then(res => {
+            if (res.data) this.updateBoard();
+            else {
+              this.setState({
+                FIRST_SELECT: null,
+                SECOND_SELECT: null
+              });
+            }
+            this.getWinner();
+            if (this.state.winner) {
+              this.setState({
+                mesg: `game ended, winner is ${this.state.winner}`
+              });
+            }
+          })
           .catch(error => this.setState({ moveMade: error }));
-
-        axios
-          .get("http://localhost:8080/game/boardstatus")
-          .then(res => this.setState({ board: res.data }));
-        this.setState({
-          FIRST_SELECT: null,
-          SECOND_SELECT: null,
-          board: this.state.board,
-          Player1: !this.state.Player1,
-          Player2: !this.state.Player2
-        });
       }
     }
   }
@@ -294,12 +321,10 @@ class Game extends React.Component {
         if (!this.state.isStart) {
           this.swap(this.state.FIRST_SELECT, index);
         } else {
-          console.log(this.state.FIRST_SELECT, index);
-          this.eat(this.state.FIRST_SELECT, index);
+          this.move(this.state.FIRST_SELECT, index);
         }
       }
     }
-    this.getWinner();
   }
 
   render() {
@@ -318,6 +343,9 @@ class Game extends React.Component {
         piece = null;
         disable = true;
       } else {
+        piece = null;
+      }
+      if (cell.Display === "no") {
         piece = null;
       }
       return (

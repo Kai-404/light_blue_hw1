@@ -40,7 +40,7 @@ public class GameController {
     }
 
     //move piece during game play
-    @RequestMapping("/game/move")
+    @PostMapping("/game/move")
     @ResponseBody
     public boolean movePiece(@RequestParam int startIndex, @RequestParam int distIndex){
         System.out.println(startIndex + " " + distIndex);
