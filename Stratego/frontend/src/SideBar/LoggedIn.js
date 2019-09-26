@@ -30,7 +30,7 @@ class LoggedIn extends Component {
           <Link className="link" to="/" onClick={this.logout}>
             Logout
           </Link>
-        </div>
+        </Menu>
       </header>
     );
   }

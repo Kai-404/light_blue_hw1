@@ -88,7 +88,7 @@ public class GameController {
     //[{"Type": "10", "Player":"1"}, ....]
     @RequestMapping("/game/getplayeronepiece")
     @ResponseBody
-    public ArrayList<Map<String,String>> getPlayerOnePiece(){
+    public Map<String,Integer> getPlayerOnePiece(){
 
         return board.getRemainingPiece( 1 );
 
@@ -99,7 +99,7 @@ public class GameController {
     //[{"Type": "10", "Player":"2"}, ....]
     @RequestMapping("/game/getplayertwopiece")
     @ResponseBody
-    public ArrayList<Map<String,String>> getPlayerTwoPiece(){
+    public Map<String,Integer> getPlayerTwoPiece(){
 
         return board.getRemainingPiece( 2 );
 

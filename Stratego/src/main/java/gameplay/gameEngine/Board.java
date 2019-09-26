@@ -25,17 +25,69 @@ public class Board {
 
     }
 
-    public ArrayList<Map<String,String>> getRemainingPiece (int whose){
-        ArrayList<Map<String,String>> remainingPiece = new ArrayList<>(  );
+    public Map<String,Integer> getRemainingPiece (int whose){
+        Map<String,Integer> remainingPiece = new HashMap<>(  );
+
+        int Marshall = 0;
+        int General = 0;
+        int Colonels = 0;
+        int Majors = 0;
+        int Captains = 0;
+        int Lieutenants = 0;
+        int Sergeants = 0;
+        int Miners = 0;
+        int Scouts = 0;
+        int Spy = 0;
+        int Bombs = 0;
+        int Flag = 0;
 
         ArrayList<Piece> list= whose==1?playerOnePieces:playerTwoPieces;
 
         for(Piece piece: list){
 
             if (piece!=null){
-                remainingPiece.add(piece.getPiece());
+                String type = piece.getType();
+
+                if (type.equals( "10" )){
+                    Marshall++;
+                }else if (type.equals( "9" )){
+                    General++;
+                }else if (type.equals( "8" )){
+                    Colonels++;
+                }else if (type.equals( "7" )){
+                    Majors++;
+                }else if (type.equals( "6" )){
+                    Captains++;
+                }else if (type.equals( "5" )){
+                    Lieutenants++;
+                }else if (type.equals( "4" )){
+                    Sergeants++;
+                }else if (type.equals( "3" )){
+                    Miners++;
+                }else if (type.equals( "2" )){
+                    Scouts++;
+                }else if (type.equals( "1" )){
+                    Spy++;
+                }else if (type.equals( "B" )){
+                    Bombs++;
+                }else if (type.equals( "F" )){
+                    Flag++;
+                }
             }
         }
+
+        remainingPiece.put( "Marshall",Marshall );
+        remainingPiece.put( "General",General );
+        remainingPiece.put( "Colonels",Colonels );
+        remainingPiece.put( "Majors",Majors );
+        remainingPiece.put( "Captains",Captains );
+        remainingPiece.put( "Lieutenants",Lieutenants );
+        remainingPiece.put( "Sergeants",Sergeants );
+        remainingPiece.put( "Miners",Miners );
+        remainingPiece.put( "Scouts",Scouts );
+        remainingPiece.put( "Spy",Spy );
+        remainingPiece.put( "Bombs",Bombs );
+        remainingPiece.put( "Flag",Flag );
 
         return remainingPiece;
     }
