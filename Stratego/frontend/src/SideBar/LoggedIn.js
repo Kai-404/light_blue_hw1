@@ -18,13 +18,6 @@ class LoggedIn extends Component {
           <Link className="link" to="/">
             Home
           </Link>
-          <Link className="link" to="/" onClick={this.logout}>
-            Logout
-          </Link>
-          <br></br>
-          <Link className="link" to="/register">
-            Register
-          </Link>
           <br />
           <Link className="link" to="/game">
             Stratego
@@ -33,7 +26,11 @@ class LoggedIn extends Component {
           <Link className="link" to="/history">
             History
           </Link>
-        </Menu>
+          <br></br>
+          <Link className="link" to="/" onClick={this.logout}>
+            Logout
+          </Link>
+        </div>
       </header>
     );
   }
