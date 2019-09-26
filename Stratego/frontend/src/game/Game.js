@@ -203,7 +203,7 @@ class Game extends React.Component {
     console.log("update board, and update remainding piece stat");
     axios
       .get("http://localhost:8080/game/boardstatus")
-      .then(res => this.setState({ board: res.data }), updatePieceStat());
+      .then(res => this.setState({ board: res.data }), this.updatePieceStat());
     if (this.state.isStart) {
       this.setState({
         FIRST_SELECT: null,
