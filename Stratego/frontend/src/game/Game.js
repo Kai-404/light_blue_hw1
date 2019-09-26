@@ -93,7 +93,7 @@ class Game extends React.Component {
   TODO: Backend: form a gameResult, start to record
   */
   playGame = () => {
-    this.clearStat();
+    //this.clearStat();
     this.state.board.map((cell, index) => {
       let piece = cell.Type;
       if (cell.Player === "1") {
