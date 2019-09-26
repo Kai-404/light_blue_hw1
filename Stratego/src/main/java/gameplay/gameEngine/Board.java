@@ -25,6 +25,22 @@ public class Board {
 
     }
 
+    public void setWinner(int winner){
+        this.winner = winner;
+    }
+
+    public int getWinner(){
+        return winner;
+    }
+
+    public void swapPieces(int pieceOne, int pieceTwo){
+
+        Piece tempPiece = boardState[pieceOne];
+        boardState[pieceOne]=boardState[pieceTwo];
+        boardState[pieceTwo]=tempPiece;
+
+    }
+
     public ArrayList<Map<String,String>> getBoardState(){
         ArrayList<Map<String,String>> boardStateStringArray = new ArrayList<>(  );
 
@@ -75,6 +91,119 @@ public class Board {
     public Piece[] getBoardMap(){
         return this.boardState;
     }
+
+
+    public boolean move(int startIndex, int distIndex){
+
+        if(isValidMove( startIndex,distIndex )){
+
+            if (boardState[distIndex].isEmptyBlock()){
+
+                if (boardState[startIndex].getType().equals( "2" ) ){
+
+                    if (!(distIndex == startIndex+1
+                            ||distIndex == startIndex-1
+                            ||distIndex == startIndex+10
+                            ||distIndex == startIndex-10)){
+
+                        boardState[startIndex].setDisplay( true );
+                    }
+                }
+                swapPieces( startIndex,distIndex );
+
+            }else {
+
+                this.battle(startIndex,distIndex);
+
+            }
+
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public void battle(int atkIndex, int defIndex){
+
+        Piece atkPiece = boardState[atkIndex];
+        Piece defPiece = boardState[defIndex];
+        Piece emptyPiece = new Piece( 0,"E",true );
+
+        if (defPiece.getType().equals( "F" )){
+            boardState[defIndex] = emptyPiece;
+            swapPieces( atkIndex,defIndex );
+            boardState[defIndex].setDisplay( true );
+            if (boardState[defIndex].getWhosePiece()==1){
+                removePiece( 1,"F" );
+            }else {
+                removePiece( 2,"F" );
+            }
+        }else if(defPiece.getType().equals( "B" )){
+
+            if (!(atkPiece.getType().equals("3"))){
+
+                boardState[atkIndex]=emptyPiece;
+                removePiece( atkPiece.getWhosePiece(),atkPiece.PieceType );
+                boardState[defIndex].setDisplay( true );
+            }else {
+                boardState[defIndex]=emptyPiece;
+                boardState[atkIndex].setDisplay( true );
+                swapPieces( atkIndex,defIndex );
+                removePiece( defPiece.getWhosePiece(),defPiece.getType() );
+            }
+        }else if(defPiece.getType().equals( "10" )){
+
+            if (!(atkPiece.getType().equals("1"))){
+
+                boardState[atkIndex]=emptyPiece;
+                removePiece( atkPiece.getWhosePiece(),atkPiece.PieceType );
+                boardState[defIndex].setDisplay( true );
+            }else {
+                boardState[defIndex]=emptyPiece;
+                boardState[atkIndex].setDisplay( true );
+                swapPieces( atkIndex,defIndex );
+                removePiece( defPiece.getWhosePiece(),defPiece.getType() );
+            }
+        }else {
+
+            int atkRank = Integer.parseInt( atkPiece.getType() );
+            int defRank = Integer.parseInt( defPiece.getType() );
+
+            if (atkRank>defRank){
+
+                boardState[defIndex]=emptyPiece;
+                boardState[atkIndex].setDisplay( true );
+                removePiece( defPiece.getWhosePiece(),defPiece.getType() );
+                swapPieces( atkIndex,defIndex );
+            }else if (atkRank<defRank){
+                boardState[atkIndex]=emptyPiece;
+                boardState[defIndex].setDisplay( true );
+                removePiece( atkPiece.getWhosePiece(),atkPiece.getType() );
+            }else {
+                boardState[defIndex]=emptyPiece;
+                boardState[atkIndex]=emptyPiece;
+                removePiece( defPiece.getWhosePiece(),defPiece.getType() );
+                removePiece( atkPiece.getWhosePiece(),atkPiece.getType() );
+            }
+
+        }
+
+    }
+
+    public void removePiece(int whose, String type){
+
+        ArrayList<Piece> list;
+
+        list= (whose ==1 ? playerOnePieces : playerTwoPieces);
+        for (Piece piece : list) {
+            if (piece.getType().equals( type )){
+                list.remove( piece );
+                break;
+            }
+        }
+    }
+
+
 
     public ArrayList<Integer> allValidMove(int pieceIndex){
 
