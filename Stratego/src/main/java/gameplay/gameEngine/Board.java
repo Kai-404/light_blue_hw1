@@ -25,6 +25,21 @@ public class Board {
 
     }
 
+    public ArrayList<Map<String,String>> getRemainingPiece (int whose){
+        ArrayList<Map<String,String>> remainingPiece = new ArrayList<>(  );
+
+        ArrayList<Piece> list= whose==1?playerOnePieces:playerTwoPieces;
+
+        for(Piece piece: list){
+
+            if (piece!=null){
+                remainingPiece.add(piece.getPiece());
+            }
+        }
+
+        return remainingPiece;
+    }
+
     public void setWinner(int winner){
         this.winner = winner;
     }
@@ -187,6 +202,49 @@ public class Board {
             }
 
         }
+
+        termination( playerOnePieces,playerTwoPieces );
+
+    }
+
+    public void termination(ArrayList<Piece> list1, ArrayList<Piece> list2){
+
+        boolean findFlag1 =false;
+        boolean findFlag2 =false;
+        boolean findMovablePiece1 =false;
+        boolean findMovablePiece2 =false;
+
+        for(Piece piece : list1){
+            if(piece != null){
+                String type = piece.getType();
+
+                if (type.equals( "F" )){
+                    findFlag1 =true;
+                }else{
+                    findMovablePiece1=true;
+                }
+            }
+        }
+
+        for(Piece piece : list2){
+            if(piece != null){
+                String type = piece.getType();
+
+                if (type.equals( "F" )){
+                    findFlag2 =true;
+                }else{
+                    findMovablePiece2=true;
+                }
+            }
+        }
+
+        if (!(findFlag1) || !(findMovablePiece1)){
+            setWinner( 2 );
+        }else if( !(findFlag2) || !(findMovablePiece2) ){
+            setWinner( 1 );
+        }
+
+
 
     }
 
