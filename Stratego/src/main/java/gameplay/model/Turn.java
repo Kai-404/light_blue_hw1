@@ -19,6 +19,11 @@ public class Turn {
     private ArrayList<Map<String,String>> remainingPiece;
     private ArrayList<Map<String,String>> currentBoard;
 
+    public Turn() {
+        this.remainingPiece = new ArrayList<>();
+        this.currentBoard = new ArrayList<>();
+    }
+
     public Turn(ArrayList<Map<String, String>> remainingPiece, ArrayList<Map<String, String>> currentBoard) {
         this.remainingPiece = remainingPiece;
         this.currentBoard = currentBoard;
