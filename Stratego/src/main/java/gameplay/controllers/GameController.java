@@ -115,4 +115,10 @@ public class GameController {
 
     }
 
+    @RequestMapping("/game/AI")
+    @ResponseBody
+    public boolean aiMove(){
+        return board.aiMove(2);
+    }
+
 }
