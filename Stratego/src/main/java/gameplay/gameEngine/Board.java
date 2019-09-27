@@ -76,18 +76,18 @@ public class Board {
             }
         }
 
-        remainingPiece.put( "Marshall",Marshall );
-        remainingPiece.put( "General",General );
-        remainingPiece.put( "Colonels",Colonels );
-        remainingPiece.put( "Majors",Majors );
-        remainingPiece.put( "Captains",Captains );
-        remainingPiece.put( "Lieutenants",Lieutenants );
-        remainingPiece.put( "Sergeants",Sergeants );
-        remainingPiece.put( "Miners",Miners );
-        remainingPiece.put( "Scouts",Scouts );
-        remainingPiece.put( "Spy",Spy );
-        remainingPiece.put( "Bombs",Bombs );
-        remainingPiece.put( "Flag",Flag );
+        remainingPiece.put( "10=Marshall",Marshall );
+        remainingPiece.put( "9=General",General );
+        remainingPiece.put( "8=Colonels",Colonels );
+        remainingPiece.put( "7=Majors",Majors );
+        remainingPiece.put( "6=Captains",Captains );
+        remainingPiece.put( "5=Lieutenants",Lieutenants );
+        remainingPiece.put( "4=Sergeants",Sergeants );
+        remainingPiece.put( "3=Miners",Miners );
+        remainingPiece.put( "2=Scouts",Scouts );
+        remainingPiece.put( "1=Spy",Spy );
+        remainingPiece.put( "B=Bombs",Bombs );
+        remainingPiece.put( "F=Flag",Flag );
 
         return remainingPiece;
     }
