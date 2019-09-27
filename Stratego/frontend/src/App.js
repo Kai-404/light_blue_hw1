@@ -11,11 +11,12 @@ import SideBar from "./SideBar/SideBar";
 import LoggedIn from "./SideBar/LoggedIn";
 import Game from "./game/Game";
 import History from "./game/History";
+import Replay from "./game/Replay";
 
 class App extends Component {
   state = {
     //    LoginFlag: false,
-    LoginFlag: false,
+    LoginFlag: true,
     User: null, //username, password, email, history
     History: null //date, status, description
   };
@@ -31,8 +32,8 @@ class App extends Component {
   */
 
   login = (user) => {
-      this.state.User = user;
-    this.setState({ LoginFlag: !this.state.LoginFlag });
+    this.setState({ User: user,
+    LoginFlag: !this.state.LoginFlag });
     /**
     axios
       .post(`/users/${email}`, data, {
@@ -113,6 +114,15 @@ class App extends Component {
                   <History />
                 </React.Fragment>
               )}
+            />
+            <Route
+            exact
+            path="/replay"
+            render={props => (
+                <React.Fragment>
+                    <Replay />
+                </React.Fragment>
+            )}
             />
           </div>
         </div>
