@@ -205,6 +205,7 @@ class Game extends React.Component {
         SECOND_SELECT: null
       });
     }
+    this.getWinner(); //check if there's winner after one move made
   }
 
   //check if there's winner of this game
@@ -219,11 +220,8 @@ class Game extends React.Component {
     }
   }
 
-    //TODO: all url in this file starting with http://localhost:8080, for testing purpose
-    // so u dont need to clean install, just use terminal and npm will be fine
-
   /*TODO: so the post method must return True, because AI must make a move, or else game terminated
-  try to see if it works, if not ask me
+          try to see if it works, if not ask me
 
     send a AI move request, if return true, update board,
     if not do nothing and wait for AI to return true
@@ -232,13 +230,6 @@ class Game extends React.Component {
     axios.post("http://localhost:8080/game/AI").then(res => {
       //update the board accordingly
       if (res.data) this.updateBoard();
-      else {
-        this.setState({
-          //clear buttons selected
-          FIRST_SELECT: null,
-          SECOND_SELECT: null
-        });
-      }
     });
   }
 
@@ -269,16 +260,16 @@ class Game extends React.Component {
           })
           .then(res => {
             //update the board accordingly
-            if (res.data) this.updateBoard();
-            else {
+            if (res.data) {
+              this.updateBoard();
+              this.ai(); // request AI to make a move
+            } else {
               this.setState({
                 //clear buttons selected
                 FIRST_SELECT: null,
                 SECOND_SELECT: null
               });
             }
-            this.getWinner(); //check if there's winner after one move made
-            this.ai(); // request AI to make a move
           })
           .catch(error => this.setState({ moveMade: error }));
       }
