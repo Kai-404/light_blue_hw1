@@ -15,9 +15,9 @@ import History from "./game/History";
 class App extends Component {
   state = {
     //    LoginFlag: false,
-    LoginFlag: true,
-    User: [], //username, password, email, history
-    History: [] //date, status, description
+    LoginFlag: false,
+    User: null, //username, password, email, history
+    History: null //date, status, description
   };
 
   /**
@@ -30,11 +30,8 @@ class App extends Component {
   }
   */
 
-  login = (email, password) => {
-    let data = JSON.stringify({
-      email,
-      password
-    });
+  login = (user) => {
+      this.state.User = user;
     this.setState({ LoginFlag: !this.state.LoginFlag });
     /**
     axios
@@ -55,7 +52,7 @@ class App extends Component {
 
   logout = () => {
     alert("You have logged out");
-    this.setState({ LoginFlag: !this.state.LoginFlag });
+      this.setState({ LoginFlag: !this.state.LoginFlag, User: null, History: null });
   };
 
   render() {
@@ -77,7 +74,10 @@ class App extends Component {
         <div className="App">
           {bar}
           <div className="Home">
-            <Route exact path="/" component={HomePage} />
+              <Route exact
+                     path="/"
+                     render={props=> (<HomePage User={this.state.User}/>)}
+              />
             <Route
               exact
               path="/login"
