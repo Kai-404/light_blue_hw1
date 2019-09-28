@@ -18,7 +18,8 @@ class Game extends React.Component {
       PlayerAStat: {},
       PlayerBStat: {},
       winner: null,
-      mesg: ""
+      mesg: "",
+      history: []
     };
   }
 
@@ -43,18 +44,19 @@ class Game extends React.Component {
   TODO: Backend: form a gameResult, start to record
   */
   playGame = () => {
-    if(this.state.winner){
-        this.setState({mesg: "Please click on setup before starting a new game"});
-    }
-    else{
-    alert("start to play game");
-    this.updatePieceStat();
-    this.setState({
-      isStart: true,
-      Player1: true,
-      Player2: false,
-      mesg: ""
-    });
+    if (this.state.winner) {
+      this.setState({
+        mesg: "Please click on setup before starting a new game"
+      });
+    } else {
+      alert("start to play game");
+      this.updatePieceStat();
+      this.setState({
+        isStart: true,
+        Player1: true,
+        Player2: false,
+        mesg: ""
+      });
     }
 
     console.log(this.state.PlayerAStat);
@@ -89,7 +91,13 @@ class Game extends React.Component {
   //end the game with AI as winner
   surrender = () => {
     this.clearStat();
-    this.setState({ winner: "AI", mesg: "game ended, winner is AI", isStart:false });
+    this.props.getHis(this.state.history);
+    this.setState({
+      winner: "AI",
+      mesg: "game ended, winner is AI",
+      isStart: false,
+      history: []
+    });
   };
 
   //check if there's winner of this game
@@ -98,9 +106,12 @@ class Game extends React.Component {
       .get("http://localhost:8080/game/termination")
       .then(res => this.setState({ winner: res.data }));
     if (this.state.winner) {
+      this.props.getHis(this.state.history);
+      console.log("winner!!!!!!!!!!!!!!");
       this.setState({
         mesg: `game ended, winner is ${this.state.winner}`,
-        isStart: false
+        isStart: false,
+        history: []
       });
     }
   }
@@ -160,9 +171,14 @@ class Game extends React.Component {
   //used to update board when move made
   updateBoard() {
     console.log("update board, and update remainding piece stat");
-    axios
-      .get("http://localhost:8080/game/boardstatus")
-      .then(res => this.setState({ board: res.data }), this.updatePieceStat());
+    axios.get("http://localhost:8080/game/boardstatus").then(
+      res =>
+        this.setState({
+          board: res.data,
+          history: [...this.state.history, res.data]
+        }),
+      this.updatePieceStat()
+    );
     if (this.state.isStart) {
       this.setState({
         FIRST_SELECT: null,

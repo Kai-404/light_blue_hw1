@@ -50,6 +50,9 @@ class App extends Component {
       });
       */
   };
+  getHistory = his => {
+    this.setState({ History: his });
+  };
 
   logout = () => {
     alert("You have logged out");
@@ -102,7 +105,7 @@ class App extends Component {
               path="/game"
               render={props => (
                 <React.Fragment>
-                  <Game />
+                  <Game getHis={this.getHistory} />
                 </React.Fragment>
               )}
             />
@@ -116,13 +119,13 @@ class App extends Component {
               )}
             />
             <Route
-            exact
-            path="/replay"
-            render={props => (
+              exact
+              path="/replay"
+              render={props => (
                 <React.Fragment>
-                    <Replay />
+                  <Replay gameHis={this.state.History} />
                 </React.Fragment>
-            )}
+              )}
             />
           </div>
         </div>
