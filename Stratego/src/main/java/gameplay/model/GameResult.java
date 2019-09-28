@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Getter
@@ -20,12 +21,12 @@ public class GameResult {
     private String id;
     private String userId;
     private Date date;
-    private ArrayList<Turn> turns;
+    private ArrayList<ArrayList<Map<String,String>>> boradHistory;
     private boolean isWon;
 
     public GameResult(String userId) {
         this.userId = userId;
         this.date = new Date();
-        turns = new ArrayList<>();
+        this.boradHistory = new ArrayList<>();
     }
 }
