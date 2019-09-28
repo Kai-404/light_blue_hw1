@@ -15,34 +15,8 @@ class Game extends React.Component {
       Player2: false,
       //board will be load from the back end as a list/array
       board: Array(100).fill(":("),
-      PlayerAStat: {
-        Marshall_10: 0,
-        General_9: 0,
-        Colonels_8: 0,
-        Majors_7: 0,
-        Captains_6: 0,
-        Lieutenants_5: 0,
-        Sergeants_4: 0,
-        Miners_3: 0,
-        Scouts_2: 0,
-        Spy_1: 0,
-        Bombs_B: 0,
-        Flag_F: 0
-      },
-      PlayerBStat: {
-        Marshall_10: 0,
-        General_9: 0,
-        Colonels_8: 0,
-        Majors_7: 0,
-        Captains_6: 0,
-        Lieutenants_5: 0,
-        Sergeants_4: 0,
-        Miners_3: 0,
-        Scouts_2: 0,
-        Spy_1: 0,
-        Bombs_B: 0,
-        Flag_F: 0
-      },
+      PlayerAStat: {},
+      PlayerBStat: {},
       winner: null,
       mesg: ""
     };
@@ -56,20 +30,7 @@ class Game extends React.Component {
   }
 
   clearStat() {
-    let a = {
-      Marshall_10: 0,
-      General_9: 0,
-      Colonels_8: 0,
-      Majors_7: 0,
-      Captains_6: 0,
-      Lieutenants_5: 0,
-      Sergeants_4: 0,
-      Miners_3: 0,
-      Scouts_2: 0,
-      Spy_1: 0,
-      Bombs_B: 0,
-      Flag_F: 0
-    };
+    let a = {};
     this.setState({
       PlayerAStat: a,
       PlayerBStat: a
@@ -82,14 +43,19 @@ class Game extends React.Component {
   TODO: Backend: form a gameResult, start to record
   */
   playGame = () => {
+    if(this.state.winner){
+        this.setState({mesg: "Please click on setup before starting a new game"});
+    }
+    else{
     alert("start to play game");
+    this.updatePieceStat();
     this.setState({
       isStart: true,
       Player1: true,
       Player2: false,
-      winner: null,
       mesg: ""
     });
+    }
 
     console.log(this.state.PlayerAStat);
   };
@@ -123,9 +89,21 @@ class Game extends React.Component {
   //end the game with AI as winner
   surrender = () => {
     this.clearStat();
-    this.setState({ winner: "AI", mesg: "game ended, winner is AI" });
+    this.setState({ winner: "AI", mesg: "game ended, winner is AI", isStart:false });
   };
 
+  //check if there's winner of this game
+  getWinner() {
+    axios
+      .get("http://localhost:8080/game/termination")
+      .then(res => this.setState({ winner: res.data }));
+    if (this.state.winner) {
+      this.setState({
+        mesg: `game ended, winner is ${this.state.winner}`,
+        isStart: false
+      });
+    }
+  }
   //validing the first index
   validPiece(index) {
     if (!this.state.FIRST_SELECT && this.state.board[index] !== null) {
@@ -206,18 +184,6 @@ class Game extends React.Component {
       });
     }
     this.getWinner(); //check if there's winner after one move made
-  }
-
-  //check if there's winner of this game
-  getWinner() {
-    axios
-      .get("http://localhost:8080/game/termination")
-      .then(res => this.setState({ winner: res.data }));
-    if (this.state.winner) {
-      this.setState({
-        mesg: `game ended, winner is ${this.state.winner}`
-      });
-    }
   }
 
   /*TODO: so the post method must return True, because AI must make a move, or else game terminated
@@ -327,16 +293,16 @@ class Game extends React.Component {
       );
     });
 
-    let Stat = Object.keys(this.state.PlayerAStat).map(function(key, index) {
+    let Stat = Object.keys(this.state.PlayerAStat).map(function(key) {
       let piec = key + ": ";
       return <p>{piec}</p>;
     });
     let Player1 = Object.values(this.state.PlayerAStat).map(function(val) {
-      let piec = val + "--";
+      let piec = val + "\xa0";
       return <p>{piec}</p>;
     });
     let Player2 = Object.values(this.state.PlayerBStat).map(function(val) {
-      let piec = val;
+      let piec = "| " + val;
       return <p>{piec}</p>;
     });
     return (
@@ -359,7 +325,7 @@ class Game extends React.Component {
           <b className="board">{board}</b>
 
           <bar className="resultBarRight">
-            <header className="stat">Remaining: A--B</header>
+            <header className="stat">Remaining: Your | AI</header>
             <p className="stat">{Stat}</p>
             <p className="stat">{Player1}</p>
             <p className="stat">{Player2}</p>
