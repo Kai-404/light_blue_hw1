@@ -15,36 +15,11 @@ class Game extends React.Component {
       Player2: false,
       //board will be load from the back end as a list/array
       board: Array(100).fill(":("),
-      PlayerAStat: {
-        Marshall_10: 0,
-        General_9: 0,
-        Colonels_8: 0,
-        Majors_7: 0,
-        Captains_6: 0,
-        Lieutenants_5: 0,
-        Sergeants_4: 0,
-        Miners_3: 0,
-        Scouts_2: 0,
-        Spy_1: 0,
-        Bombs_B: 0,
-        Flag_F: 0
-      },
-      PlayerBStat: {
-        Marshall_10: 0,
-        General_9: 0,
-        Colonels_8: 0,
-        Majors_7: 0,
-        Captains_6: 0,
-        Lieutenants_5: 0,
-        Sergeants_4: 0,
-        Miners_3: 0,
-        Scouts_2: 0,
-        Spy_1: 0,
-        Bombs_B: 0,
-        Flag_F: 0
-      },
+      PlayerAStat: {},
+      PlayerBStat: {},
       winner: null,
-      mesg: ""
+      mesg: "",
+      history: []
     };
   }
 
@@ -56,20 +31,7 @@ class Game extends React.Component {
   }
 
   clearStat() {
-    let a = {
-      Marshall_10: 0,
-      General_9: 0,
-      Colonels_8: 0,
-      Majors_7: 0,
-      Captains_6: 0,
-      Lieutenants_5: 0,
-      Sergeants_4: 0,
-      Miners_3: 0,
-      Scouts_2: 0,
-      Spy_1: 0,
-      Bombs_B: 0,
-      Flag_F: 0
-    };
+    let a = {};
     this.setState({
       PlayerAStat: a,
       PlayerBStat: a
@@ -82,14 +44,20 @@ class Game extends React.Component {
   TODO: Backend: form a gameResult, start to record
   */
   playGame = () => {
-    alert("start to play game");
-    this.setState({
-      isStart: true,
-      Player1: true,
-      Player2: false,
-      winner: null,
-      mesg: ""
-    });
+    if (this.state.winner) {
+      this.setState({
+        mesg: "Please click on setup before starting a new game"
+      });
+    } else {
+      alert("start to play game");
+      this.updatePieceStat();
+      this.setState({
+        isStart: true,
+        Player1: true,
+        Player2: false,
+        mesg: ""
+      });
+    }
 
     console.log(this.state.PlayerAStat);
   };
@@ -123,9 +91,30 @@ class Game extends React.Component {
   //end the game with AI as winner
   surrender = () => {
     this.clearStat();
-    this.setState({ winner: "AI", mesg: "game ended, winner is AI" });
+    this.props.getHis(this.state.history);
+    this.setState({
+      winner: "AI",
+      mesg: "game ended, winner is AI",
+      isStart: false,
+      history: []
+    });
   };
 
+  //check if there's winner of this game
+  getWinner() {
+    axios
+      .get("http://localhost:8080/game/termination")
+      .then(res => this.setState({ winner: res.data }));
+    if (this.state.winner) {
+      this.props.getHis(this.state.history);
+      console.log("winner!!!!!!!!!!!!!!");
+      this.setState({
+        mesg: `game ended, winner is ${this.state.winner}`,
+        isStart: false,
+        history: []
+      });
+    }
+  }
   //validing the first index
   validPiece(index) {
     if (!this.state.FIRST_SELECT && this.state.board[index] !== null) {
@@ -182,9 +171,14 @@ class Game extends React.Component {
   //used to update board when move made
   updateBoard() {
     console.log("update board, and update remainding piece stat");
-    axios
-      .get("http://localhost:8080/game/boardstatus")
-      .then(res => this.setState({ board: res.data }), this.updatePieceStat());
+    axios.get("http://localhost:8080/game/boardstatus").then(
+      res =>
+        this.setState({
+          board: res.data,
+          history: [...this.state.history, res.data]
+        }),
+      this.updatePieceStat()
+    );
     if (this.state.isStart) {
       this.setState({
         FIRST_SELECT: null,
@@ -205,25 +199,11 @@ class Game extends React.Component {
         SECOND_SELECT: null
       });
     }
+    this.getWinner(); //check if there's winner after one move made
   }
-
-  //check if there's winner of this game
-  getWinner() {
-    axios
-      .get("http://localhost:8080/game/termination")
-      .then(res => this.setState({ winner: res.data }));
-    if (this.state.winner) {
-      this.setState({
-        mesg: `game ended, winner is ${this.state.winner}`
-      });
-    }
-  }
-
-    //TODO: all url in this file starting with http://localhost:8080, for testing purpose
-    // so u dont need to clean install, just use terminal and npm will be fine
 
   /*TODO: so the post method must return True, because AI must make a move, or else game terminated
-  try to see if it works, if not ask me
+          try to see if it works, if not ask me
 
     send a AI move request, if return true, update board,
     if not do nothing and wait for AI to return true
@@ -232,13 +212,6 @@ class Game extends React.Component {
     axios.post("http://localhost:8080/game/AI").then(res => {
       //update the board accordingly
       if (res.data) this.updateBoard();
-      else {
-        this.setState({
-          //clear buttons selected
-          FIRST_SELECT: null,
-          SECOND_SELECT: null
-        });
-      }
     });
   }
 
@@ -269,16 +242,16 @@ class Game extends React.Component {
           })
           .then(res => {
             //update the board accordingly
-            if (res.data) this.updateBoard();
-            else {
+            if (res.data) {
+              this.updateBoard();
+              this.ai(); // request AI to make a move
+            } else {
               this.setState({
                 //clear buttons selected
                 FIRST_SELECT: null,
                 SECOND_SELECT: null
               });
             }
-            this.getWinner(); //check if there's winner after one move made
-            this.ai(); // request AI to make a move
           })
           .catch(error => this.setState({ moveMade: error }));
       }
@@ -336,16 +309,16 @@ class Game extends React.Component {
       );
     });
 
-    let Stat = Object.keys(this.state.PlayerAStat).map(function(key, index) {
+    let Stat = Object.keys(this.state.PlayerAStat).map(function(key) {
       let piec = key + ": ";
       return <p>{piec}</p>;
     });
     let Player1 = Object.values(this.state.PlayerAStat).map(function(val) {
-      let piec = val + "--";
+      let piec = val + "\xa0";
       return <p>{piec}</p>;
     });
     let Player2 = Object.values(this.state.PlayerBStat).map(function(val) {
-      let piec = val;
+      let piec = "| " + val;
       return <p>{piec}</p>;
     });
     return (
@@ -368,7 +341,7 @@ class Game extends React.Component {
           <b className="board">{board}</b>
 
           <bar className="resultBarRight">
-            <header className="stat">Remaining: A--B</header>
+            <header className="stat">Remaining: Your | AI</header>
             <p className="stat">{Stat}</p>
             <p className="stat">{Player1}</p>
             <p className="stat">{Player2}</p>

@@ -6,213 +6,7 @@ class Replay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        //demo history data
-      History: [
-        [
-          { Type: "B", Player: "2", Display: "no" },
-          { Type: "3", Player: "2", Display: "no" },
-          { Type: "3", Player: "2", Display: "no" },
-          { Type: "B", Player: "2", Display: "no" },
-          { Type: "F", Player: "2", Display: "no" },
-          { Type: "B", Player: "2", Display: "no" },
-          { Type: "6", Player: "2", Display: "no" },
-          { Type: "6", Player: "2", Display: "no" },
-          { Type: "2", Player: "2", Display: "no" },
-          { Type: "2", Player: "2", Display: "no" },
-          { Type: "1", Player: "2", Display: "no" },
-          { Type: "4", Player: "2", Display: "no" },
-          { Type: "8", Player: "2", Display: "no" },
-          { Type: "7", Player: "2", Display: "no" },
-          { Type: "B", Player: "2", Display: "no" },
-          { Type: "4", Player: "2", Display: "no" },
-          { Type: "B", Player: "2", Display: "no" },
-          { Type: "7", Player: "2", Display: "no" },
-          { Type: "5", Player: "2", Display: "no" },
-          { Type: "2", Player: "2", Display: "no" },
-          { Type: "7", Player: "2", Display: "no" },
-          { Type: "5", Player: "2", Display: "no" },
-          { Type: "6", Player: "2", Display: "no" },
-          { Type: "10", Player: "2", Display: "no" },
-          { Type: "8", Player: "2", Display: "no" },
-          { Type: "2", Player: "2", Display: "no" },
-          { Type: "4", Player: "2", Display: "no" },
-          { Type: "3", Player: "2", Display: "no" },
-          { Type: "4", Player: "2", Display: "no" },
-          { Type: "3", Player: "2", Display: "no" },
-          { Type: "9", Player: "2", Display: "no" },
-          { Type: "2", Player: "2", Display: "no" },
-          { Type: "3", Player: "2", Display: "no" },
-          { Type: "6", Player: "2", Display: "no" },
-          { Type: "2", Player: "2", Display: "no" },
-          { Type: "2", Player: "2", Display: "no" },
-          { Type: "B", Player: "2", Display: "no" },
-          { Type: "5", Player: "2", Display: "no" },
-          { Type: "2", Player: "2", Display: "no" },
-          { Type: "5", Player: "2", Display: "no" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "R", Player: "0", Display: "yes" },
-          { Type: "R", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "R", Player: "0", Display: "yes" },
-          { Type: "R", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "R", Player: "0", Display: "yes" },
-          { Type: "R", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "R", Player: "0", Display: "yes" },
-          { Type: "R", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "4", Player: "1", Display: "yes" },
-          { Type: "2", Player: "1", Display: "yes" },
-          { Type: "4", Player: "1", Display: "yes" },
-          { Type: "3", Player: "1", Display: "yes" },
-          { Type: "10", Player: "1", Display: "yes" },
-          { Type: "4", Player: "1", Display: "yes" },
-          { Type: "6", Player: "1", Display: "yes" },
-          { Type: "2", Player: "1", Display: "yes" },
-          { Type: "8", Player: "1", Display: "yes" },
-          { Type: "B", Player: "1", Display: "yes" },
-          { Type: "5", Player: "1", Display: "yes" },
-          { Type: "3", Player: "1", Display: "yes" },
-          { Type: "7", Player: "1", Display: "yes" },
-          { Type: "9", Player: "1", Display: "yes" },
-          { Type: "B", Player: "1", Display: "yes" },
-          { Type: "3", Player: "1", Display: "yes" },
-          { Type: "1", Player: "1", Display: "yes" },
-          { Type: "2", Player: "1", Display: "yes" },
-          { Type: "B", Player: "1", Display: "yes" },
-          { Type: "5", Player: "1", Display: "yes" },
-          { Type: "6", Player: "1", Display: "yes" },
-          { Type: "2", Player: "1", Display: "yes" },
-          { Type: "5", Player: "1", Display: "yes" },
-          { Type: "B", Player: "1", Display: "yes" },
-          { Type: "F", Player: "1", Display: "yes" },
-          { Type: "B", Player: "1", Display: "yes" },
-          { Type: "5", Player: "1", Display: "yes" },
-          { Type: "3", Player: "1", Display: "yes" },
-          { Type: "7", Player: "1", Display: "yes" },
-          { Type: "2", Player: "1", Display: "yes" },
-          { Type: "3", Player: "1", Display: "yes" },
-          { Type: "7", Player: "1", Display: "yes" },
-          { Type: "2", Player: "1", Display: "yes" },
-          { Type: "2", Player: "1", Display: "yes" },
-          { Type: "B", Player: "1", Display: "yes" },
-          { Type: "6", Player: "1", Display: "yes" },
-          { Type: "4", Player: "1", Display: "yes" },
-          { Type: "8", Player: "1", Display: "yes" },
-          { Type: "6", Player: "1", Display: "yes" },
-          { Type: "2", Player: "1", Display: "yes" }
-        ],
-        [
-          { Type: "B", Player: "2", Display: "no" },
-          { Type: "3", Player: "2", Display: "no" },
-          { Type: "3", Player: "2", Display: "no" },
-          { Type: "B", Player: "2", Display: "no" },
-          { Type: "F", Player: "2", Display: "no" },
-          { Type: "B", Player: "2", Display: "no" },
-          { Type: "6", Player: "2", Display: "no" },
-          { Type: "6", Player: "2", Display: "no" },
-          { Type: "2", Player: "2", Display: "no" },
-          { Type: "2", Player: "2", Display: "no" },
-          { Type: "1", Player: "2", Display: "no" },
-          { Type: "4", Player: "2", Display: "no" },
-          { Type: "8", Player: "2", Display: "no" },
-          { Type: "7", Player: "2", Display: "no" },
-          { Type: "B", Player: "2", Display: "no" },
-          { Type: "4", Player: "2", Display: "no" },
-          { Type: "B", Player: "2", Display: "no" },
-          { Type: "7", Player: "2", Display: "no" },
-          { Type: "5", Player: "2", Display: "no" },
-          { Type: "2", Player: "2", Display: "no" },
-          { Type: "7", Player: "2", Display: "no" },
-          { Type: "5", Player: "2", Display: "no" },
-          { Type: "6", Player: "2", Display: "no" },
-          { Type: "10", Player: "2", Display: "no" },
-          { Type: "8", Player: "2", Display: "no" },
-          { Type: "2", Player: "2", Display: "no" },
-          { Type: "4", Player: "2", Display: "no" },
-          { Type: "3", Player: "2", Display: "no" },
-          { Type: "4", Player: "2", Display: "no" },
-          { Type: "3", Player: "2", Display: "no" },
-          { Type: "9", Player: "2", Display: "no" },
-          { Type: "2", Player: "2", Display: "no" },
-          { Type: "3", Player: "2", Display: "no" },
-          { Type: "6", Player: "2", Display: "no" },
-          { Type: "2", Player: "2", Display: "no" },
-          { Type: "2", Player: "2", Display: "no" },
-          { Type: "B", Player: "2", Display: "no" },
-          { Type: "5", Player: "2", Display: "no" },
-          { Type: "2", Player: "2", Display: "no" },
-          { Type: "5", Player: "2", Display: "no" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "R", Player: "0", Display: "yes" },
-          { Type: "R", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "R", Player: "0", Display: "yes" },
-          { Type: "R", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "R", Player: "0", Display: "yes" },
-          { Type: "R", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "R", Player: "0", Display: "yes" },
-          { Type: "R", Player: "0", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "10", Player: "1", Display: "yes" },
-          { Type: "E", Player: "0", Display: "yes" },
-          { Type: "4", Player: "1", Display: "yes" },
-          { Type: "2", Player: "1", Display: "yes" },
-          { Type: "4", Player: "1", Display: "yes" },
-          { Type: "3", Player: "1", Display: "yes" },
-          { Type: "4", Player: "1", Display: "yes" },
-          { Type: "6", Player: "1", Display: "yes" },
-          { Type: "2", Player: "1", Display: "yes" },
-          { Type: "8", Player: "1", Display: "yes" },
-          { Type: "B", Player: "1", Display: "yes" },
-          { Type: "5", Player: "1", Display: "yes" },
-          { Type: "3", Player: "1", Display: "yes" },
-          { Type: "7", Player: "1", Display: "yes" },
-          { Type: "9", Player: "1", Display: "yes" },
-          { Type: "B", Player: "1", Display: "yes" },
-          { Type: "3", Player: "1", Display: "yes" },
-          { Type: "1", Player: "1", Display: "yes" },
-          { Type: "2", Player: "1", Display: "yes" },
-          { Type: "B", Player: "1", Display: "yes" },
-          { Type: "5", Player: "1", Display: "yes" },
-          { Type: "6", Player: "1", Display: "yes" },
-          { Type: "2", Player: "1", Display: "yes" },
-          { Type: "5", Player: "1", Display: "yes" },
-          { Type: "B", Player: "1", Display: "yes" },
-          { Type: "F", Player: "1", Display: "yes" },
-          { Type: "B", Player: "1", Display: "yes" },
-          { Type: "5", Player: "1", Display: "yes" },
-          { Type: "3", Player: "1", Display: "yes" },
-          { Type: "7", Player: "1", Display: "yes" },
-          { Type: "2", Player: "1", Display: "yes" },
-          { Type: "3", Player: "1", Display: "yes" },
-          { Type: "7", Player: "1", Display: "yes" },
-          { Type: "2", Player: "1", Display: "yes" },
-          { Type: "2", Player: "1", Display: "yes" },
-          { Type: "B", Player: "1", Display: "yes" },
-          { Type: "6", Player: "1", Display: "yes" },
-          { Type: "4", Player: "1", Display: "yes" },
-          { Type: "8", Player: "1", Display: "yes" },
-          { Type: "6", Player: "1", Display: "yes" },
-          { Type: "2", Player: "1", Display: "yes" }
-        ]
-      ],
+      History: null,
       currentBoard: [],
       isPause: true,
       seconds: 0,
@@ -222,7 +16,7 @@ class Replay extends React.Component {
 
   componentDidMount() {
     this.setState({
-      currentBoard: this.state.History[0]
+      History: this.props.gameHis
     });
     this.interval = setInterval(() => this.tick(), this.state.frameTime);
   }
@@ -232,19 +26,21 @@ class Replay extends React.Component {
   }
 
   tick() {
-    let len = this.state.History.length;
-    if (this.state.seconds < len && !this.state.isPause) {
-      this.setState({
-        currentBoard: this.state.History[this.state.seconds]
-      });
-      this.setState(prevState => ({
-        seconds: prevState.seconds + 1
-      }));
+    if (this.state.History) {
+      let len = this.state.History.length;
+      if (this.state.seconds < len && !this.state.isPause) {
+        this.setState({
+          currentBoard: this.state.History[this.state.seconds]
+        });
+        this.setState(prevState => ({
+          seconds: prevState.seconds + 1
+        }));
+      }
     }
   }
 
   faster = () => {
-    this.setState({ frameTime: this.frameTime / 2 });
+    this.setState({ frameTime: this.state.frameTime / 2 });
   };
   pause = () => {
     this.setState({ isPause: true });
@@ -255,7 +51,7 @@ class Replay extends React.Component {
 
   //for each game result a component will be redered
   render() {
-    let board = this.state.currentBoard.map((cell, index) => {
+    let board = this.state.currentBoard.map(cell => {
       let cn = "square";
       let disable = false;
       let piece = cell.Type;
@@ -289,7 +85,7 @@ class Replay extends React.Component {
           Pause
         </button>
         <button className="submitButton" onClick={this.faster}>
-          Faster
+          PlaceHolder
         </button>
         <div>(For testing purpose)Turns Taking: {this.state.seconds}</div>
         <b className="board">{board}</b>
