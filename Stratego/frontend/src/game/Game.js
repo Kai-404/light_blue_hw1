@@ -10,37 +10,38 @@ class Game extends React.Component {
     this.state = {
       isStart: false,
       FIRST_SELECT: null,
+      //player1 is self, Player2 is AI
       Player1: true,
       Player2: false,
       //board will be load from the back end as a list/array
       board: Array(100).fill(":("),
       PlayerAStat: {
-        Marshall: 0,
-        General: 0,
-        Colonels: 0,
-        Majors: 0,
-        Captains: 0,
-        Lieutenants: 0,
-        Sergeants: 0,
-        Miners: 0,
-        Scouts: 0,
-        Spy: 0,
-        Bombs: 0,
-        Flag: 0
+        Marshall_10: 0,
+        General_9: 0,
+        Colonels_8: 0,
+        Majors_7: 0,
+        Captains_6: 0,
+        Lieutenants_5: 0,
+        Sergeants_4: 0,
+        Miners_3: 0,
+        Scouts_2: 0,
+        Spy_1: 0,
+        Bombs_B: 0,
+        Flag_F: 0
       },
       PlayerBStat: {
-        Marshall: 0,
-        General: 0,
-        Colonels: 0,
-        Majors: 0,
-        Captains: 0,
-        Lieutenants: 0,
-        Sergeants: 0,
-        Miners: 0,
-        Scouts: 0,
-        Spy: 0,
-        Bombs: 0,
-        Flag: 0
+        Marshall_10: 0,
+        General_9: 0,
+        Colonels_8: 0,
+        Majors_7: 0,
+        Captains_6: 0,
+        Lieutenants_5: 0,
+        Sergeants_4: 0,
+        Miners_3: 0,
+        Scouts_2: 0,
+        Spy_1: 0,
+        Bombs_B: 0,
+        Flag_F: 0
       },
       winner: null,
       mesg: ""
@@ -55,35 +56,23 @@ class Game extends React.Component {
   }
 
   clearStat() {
+    let a = {
+      Marshall_10: 0,
+      General_9: 0,
+      Colonels_8: 0,
+      Majors_7: 0,
+      Captains_6: 0,
+      Lieutenants_5: 0,
+      Sergeants_4: 0,
+      Miners_3: 0,
+      Scouts_2: 0,
+      Spy_1: 0,
+      Bombs_B: 0,
+      Flag_F: 0
+    };
     this.setState({
-      PlayerAStat: {
-        Marshall: 0,
-        General: 0,
-        Colonels: 0,
-        Majors: 0,
-        Captains: 0,
-        Lieutenants: 0,
-        Sergeants: 0,
-        Miners: 0,
-        Scouts: 0,
-        Spy: 0,
-        Bombs: 0,
-        Flag: 0
-      },
-      PlayerBStat: {
-        Marshall: 0,
-        General: 0,
-        Colonels: 0,
-        Majors: 0,
-        Captains: 0,
-        Lieutenants: 0,
-        Sergeants: 0,
-        Miners: 0,
-        Scouts: 0,
-        Spy: 0,
-        Bombs: 0,
-        Flag: 0
-      }
+      PlayerAStat: a,
+      PlayerBStat: a
     });
   }
 
@@ -93,15 +82,6 @@ class Game extends React.Component {
   TODO: Backend: form a gameResult, start to record
   */
   playGame = () => {
-    //this.clearStat();
-    this.state.board.map((cell, index) => {
-      let piece = cell.Type;
-      if (cell.Player === "1") {
-        this.modefiyStat(cell.Type, this.state.PlayerAStat);
-      } else if (cell.Player === "2") {
-        this.modefiyStat(cell.Type, this.state.PlayerBStat);
-      }
-    });
     alert("start to play game");
     this.setState({
       isStart: true,
@@ -150,8 +130,9 @@ class Game extends React.Component {
   validPiece(index) {
     if (!this.state.FIRST_SELECT && this.state.board[index] !== null) {
       if (
-        (this.state.board[index].Player === "2" && this.state.Player2) ||
-        (this.state.board[index].Player === "1" && this.state.Player1)
+        //  (this.state.board[index].Player === "2" && this.state.Player2) ||
+        this.state.board[index].Player === "1" &&
+        this.state.Player1
       ) {
         this.setState({
           FIRST_SELECT: index
@@ -226,6 +207,42 @@ class Game extends React.Component {
     }
   }
 
+  //check if there's winner of this game
+  getWinner() {
+    axios
+      .get("http://localhost:8080/game/termination")
+      .then(res => this.setState({ winner: res.data }));
+    if (this.state.winner) {
+      this.setState({
+        mesg: `game ended, winner is ${this.state.winner}`
+      });
+    }
+  }
+
+    //TODO: all url in this file starting with http://localhost:8080, for testing purpose
+    // so u dont need to clean install, just use terminal and npm will be fine
+
+  /*TODO: so the post method must return True, because AI must make a move, or else game terminated
+  try to see if it works, if not ask me
+
+    send a AI move request, if return true, update board,
+    if not do nothing and wait for AI to return true
+    */
+  ai() {
+    axios.post("http://localhost:8080/game/AI").then(res => {
+      //update the board accordingly
+      if (res.data) this.updateBoard();
+      else {
+        this.setState({
+          //clear buttons selected
+          FIRST_SELECT: null,
+          SECOND_SELECT: null
+        });
+      }
+    });
+  }
+
+  //two player take turns to make move
   move(index1, index2) {
     if (index1 !== null && index1 !== index2) {
       if (
@@ -239,36 +256,35 @@ class Game extends React.Component {
           index1,
           index2
         });
+        /*
+        send a player's move request with 2 index(2 piece on board) to backend,
+          valid it, if a valid board:  update the board accordingly
+                              update the state too
+          -if not: unselect buttons, and do nothing.
+        */
         axios
           .post("http://localhost:8080/game/move", data, {
             headers: { "Content-Type": "application/json;charset=UTF-8" },
             params: { startIndex: index1, distIndex: index2 }
           })
           .then(res => {
+            //update the board accordingly
             if (res.data) this.updateBoard();
             else {
               this.setState({
+                //clear buttons selected
                 FIRST_SELECT: null,
                 SECOND_SELECT: null
               });
             }
-            this.getWinner();
-            if (this.state.winner) {
-              this.setState({
-                mesg: `game ended, winner is ${this.state.winner}`
-              });
-            }
+            this.getWinner(); //check if there's winner after one move made
+            this.ai(); // request AI to make a move
           })
           .catch(error => this.setState({ moveMade: error }));
       }
     }
   }
 
-  getWinner() {
-    axios
-      .get("http://localhost:8080/game/termination")
-      .then(res => this.setState({ winner: res.data }));
-  }
   //display the pieces based on the state
   //if the piece haven't been explored, display:false
   //if piece explored(eat other piece), display:true
@@ -289,59 +305,11 @@ class Game extends React.Component {
     }
   }
 
-  //modefiy the player remaining pieces according to the board
-  //using switch statement
-  modefiyStat = (pie, player) => {
-    switch (pie) {
-      case "10":
-        player.Marshall = Number(player.Marshall) + 1;
-        break;
-      case "9":
-        player.General = Number(player.General) + 1;
-        break;
-      case "8":
-        player.Colonels = Number(player.Colonels) + 1;
-        break;
-      case "7":
-        player.Majors = Number(player.Majors) + 1;
-        break;
-      case "6":
-        player.Captains = Number(player.Captains) + 1;
-        break;
-      case "5":
-        player.Lieutenants = Number(player.Lieutenants) + 1;
-        break;
-      case "4":
-        player.Sergeants = Number(player.Sergeants) + 1;
-        break;
-      case "3":
-        player.Miners = Number(player.Miners) + 1;
-        break;
-      case "2":
-        player.Scouts = Number(player.Scouts) + 1;
-        break;
-      case "1":
-        player.Spy = Number(player.Spy) + 1;
-        break;
-      case "F":
-        player.Flag = Number(player.Flag) + 1;
-        break;
-      case "B":
-        player.Bombs = Number(player.Bombs) + 1;
-        break;
-      default:
-      // do nothing
-    }
-    return player;
-  };
-
   render() {
     let board = this.state.board.map((cell, index) => {
-      var classNames = require("classnames");
       let cn = "square";
       let disable = false;
       let piece = cell.Type;
-
       if (cell.Player === "1") {
         cn = "squareA";
       } else if (cell.Player === "2") {

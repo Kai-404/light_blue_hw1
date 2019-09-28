@@ -647,5 +647,25 @@ public class Board {
 
     }
 
+    public boolean aiMove(int player) {
+        ArrayList<Integer> indices = new ArrayList<>();
+        for (int i=0; i<boardState.length; i++) {
+            if (boardState[i].getWhosePiece() == player && allValidMove(i).size()>0) {
+                indices.add(i);
+            }
+        }
+
+        Random rand = new Random();
+        if (indices.size() > 0) {
+            int idx1 = indices.get(rand.nextInt(indices.size()));
+            ArrayList<Integer> possibleMoves = allValidMove(idx1);
+            int idx2 = possibleMoves.get(rand.nextInt(possibleMoves.size()));
+            return this.move(idx1, idx2);
+        }
+        else {
+            return false;
+        }
+    }
+
 
 }
