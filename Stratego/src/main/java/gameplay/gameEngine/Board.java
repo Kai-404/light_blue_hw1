@@ -26,7 +26,7 @@ public class Board {
     }
 
     public Map<String,Integer> getRemainingPiece (int whose){
-        Map<String,Integer> remainingPiece = new HashMap<>(  );
+        Map<String,Integer> remainingPiece = new LinkedHashMap<>(  );
 
         int Marshall = 0;
         int General = 0;
@@ -89,6 +89,7 @@ public class Board {
         remainingPiece.put( "B=Bombs",Bombs );
         remainingPiece.put( "F=Flag",Flag );
 
+        System.out.println( remainingPiece );
         return remainingPiece;
     }
 
