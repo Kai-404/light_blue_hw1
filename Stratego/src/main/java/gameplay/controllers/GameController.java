@@ -1,16 +1,23 @@
 package gameplay.controllers;
 
+import gameplay.model.GameResult;
+import gameplay.model.GameResultRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import gameplay.gameEngine.Board;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
 @RestController
 public class GameController {
     Board board;
+
+    @Autowired
+    private GameResultRepository gameResultRepository;
 
     @RequestMapping("/game/init")
     @ResponseBody
@@ -121,4 +128,16 @@ public class GameController {
         return board.aiMove(2);
     }
 
+
+    @RequestMapping("/game/savehistory")
+    @ResponseBody
+    public void saveHistory(GameResult results) {
+        gameResultRepository.save(results);
+    }
+
+    @RequestMapping("/game/gethistory")
+    @ResponseBody
+    public List<GameResult> getHistory(@RequestParam(name="userid") String userid) {
+        return gameResultRepository.findAllByUserIdOrderByDate(userid);
+    }
 }
