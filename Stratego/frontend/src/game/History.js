@@ -9,11 +9,8 @@ class History extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      History: [
-        { Date: "12/10", Status: "Won" },
-        { Date: "11/10", Status: "Lost" }
-      ],
-      gameId: null
+      History: [],
+      index: null //index of which game history is going to be replayed
     };
   }
 
@@ -42,7 +39,10 @@ class History extends React.Component {
 
   //click on the replay button will redirect/pop up a window to autoplay the game
   routeChange = () => {
+    //send the history data to app.js to be replayed
+    //this.props.setReplay(this.state.History[this.state.index].board);
       this.props.getHis();
+
     //let path = `/replay/${this.state.gameId}`;
     let path = "/replay";
     this.props.history.push(path);
@@ -74,6 +74,14 @@ class History extends React.Component {
           data={this.state.History}
           getTrProps={this.onRowClick}
           defaultPageSize={5}
+          getTdProps={(state, rowInfo, column, instance) => {
+            return {
+              onClick: (e, handleOriginal) => {
+                console.log("row:", rowInfo.index);
+                this.setState({ index: rowInfo.index });
+              }
+            };
+          }}
         ></ReactTable>
       </React.Fragment>
     );

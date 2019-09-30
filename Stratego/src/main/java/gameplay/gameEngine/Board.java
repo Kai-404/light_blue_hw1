@@ -26,7 +26,7 @@ public class Board {
     }
 
     public Map<String,Integer> getRemainingPiece (int whose){
-        Map<String,Integer> remainingPiece = new HashMap<>(  );
+        Map<String,Integer> remainingPiece = new LinkedHashMap<>(  );
 
         int Marshall = 0;
         int General = 0;
@@ -89,6 +89,7 @@ public class Board {
         remainingPiece.put( "B=Bombs",Bombs );
         remainingPiece.put( "F=Flag",Flag );
 
+        System.out.println( remainingPiece );
         return remainingPiece;
     }
 
@@ -134,7 +135,7 @@ public class Board {
             }
 
             if (boardStateStringArray.get( i )!=null){
-                System.out.print(boardStateStringArray.get( i ).get("Type") + " " );
+                System.out.print(boardStateStringArray.get( i ).get("Type") + ","+boardStateStringArray.get( i ).get("Display")+" " );
             }else{
                 System.out.print("  ");
             }
@@ -439,8 +440,8 @@ public class Board {
         pieceList.add( piece );
 
         //  B: 6 Bombs
-        piece = new Piece( whose,"B",display );
         for(int i =0; i<6;i++){
+            piece = new Piece( whose,"B",display );
             pieceList.add( piece );
         }
 
@@ -453,44 +454,44 @@ public class Board {
         pieceList.add( piece );
 
         //  8: 2 Colonels
-        piece = new Piece( whose,"8",display );
         for(int i =0; i<2;i++){
+            piece = new Piece( whose,"8",display );
             pieceList.add( piece );
         }
 
         //  7: 3 Majors
-        piece = new Piece( whose,"7",display );
         for(int i =0; i<3;i++){
+            piece = new Piece( whose,"7",display );
             pieceList.add( piece );
         }
 
         //  6: 4 Captains
-        piece = new Piece( whose,"6",display );
         for(int i =0; i<4;i++){
+            piece = new Piece( whose,"6",display );
             pieceList.add( piece );
         }
 
         //  5: 4 Lieutenants
-        piece = new Piece( whose,"5",display );
         for(int i =0; i<4;i++){
+            piece = new Piece( whose,"5",display );
             pieceList.add( piece );
         }
 
         //  4: 4 Sergeants
-        piece = new Piece( whose,"4",display );
         for(int i =0; i<4;i++){
+            piece = new Piece( whose,"4",display );
             pieceList.add( piece );
         }
 
         //  3: 5 Miners
-        piece = new Piece( whose,"3",display );
         for(int i =0; i<5;i++){
+            piece = new Piece( whose,"3",display );
             pieceList.add( piece );
         }
 
         //  2: 8 Scouts
-        piece = new Piece( whose,"2",display );
         for(int i =0; i<8;i++){
+            piece = new Piece( whose,"2",display );
             pieceList.add( piece );
         }
 
