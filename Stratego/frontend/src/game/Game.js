@@ -86,21 +86,25 @@ class Game extends React.Component {
 
   //end the game with AI as winner
   surrender = () => {
-    this.clearStat();
-    this.props.getHis(this.state.history);
-    axios
-        .post("http://localhost:8080/game/savehistory",
-            {
-                userId : this.props.User.id,
-                history : JSON.stringify(this.state.history),
-                isWon : false
-        });
-    this.setState({
-      winner: "AI",
-      mesg: "game ended, winner is AI",
-      isStart: false,
-      history: []
-    });
+    if (this.state.isStart) {
+      //this.state.winner = "asd";
+      this.clearStat();
+      this.props.getHis(this.state.history);
+      axios
+          .post("http://localhost:8080/game/savehistory",
+              {
+                userId: this.props.User.id,
+                history: JSON.stringify(this.state.history),
+                isWon: false
+              });
+      this.setState({
+        winner: "AI",
+        mesg: "game ended, winner is AI",
+        isStart: false,
+        history: [],
+        isAutoPlay: false
+      });
+    }
   };
 
   //check if there's winner of this game
@@ -120,9 +124,10 @@ class Game extends React.Component {
       this.props.getHis(this.state.history);
       console.log("winner!!!!!!!!!!!!!!");
       this.setState({
-        mesg: `game ended, winner is ${this.state.winner}`,
+        mesg: `game ended, winner is ${this.props.User.username}`,
         isStart: false,
-        history: []
+        history: [],
+        isAutoPlay: false
       });
     }
   }
@@ -236,10 +241,10 @@ class Game extends React.Component {
   autoPlay = async () => {
     this.setState({ isAutoPlay: true });
     //while there's no winner of the game 2 AI will keep playing
-    while (!this.state.winner) {
-       await axios.get("http://localhost:8080/game/AI", {
+    while (!this.state.winner && this.state.isStart) {
+      await axios.get("http://localhost:8080/game/AI", {
         headers: {"Content-Type": "application/json;charset=UTF-8"},
-        params: {player:1}
+        params: {player: 1}
       }).then(res => {
         //update the board and call another AI to make next move
         if (res.data) {
@@ -248,8 +253,6 @@ class Game extends React.Component {
         }
       });
     }
-    this.getWinner();
-    this.setState({isAutoPlay: false});
   };
 
   //two player take turns to make move
