@@ -18,7 +18,7 @@ class History extends React.Component {
     componentDidMount() {
         let temp = [];
         axios
-            .get("http://localhost:8080/game/gethistory", {params: {userid:this.props.User.id}})
+            .get("/game/gethistory", {params: {userid:this.props.User.id}})
             .then(res => {
                     let i;
                     for(i=0; i<res.data.length;i++) {
