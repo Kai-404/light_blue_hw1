@@ -25,7 +25,7 @@ class History extends React.Component {
             .then(res => {
                     let i;
                     for(i=0; i<res.data.length;i++) {
-                        temp.push({Date: res.data[i].date, Status:res.data[i].won ? "Won":"Lost", hist: res.data[i].history});
+                        temp.push({Date: String(res.data[i].date).slice(0,10), Status:res.data[i].won ? "Won":"Lost", hist: res.data[i].history});
                     }
                     this.setState({History : temp});
                 }
