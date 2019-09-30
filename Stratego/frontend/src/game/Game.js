@@ -217,8 +217,12 @@ class Game extends React.Component {
     send a AI move request, if return true, update board,
     if not do nothing and wait for AI to return true
     */
-  ai() {
-    axios.post("http://localhost:8080/game/AI").then(res => {
+  async ai() {
+
+    await axios.get("http://localhost:8080/game/AI",{
+      headers: {"Content-Type": "application/json;charset=UTF-8"},
+      params: {player:2}
+    }).then(res => {
       //update the board accordingly
       if (res.data) this.updateBoard();
     });
@@ -229,18 +233,21 @@ class Game extends React.Component {
    * such that moves are automatically chosen via the same AI logic that governs the AI player.
    * by clicking on the autoPlay button, user will be replaced by the AI
    */
-  autoPlay = () => {
+  autoPlay = async () => {
     this.setState({ isAutoPlay: true });
     //while there's no winner of the game 2 AI will keep playing
-  /*  while (!this.state.winner) {
-      axios.post("http://localhost:8080/game/AI").then(res => {
+    while (!this.state.winner) {
+       await axios.get("http://localhost:8080/game/AI", {
+        headers: {"Content-Type": "application/json;charset=UTF-8"},
+        params: {player:1}
+      }).then(res => {
         //update the board and call another AI to make next move
         if (res.data) {
           this.updateBoard();
           this.ai(); // request AI to make a move
         }
       });
-    }*/
+    }
   };
 
   //two player take turns to make move
