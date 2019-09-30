@@ -1,16 +1,25 @@
 package gameplay.controllers;
 
+import gameplay.model.GameResult;
+import gameplay.model.GameResultRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import gameplay.gameEngine.Board;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
 @RestController
 public class GameController {
     Board board;
+
+    @Autowired
+    private GameResultRepository gameResultRepository;
 
     @RequestMapping("/game/init")
     @ResponseBody
@@ -121,4 +130,18 @@ public class GameController {
         return board.aiMove(2);
     }
 
+
+    @RequestMapping(value = "/game/savehistory", method = RequestMethod.POST)
+    public void generateAddress(@RequestBody GameResult result) {
+        System.out.println(result.getUserId());
+        System.out.println(result.getDate());
+        System.out.println(result.isWon());
+        gameResultRepository.save(result);
+    }
+
+    @RequestMapping("/game/gethistory")
+    @ResponseBody
+    public List<GameResult> getHistory(@RequestParam(name="userid") String userid) {
+        return gameResultRepository.findAllByUserIdOrderByDate(userid);
+    }
 }

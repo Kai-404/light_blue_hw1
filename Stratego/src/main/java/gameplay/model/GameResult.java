@@ -15,18 +15,19 @@ import java.util.Map;
 @Data
 @Getter
 @Setter
-@Document
+@Document(collection="history")
 public class GameResult {
     @Id
     private String id;
     private String userId;
     private Date date;
-    private ArrayList<ArrayList<Map<String,String>>> boradHistory;
+    private String history;
     private boolean isWon;
 
-    public GameResult(String userId) {
+    public GameResult(String userId, String history, boolean isWon) {
         this.userId = userId;
         this.date = new Date();
-        this.boradHistory = new ArrayList<>();
+        this.history = history;
+        this.isWon = isWon;
     }
 }
