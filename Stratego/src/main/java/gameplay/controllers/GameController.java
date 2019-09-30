@@ -124,18 +124,14 @@ public class GameController {
 
     }
 
-    @RequestMapping("/game/AI")
-    @ResponseBody
-    public boolean aiMove(){
-        return board.aiMove(2);
+    @GetMapping("/game/AI")
+    public boolean aiMove(@RequestParam(name="player") int player){
+        return board.aiMove(player);
     }
 
 
     @RequestMapping(value = "/game/savehistory", method = RequestMethod.POST)
     public void generateAddress(@RequestBody GameResult result) {
-        System.out.println(result.getUserId());
-        System.out.println(result.getDate());
-        System.out.println(result.isWon());
         gameResultRepository.save(result);
     }
 

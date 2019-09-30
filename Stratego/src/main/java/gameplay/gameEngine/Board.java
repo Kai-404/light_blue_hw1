@@ -89,7 +89,7 @@ public class Board {
         remainingPiece.put( "B=Bombs",Bombs );
         remainingPiece.put( "F=Flag",Flag );
 
-        System.out.println( remainingPiece );
+        System.out.println("\n"+remainingPiece );
         return remainingPiece;
     }
 
@@ -308,6 +308,7 @@ public class Board {
         list= (whose ==1 ? playerOnePieces : playerTwoPieces);
         for (Piece piece : list) {
             if (piece.getType().equals( type )){
+                System.out.println( "\n"+"remove: piece "+piece.getType()+" "+piece.getWhosePiece() );
                 list.remove( piece );
                 break;
             }
@@ -337,10 +338,11 @@ public class Board {
                 tempIndex +=1 ;
                 if (boardState[tempIndex].isEmptyBlock()){
                     validMoveIndexes.add( tempIndex );
-                } else if (boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0){
+                } else if (boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].isRiver()){
                     break;
                 }else {
                     validMoveIndexes.add( tempIndex );
+                    break;
                 }
             }
 
@@ -349,10 +351,11 @@ public class Board {
                 tempIndex -=1 ;
                 if (boardState[tempIndex].isEmptyBlock()){
                     validMoveIndexes.add( tempIndex );
-                } else if (boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0){
+                } else if (boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].isRiver()){
                     break;
                 }else {
                     validMoveIndexes.add( tempIndex );
+                    break;
                 }
             }
 
@@ -361,10 +364,11 @@ public class Board {
                 tempIndex +=10 ;
                 if (boardState[tempIndex].isEmptyBlock()){
                     validMoveIndexes.add( tempIndex );
-                } else if (boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0){
+                } else if (boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].isRiver()){
                     break;
                 }else {
                     validMoveIndexes.add( tempIndex );
+                    break;
                 }
             }
 
@@ -373,10 +377,11 @@ public class Board {
                 tempIndex -=10 ;
                 if (boardState[tempIndex].isEmptyBlock()){
                     validMoveIndexes.add( tempIndex );
-                } else if (boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].getWhosePiece()==0){
+                } else if (boardState[tempIndex].getWhosePiece()==whose || boardState[tempIndex].isRiver()){
                     break;
                 }else {
                     validMoveIndexes.add( tempIndex );
+                    break;
                 }
             }
 
@@ -422,7 +427,6 @@ public class Board {
                 }
             }
         }
-
 
         return validMoveIndexes;
     }
