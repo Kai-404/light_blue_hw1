@@ -91,7 +91,7 @@ class Game extends React.Component {
       this.clearStat();
       this.props.getHis(this.state.history);
       axios
-          .post("http://localhost:8080/game/savehistory",
+          .post("/game/savehistory",
               {
                 userId: this.props.User.id,
                 history: JSON.stringify(this.state.history),
@@ -242,7 +242,7 @@ class Game extends React.Component {
     this.setState({ isAutoPlay: true });
     //while there's no winner of the game 2 AI will keep playing
     while (!this.state.winner && this.state.isStart) {
-      await axios.get("http://localhost:8080/game/AI", {
+      await axios.get("/game/AI", {
         headers: {"Content-Type": "application/json;charset=UTF-8"},
         params: {player: 1}
       }).then(res => {
