@@ -26,7 +26,7 @@ class Game extends React.Component {
   componentDidMount() {
     //get init game data from spring boot
     axios
-      .get("http://localhost:8080/game/init")
+      .get("/game/init")
       .then(res => this.setState({ board: res.data }));
   }
 
@@ -71,7 +71,7 @@ class Game extends React.Component {
       );
     }
     axios
-      .get("http://localhost:8080/game/init")
+      .get("/game/init")
       .then(res => this.setState({ board: res.data }));
     this.clearStat();
     this.setState({
@@ -110,12 +110,12 @@ class Game extends React.Component {
   //check if there's winner of this game
   getWinner() {
     axios
-      .get("http://localhost:8080/game/termination")
+      .get("/game/termination")
       .then(res => this.setState({ winner: res.data }));
     if (this.state.winner) {
       console.log(this.state.winner);
       axios
-          .post("http://localhost:8080/game/savehistory",
+          .post("/game/savehistory",
               {
                 userId : this.props.User.id,
                 history : JSON.stringify(this.state.history),
@@ -161,7 +161,7 @@ class Game extends React.Component {
           index2
         });
         axios
-          .post("http://localhost:8080/game/swap", data, {
+          .post("/game/swap", data, {
             headers: { "Content-Type": "application/json;charset=UTF-8" },
             params: { startIndex: index1, distIndex: index2 }
           })
@@ -177,17 +177,17 @@ class Game extends React.Component {
   //update the remainding piece accordingly
   updatePieceStat() {
     axios
-      .get("http://localhost:8080/game/getplayeronepiece")
+      .get("/game/getplayeronepiece")
       .then(res => this.setState({ PlayerAStat: res.data }));
     axios
-      .get("http://localhost:8080/game/getplayertwopiece")
+      .get("/game/getplayertwopiece")
       .then(res => this.setState({ PlayerBStat: res.data }));
   }
 
   //used to update board when move made
   updateBoard() {
     console.log("update board, and update remainding piece stat");
-    axios.get("http://localhost:8080/game/boardstatus").then(
+    axios.get("/game/boardstatus").then(
       res =>
         this.setState({
           board: res.data,
@@ -224,7 +224,7 @@ class Game extends React.Component {
     */
   async ai() {
 
-    await axios.get("http://localhost:8080/game/AI",{
+    await axios.get("/game/AI",{
       headers: {"Content-Type": "application/json;charset=UTF-8"},
       params: {player:2}
     }).then(res => {
@@ -276,7 +276,7 @@ class Game extends React.Component {
           -if not: unselect buttons, and do nothing.
         */
         axios
-          .post("http://localhost:8080/game/move", data, {
+          .post("/game/move", data, {
             headers: { "Content-Type": "application/json;charset=UTF-8" },
             params: { startIndex: index1, distIndex: index2 }
           })
