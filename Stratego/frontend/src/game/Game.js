@@ -248,6 +248,8 @@ class Game extends React.Component {
         }
       });
     }
+    this.getWinner();
+    this.setState({isAutoPlay: false});
   };
 
   //two player take turns to make move
