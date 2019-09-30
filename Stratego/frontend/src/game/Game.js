@@ -88,6 +88,13 @@ class Game extends React.Component {
   surrender = () => {
     this.clearStat();
     this.props.getHis(this.state.history);
+    axios
+        .post("http://localhost:8080/game/savehistory",
+            {
+                userId : this.props.User.id,
+                history : JSON.stringify(this.state.history),
+                isWon : false
+        });
     this.setState({
       winner: "AI",
       mesg: "game ended, winner is AI",
@@ -102,6 +109,14 @@ class Game extends React.Component {
       .get("http://localhost:8080/game/termination")
       .then(res => this.setState({ winner: res.data }));
     if (this.state.winner) {
+      console.log(this.state.winner);
+      axios
+          .post("http://localhost:8080/game/savehistory",
+              {
+                userId : this.props.User.id,
+                history : JSON.stringify(this.state.history),
+                isWon : (this.state.winner === 2)
+              });
       this.props.getHis(this.state.history);
       console.log("winner!!!!!!!!!!!!!!");
       this.setState({
