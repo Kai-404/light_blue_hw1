@@ -114,7 +114,7 @@ class App extends Component {
               path="/history"
               render={props => (
                 <React.Fragment>
-                  <History User={this.state.User}/>
+                  <History User={this.state.User} getHis={this.getHistory}s/>
                 </React.Fragment>
               )}
             />

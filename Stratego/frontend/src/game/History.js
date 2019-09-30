@@ -18,23 +18,31 @@ class History extends React.Component {
   }
 
   //for each game histroy a component will be redered
-  componentDidMount() {
-    let temp = [];
-    axios
-        .get("http://localhost:8080/game/gethistory", {params: {userid:this.props.User.id}})
-        .then(res => {
-            let i;
-            for(i=0; i<res.data.length;i++) {
-              temp.push({Date: res.data[i].date, Status:res.data[i].won ? "Won":"Lost"});
-            }
-          this.setState({History : temp});
-          }
-        );
+    componentDidMount() {
+        let temp = [];
+        axios
+            .get("http://localhost:8080/game/gethistory", {params: {userid:this.props.User.id}})
+            .then(res => {
+                    let i;
+                    for(i=0; i<res.data.length;i++) {
+                        temp.push({Date: res.data[i].date, Status:res.data[i].won ? "Won":"Lost", hist: res.data[i].history});
+                    }
+                    this.setState({History : temp});
+                }
+            );
+    }
 
-  }
+    onRowClick = (state, rowInfo, column, instance) => {
+        return {
+            onClick: e => {
+                this.props.getHis(JSON.parse(rowInfo.original.hist));
+            }
+        }
+    };
 
   //click on the replay button will redirect/pop up a window to autoplay the game
   routeChange = () => {
+      this.props.getHis();
     //let path = `/replay/${this.state.gameId}`;
     let path = "/replay";
     this.props.history.push(path);
@@ -64,6 +72,7 @@ class History extends React.Component {
         <ReactTable
           columns={columns}
           data={this.state.History}
+          getTrProps={this.onRowClick}
           defaultPageSize={5}
         ></ReactTable>
       </React.Fragment>
