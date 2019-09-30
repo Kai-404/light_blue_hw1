@@ -17,7 +17,11 @@ class History extends React.Component {
   //for each game histroy a component will be redered
   componentDidMount() {
     axios
-      .get("http://localhost:8080/game/history")
+      .get("http://localhost:8080/game/gethistory",
+          {
+            headers: {"Content-Type": "application/json;charset=UTF-8"},
+            params: {userid : this.props.User.id}
+          })
       .then(res => this.setState({ History: res.data }));
   }
 

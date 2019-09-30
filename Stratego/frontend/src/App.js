@@ -16,7 +16,7 @@ import Replay from "./game/Replay";
 class App extends Component {
   state = {
     //    LoginFlag: false,
-    LoginFlag: true,
+    LoginFlag: false,
     User: null, //username, password, email, history
     History: null //date, status, description
   };
@@ -105,7 +105,7 @@ class App extends Component {
               path="/game"
               render={props => (
                 <React.Fragment>
-                  <Game getHis={this.getHistory} />
+                  <Game User={this.state.User} getHis={this.getHistory} />
                 </React.Fragment>
               )}
             />
@@ -114,7 +114,7 @@ class App extends Component {
               path="/history"
               render={props => (
                 <React.Fragment>
-                  <History />
+                  <History User={this.state.User}/>
                 </React.Fragment>
               )}
             />

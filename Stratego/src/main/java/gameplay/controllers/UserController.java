@@ -16,7 +16,7 @@ public class UserController {
     private UserRepository userRepository;
 
     @PostMapping("/register")
-    public int createCourse(@RequestParam(name = "username") String username, @RequestParam(name = "email") String email, @RequestParam(name = "password") String password) {
+    public int createUser(@RequestParam(name = "username") String username, @RequestParam(name = "email") String email, @RequestParam(name = "password") String password) {
         if (userRepository.findByEmail(email) != null) { return 1; }
         if (userRepository.findByUsername(username) != null) { return 2; }
         userRepository.save(new User(username, email, password));
