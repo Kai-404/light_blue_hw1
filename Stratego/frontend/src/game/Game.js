@@ -10,9 +10,9 @@ class Game extends React.Component {
     this.state = {
       isStart: false,
       FIRST_SELECT: null,
-      //player1 is self, Player2 is AI
-      Player1: true,
-      Player2: false,
+      Player1: true, //self
+      Player2: false, //AI
+      isAutoPlay: false, //replace player1 as another AI
       //board will be load from the back end as a list/array
       board: Array(100).fill(":("),
       PlayerAStat: {},
@@ -62,11 +62,6 @@ class Game extends React.Component {
     console.log(this.state.PlayerAStat);
   };
 
-  /*TODO: setup game will cause current game not saved,
-          remove gameHis from datatbase
-          - backend: trysomething like if game/init gets request
-                      delete gameHis with gameid
-  */
   setupGame = () => {
     if (this.state.isStart) {
       alert("New game started without saving the old one");
@@ -80,6 +75,7 @@ class Game extends React.Component {
       .then(res => this.setState({ board: res.data }));
     this.clearStat();
     this.setState({
+      isAutoPlay: false,
       isStart: false,
       Player1: true,
       Player2: false,
@@ -202,9 +198,7 @@ class Game extends React.Component {
     this.getWinner(); //check if there's winner after one move made
   }
 
-  /*TODO: so the post method must return True, because AI must make a move, or else game terminated
-          try to see if it works, if not ask me
-
+  /*
     send a AI move request, if return true, update board,
     if not do nothing and wait for AI to return true
     */
@@ -214,6 +208,25 @@ class Game extends React.Component {
       if (res.data) this.updateBoard();
     });
   }
+
+  /**
+   * for testing purposes, add a button that lets the user quickly hurry through a game
+   * such that moves are automatically chosen via the same AI logic that governs the AI player.
+   * by clicking on the autoPlay button, user will be replaced by the AI
+   */
+  autoPlay = () => {
+    this.setState({ isAutoPlay: true });
+    //while there's no winner of the game 2 AI will keep playing
+    while (!this.state.winner) {
+      axios.post("http://localhost:8080/game/AI").then(res => {
+        //update the board and call another AI to make next move
+        if (res.data) {
+          this.updateBoard();
+          this.ai(); // request AI to make a move
+        }
+      });
+    }
+  };
 
   //two player take turns to make move
   move(index1, index2) {
@@ -266,6 +279,8 @@ class Game extends React.Component {
   handleClick(index) {
     if (this.state.winner) {
       this.setState({ mesg: `game ended, winner is ${this.state.winner}` });
+    } else if (this.state.isAutoPlay) {
+      this.setState({ mesg: "Game is in Quick Auto Play mode" });
     } else {
       if (!this.state.FIRST_SELECT) this.validPiece(index);
       else {
@@ -334,6 +349,9 @@ class Game extends React.Component {
         </button>
         <button className="button" onClick={this.surrender}>
           Surrender
+        </button>
+        <button className="button" onClick={this.autoPlay}>
+          AutoPlay
         </button>
         <br />
         <br />
