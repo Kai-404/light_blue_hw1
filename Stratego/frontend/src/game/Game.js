@@ -217,7 +217,7 @@ class Game extends React.Component {
   autoPlay = () => {
     this.setState({ isAutoPlay: true });
     //while there's no winner of the game 2 AI will keep playing
-    while (!this.state.winner) {
+  /*  while (!this.state.winner) {
       axios.post("http://localhost:8080/game/AI").then(res => {
         //update the board and call another AI to make next move
         if (res.data) {
@@ -225,7 +225,7 @@ class Game extends React.Component {
           this.ai(); // request AI to make a move
         }
       });
-    }
+    }*/
   };
 
   //two player take turns to make move
