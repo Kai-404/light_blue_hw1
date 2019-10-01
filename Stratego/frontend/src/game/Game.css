@@ -1,0 +1,94 @@
+.square {
+  background-color: #ffffcc;
+  height: 50px;
+  width: 50px;
+  box-sizing: border-box;
+  border: 2px solid white;
+  font-size: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.squareR {
+  background-image: url(../image/water.png);
+  background-size: 70px, 50px;
+  background-color: white;
+  height: 50px;
+  width: 50px;
+  box-sizing: border-box;
+  border: 2px solid white;
+  font-size: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.squareB {
+  background-color: #99cccc;
+  height: 50px;
+  width: 50px;
+  box-sizing: border-box;
+  border: 2px solid white;
+  font-size: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.squareA {
+  background-color: #ccffcc;
+  height: 50px;
+  width: 50px;
+  box-sizing: border-box;
+  border: 2px solid white;
+  font-size: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 800px;
+  height: 638px;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+}
+.board {
+  display: flex;
+  width: 510px;
+  height: 510px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  border: 5px solid lightblue;
+}
+.resultBarRight {
+  width: 25%;
+  height: 510px;
+  background: lightblue;
+  box-sizing: border-box;
+  border: 5px solid white;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 2px 0;
+}
+
+.stat {
+  font-size: 15px;
+  font-weight: bold;
+  text-align: left;
+  display: inline-block;
+}
+
+.button {
+  background-color: lightsteelblue;
+  color: #fff;
+  padding: 12px 20px;
+  border: 2px solid white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.message {
+  color: red;
+}

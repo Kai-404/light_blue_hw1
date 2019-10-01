@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { slide as Menu } from "react-burger-menu";
 import "../App.css";
 
 function SideBar() {
   return (
     <header>
       <h1>Light Blue Stratego</h1>
-      <br></br>
-      <div className="pageHeader">
+      <Menu>
         <Link className="link" to="/">
           Home
         </Link>
@@ -19,7 +19,7 @@ function SideBar() {
         <Link className="link" to="/register">
           Register
         </Link>
-      </div>
+      </Menu>
     </header>
   );
 }

@@ -2,43 +2,92 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router";
+import axios from "axios";
 import "../App.css";
+import Login from "./Login";
 
 class Register extends Component {
   state = {
     username: "",
-    email: "@stonybrook.edu",
+    email: "",
     password: "",
     password2: "",
-    phoneNumber: ""
+      errmsg: ""
+  };
+  routeChange = () => {
+    this.props.history.push("/");
   };
   onChange = e => this.setState({ [e.target.name]: e.target.value });
-  /** 
-  onSubmit = e => {
-    e.preventDefault();
-    const { name, email, password, password2, phoneNumber } = this.state;
-    if (password !== password2) {
-      this.props.createAccount(name, email, "", phoneNumber);
-    } else this.props.createAccount(name, email, password, phoneNumber);
-    this.setState({
-      name: "",
-      email: "@stonybrook.edu",
-      password: "",
-      password2: "",
-      phoneNumber: ""
-    });
-    this.props.history.push("/");
-  };*/
+
+  //TODO: if registered then use this new account to Login, jump to loggedIn bar
+    register = (username, email, password) => {
+        let data = JSON.stringify({
+            username,
+            email,
+            password
+        });
+        let resdata = -1;
+        axios
+            .post("/register", data, {
+                headers: { "Content-Type": "application/json;charset=UTF-8" },
+                params: {username: username, email: email, password: password}
+            })
+            .then(res => {
+                resdata = res.data;
+                if (res.data === 0) {
+                    this.setState({errmsg: "Fail to create new Account, invalid email"});
+                } else if (res.data === 1) {
+                    this.setState({errmsg: "Fail to create new Account, email already exists"});
+                } else if (res.data === 2)
+                    this.setState({errmsg: "Fail to create new Account, username already exists"});
+                else {
+                    this.setState({errmsg: "registration successful"})
+                }
+                console.log(res);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        return resdata;
+    };
+
+    onSubmit = e => {
+        e.preventDefault();
+        const { username, email, password, password2 } = this.state;
+        if (username === "" || email == "" || password === "" || password2 === "") {
+            this.setState({errmsg: "fill in all fields"})
+        }
+        else if (/\S+@\S+\.\S+/.test(email) == false) { this.setState({errmsg: "invalid email"})}
+        else if (password !== password2) {
+            this.setState({errmsg: "Fail to create new Account, password don't match"});
+        }
+        else if (password.length < 8) {
+            this.setState({errmsg: "password needs to be at least 8 characters long"})
+        } else {
+            if (this.register(username, email, password) == 3) {
+
+                this.setState({
+                    username: "",
+                    email: "",
+                    password: "",
+                    password2: ""
+                });
+                this.props.history.push("/");
+            }
+        }
+    };
+
   render() {
     return (
+        <div>
+            <p className="errmsg">{this.state.errmsg}</p>
       <form className="form" onSubmit={this.onSubmit}>
         User Name:
         <input
           className="input"
-          placeholder="UserName"
-          value={this.state.name}
+          value={this.state.username}
           type="text"
-          name="name"
+          name="username"
           onChange={this.onChange}
         />
         <br />
@@ -46,7 +95,6 @@ class Register extends Component {
         Email:
         <input
           className="input"
-          placeholder="first.last@stonybrook.edu"
           value={this.state.email}
           type="text"
           name="email"
@@ -74,27 +122,19 @@ class Register extends Component {
         />
         <br />
         <br />
-        Phone Number:
-        <input
-          className="input"
-          placeholder={"1234567890"}
-          value={this.state.phoneNumber}
-          type="text"
-          name="phoneNumber"
-          onChange={this.onChange}
-        />
-        <br />
-        <br />
         <button type="submit" className="submitButton">
           Submit
         </button>
         {"  "}
-        <button type="button" className="submitButton">
-          <Link className="linkStyle" to="/">
-            Cancle
-          </Link>
+        <button
+          type="button"
+          className="submitButton"
+          onClick={this.routeChange}
+        >
+          Cancel
         </button>
       </form>
+        </div>
     );
   }
 }
