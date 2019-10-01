@@ -668,6 +668,7 @@ public class Board {
             return this.move(idx1, idx2);
         }
         else {
+            setWinner(player);
             return false;
         }
     }
