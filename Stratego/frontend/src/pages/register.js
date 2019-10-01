@@ -67,7 +67,7 @@ class Register extends Component {
         else if (password.length < 8) {
             this.setState({errmsg: "password needs to be at least 8 characters long"})
         }
-        this.register(username, email, password)
+        this.register(username, email, password);
     };
 
   render() {
