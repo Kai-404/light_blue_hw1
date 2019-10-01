@@ -114,14 +114,14 @@ class Game extends React.Component {
           else if(res.data === 1)
              this.setState({ winner: 'AI' })
       });
-    if (this.state.winner) {
+    if (this.state.winner && this.state.isStart) {
       console.log(this.state.winner);
       axios
           .post("/game/savehistory",
               {
                 userId : this.props.User.id,
                 history : JSON.stringify(this.state.history),
-                isWon : (this.state.winner === 2)
+                isWon : (this.state.winner != 'AI')
               });
       this.props.getHis(this.state.history);
       console.log("winner!!!!!!!!!!!!!!");
