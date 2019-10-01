@@ -38,13 +38,10 @@ class Game extends React.Component {
     });
   }
 
-  /*by clicking the play button,
-  react will send back the finalized board to spring,
-  then user are able to start the game
-  TODO: Backend: form a gameResult, start to record
+  /*by clicking the play button user are able to start the game
   */
   playGame = () => {
-    if (this.state.winner) {
+    if (this.state.winner || this.state.isStart) {
       this.setState({
         mesg: "Please click on setup before starting a new game"
       });
@@ -111,20 +108,25 @@ class Game extends React.Component {
   getWinner() {
     axios
       .get("/game/termination")
-      .then(res => this.setState({ winner: res.data }));
-    if (this.state.winner) {
+      .then(res => {
+          if(res.data === 2)
+            this.setState({ winner: this.props.User.username })
+          else if(res.data === 1)
+             this.setState({ winner: 'AI' })
+      });
+    if (this.state.winner && this.state.isStart) {
       console.log(this.state.winner);
       axios
           .post("/game/savehistory",
               {
                 userId : this.props.User.id,
                 history : JSON.stringify(this.state.history),
-                isWon : (this.state.winner === 2)
+                isWon : (this.state.winner != 'AI')
               });
       this.props.getHis(this.state.history);
       console.log("winner!!!!!!!!!!!!!!");
       this.setState({
-        mesg: `game ended, winner is ${this.props.User.username}`,
+        mesg: `game ended, winner is ${this.state.winner}`,
         isStart: false,
         history: [],
         isAutoPlay: false

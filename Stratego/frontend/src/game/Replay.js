@@ -10,7 +10,7 @@ class Replay extends React.Component {
       currentBoard: [],
       isPause: true,
       seconds: 0,
-      frameTime: 1000
+      frameTime: 500
     };
   }
 
