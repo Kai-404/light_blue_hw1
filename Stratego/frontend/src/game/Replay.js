@@ -84,9 +84,6 @@ class Replay extends React.Component {
         <button className="submitButton" onClick={this.pause}>
           Pause
         </button>
-        <button className="submitButton" onClick={this.faster}>
-          PlaceHolder
-        </button>
         <div>(For testing purpose)Turns Taking: {this.state.seconds}</div>
         <b className="board">{board}</b>
       </React.Fragment>
