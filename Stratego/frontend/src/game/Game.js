@@ -230,6 +230,7 @@ class Game extends React.Component {
     }).then(res => {
       //update the board accordingly
       if (res.data) this.updateBoard();
+      else { this.getWinner(); }
     });
   }
 

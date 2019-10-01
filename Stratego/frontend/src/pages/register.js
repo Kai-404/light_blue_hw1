@@ -26,14 +26,12 @@ class Register extends Component {
             email,
             password
         });
-        let resdata = -1;
         axios
             .post("/register", data, {
                 headers: { "Content-Type": "application/json;charset=UTF-8" },
                 params: {username: username, email: email, password: password}
             })
             .then(res => {
-                resdata = res.data;
                 if (res.data === 0) {
                     this.setState({errmsg: "Fail to create new Account, invalid email"});
                 } else if (res.data === 1) {
@@ -41,14 +39,19 @@ class Register extends Component {
                 } else if (res.data === 2)
                     this.setState({errmsg: "Fail to create new Account, username already exists"});
                 else {
-                    this.setState({errmsg: "registration successful"})
+                    this.setState({
+                        username: "",
+                        email: "",
+                        password: "",
+                        password2: ""
+                    });
+                    this.props.history.push("/");
                 }
                 console.log(res);
             })
             .catch(err => {
                 console.log(err);
             });
-        return resdata;
     };
 
     onSubmit = e => {
@@ -63,18 +66,9 @@ class Register extends Component {
         }
         else if (password.length < 8) {
             this.setState({errmsg: "password needs to be at least 8 characters long"})
-        } else {
-            if (this.register(username, email, password) == 3) {
-
-                this.setState({
-                    username: "",
-                    email: "",
-                    password: "",
-                    password2: ""
-                });
-                this.props.history.push("/");
-            }
         }
+        this.register(username, email, password);
+
     };
 
   render() {
